@@ -5,7 +5,8 @@ C_FLAGS		=	-Wall -Wextra -Werror -g3
 
 SRCS_DIR	=	srcs
 OBJ_DIR		=	objs
-SRCS_NAMES	=	main.c
+SRCS_NAMES	=	signal.c env.c \
+				main.c
 OBJS_NAMES	=	$(SRCS_NAMES:.c=.o)
 SRCS		=	$(addprefix $(SRC_DIR)/,$(SRCS_NAMES))
 OBJS		=	$(addprefix $(OBJ_DIR)/,$(OBJS_NAMES))
@@ -28,17 +29,17 @@ CLEAN		=	[ ♻ ]
 REMOVE		=	[ 🗑 ]
 REDO		=	[ 🗘 ]
 
-all: $(NAME)
+all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJS)
-	@$(CC) $(C_FLAGS) $(OBJS) $(HEADER) -L./libft -lreadline -o $(NAME) || (echo "\n$(RED) ============ $(ERROR) Linking failed ! ====================================== $(RESET)\n"; exit 1)
+	@$(CC) $(C_FLAGS) $(OBJS) $(HEADER) $(LIBFT) -lreadline -o $(NAME) || (echo "\n$(RED) ============ $(ERROR) Linking failed ! ====================================== $(RESET)\n"; exit 1)
 	@echo "$(GREEN) ============ $(SUCCESS) Executable created ! ================================== $(RESET)"
 
 $(LIBFT): #libft/includes/libft.h libft/$(SRC_DIR)/*.c
 	@make -C libft --no-print-directory
 
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJ_DIR)
-	@$(CC) $(C_FLAGS) -c $< -o $@ $(HEADER) || (echo "\n$(RED) ============ $(ERROR) Compilation failed ! ================================== $(RESET)\n"; exit 1)
+	@$(CC) $(C_FLAGS) -c $< -o $@ $(HEADER) -L./libft || (echo "\n$(RED) ============ $(ERROR) Compilation failed ! ================================== $(RESET)\n"; exit 1)
 	@echo "$(GREEN) ============ $(SUCCESS) Successful compilation ! ============================== $(RESET)"
 
 $(OBJ_DIR):
