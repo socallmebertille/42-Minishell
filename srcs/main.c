@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/15 12:47:54 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/15 14:44:44 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ void	exit_prog(t_env *env, int code)
 	exit(code);
 }
 
+static void mafocntion()
+{
+	return (0);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
@@ -53,5 +58,6 @@ int	main(int ac, char **av, char **env)
 		free(input);
 	}
 	rl_clear_history();
+	mafocntion();
 	return (0);
 }
