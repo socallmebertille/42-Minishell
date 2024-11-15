@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/15 14:57:56 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/15 15:12:52 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	exit_prog(t_env *env, int code)
 	tmp = env->next;
 	while(tmp)
 	{
-		printf("%s = %s\n", env->type, env->value);
+		// printf("%s = %s\n", env->type, env->value);
 		tmp = env->next;
 		free(env->type);
 		free(env->value);
