@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/15 15:12:52 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/15 18:24:26 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	main(int ac, char **av, char **env)
 	get_env(env, &cpy_env);
 	while (1)
 	{
-		input = readline("minishell$ ");
+		input = readline(MAGENTA"minishell$ "RESET);
 		if (!input)
 			exit_prog(cpy_env, 130);
 		if (*input)
