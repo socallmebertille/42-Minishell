@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 04:51:00 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/13 19:57:00 by bertille         ###   ########.fr       */
+/*   Created: 2024/11/13 16:54:47 by bertille          #+#    #+#             */
+/*   Updated: 2024/11/13 18:56:36 by bertille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-t_list	*ft_lstnew(void *content)
+static void	handle_sigint(int signum)
 {
-	t_list	*node;
-
-	node = (t_list *)malloc(sizeof(t_list));
-	if (!node)
-		return (NULL);
-	node->content = content;
-	node->next = NULL;
-	return (node);
+	(void)signum;
+	write(2, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
-/*#include <stdio.h>
-
-int	main(void)
+static void	handle_sigquit(int signum)
 {
-	char	*content = "Hola";
-	t_list	*node = ft_lstnew(&content);
+	(void)signum;
+	rl_clear_history();
+	exit(0);
+}
 
-	if (!node)
-		return(1);
-	printf("%s\n", *(char **)(node->content));
-	free(node);
-	return (0);
-}*/
+void	signal_handlers(void)
+{
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, handle_sigquit);
+}
