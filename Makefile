@@ -39,7 +39,7 @@ $(LIBFT): #libft/includes/libft.h libft/$(SRC_DIR)/*.c
 	@make -C libft --no-print-directory
 
 $(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJ_DIR)
-	@$(CC) $(C_FLAGS) -c $< -o $@ $(HEADER) -L./libft || (echo "\n$(RED) ============ $(ERROR) Compilation failed ! ================================== $(RESET)\n"; exit 1)
+	@$(CC) $(C_FLAGS) -c $< -o $@ $(HEADER) || (echo "\n$(RED) ============ $(ERROR) Compilation failed ! ================================== $(RESET)\n"; exit 1)
 	@echo "$(GREEN) ============ $(SUCCESS) Successful compilation ! ============================== $(RESET)"
 
 $(OBJ_DIR):

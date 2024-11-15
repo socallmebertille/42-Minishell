@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/13 20:23:25 by bertille         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:47:54 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	exit_prog(t_env *env, int code)
+{
+	t_env	*tmp;
+	
+	tmp = env->next;
+	while(tmp)
+	{
+		printf("%s = %s\n", env->type, env->value);
+		tmp = env->next;
+		free(env->type);
+		free(env->value);
+		free(env);
+		env = tmp;
+	}
+	if (code == 130)
+		write(2, "exit\n", 5);
+	rl_clear_history();
+	exit(code);
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -21,16 +41,12 @@ int	main(int ac, char **av, char **env)
 	if (ac != 1)
 		return (1);
 	signal_handlers();
-	get_env(env, &cpy_env);//ft_bzero(cpy_env, sizeof(cpy_env)));
+	get_env(env, &cpy_env);
 	while (1)
 	{
 		input = readline("minishell$ ");
 		if (!input)
-		{
-			write(2, "exit\n", 5);
-			rl_clear_history();
-			exit(130);
-		}
+			exit_prog(cpy_env, 130);
 		if (*input)
 			add_history(input);
 		// 	parse(input);

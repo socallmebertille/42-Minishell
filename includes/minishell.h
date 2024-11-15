@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/13 20:30:52 by bertille         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:12:21 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_env
 void	signal_handlers(void);
 
 //		env.c
-t_env	**ft_addenv(char *type, char *value, t_env **env);
+t_env	**add_cpy_env(char *type, char *value, t_env **env);
 t_env	**get_env(char **env, t_env **cpy_env);
 
 #endif
