@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/15 12:47:54 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/15 18:24:26 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	exit_prog(t_env *env, int code)
 	tmp = env->next;
 	while(tmp)
 	{
-		printf("%s = %s\n", env->type, env->value);
+		// printf("%s = %s\n", env->type, env->value);
 		tmp = env->next;
 		free(env->type);
 		free(env->value);
@@ -44,7 +44,7 @@ int	main(int ac, char **av, char **env)
 	get_env(env, &cpy_env);
 	while (1)
 	{
-		input = readline("minishell$ ");
+		input = readline(MAGENTA"minishell$ "RESET);
 		if (!input)
 			exit_prog(cpy_env, 130);
 		if (*input)
