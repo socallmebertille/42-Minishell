@@ -8,6 +8,7 @@ As beautiful as a shell
 | git branch | -> affiche les differentes branches existantes |
 | git pull | -> toujours avant de commencer des modif pour mettre a jour et eviter les conflits |
 | git checkout development | -> rentrer dans la branche development |
+| git checkout branche_a_copie dossier/fichier_a_copie | -> ajoute ou modifie le fichier_a_copie provenant de la branche_a_copie sur la branche actuelle |
 
 ## Testeurs
 

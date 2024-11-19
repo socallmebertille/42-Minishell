@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:57:40 by bertille          #+#    #+#             */
-/*   Updated: 2024/11/15 12:39:57 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:39:03 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,42 +21,45 @@ static t_env	*last_value(t_env *env)
 	return (env);
 }
 
-t_env	**add_cpy_env(char *type, char *value, t_env **env)
+void add_cpy_env(char *type, char *value, t_env **env, t_data *data)
 {
-	t_env	*new;
 	t_env	*node;
+	t_env	*new_last_node;
 
-	new = (t_env *)malloc(sizeof(t_env));
-	if (!new)
-		return (NULL);
-	new->type = type;
-	new->value = value;
-	new->next = NULL;
-	if (!new)
-		return (NULL);
+	new_last_node = (t_env *)malloc(sizeof(t_env));
+	if (!new_last_node)
+		return ;
+	new_last_node->type = type;
+	new_last_node->value = value;
+	new_last_node->next = NULL;
 	if (!*env)
-		*env = new;
-	else if (*env)
+	{
+		*env = new_last_node;
+		data->cpy_env = *env;
+	}
+	else
 	{
 		node = last_value(*env);
-		node->next = new;
+		node->next = new_last_node;
 	}
-	return (env);
+	return ;
 }
 
-t_env	**get_env(char **env, t_env **cpy_env)
+void	get_env(char **env, t_data *data)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	t_env	*cpy_env;
 
-	ft_bzero(cpy_env, sizeof(t_env));
-	if (!env) // launch "env -i bash" then "env"
+	cpy_env = NULL;
+	data->env = env;
+	if (!env || !*env) // launch "env -i bash" then "env"
 	{
-		add_cpy_env(ft_strdup("PWD"), ft_strdup("get_cwd()"), cpy_env);
-		add_cpy_env(ft_strdup("SHLVL"), ft_strdup("1"), cpy_env);
+		add_cpy_env(ft_strdup("PWD"), ft_strdup("get_cwd()"), &cpy_env, data);
+		add_cpy_env(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env, data);
 		add_cpy_env(ft_strdup("_"), ft_strdup("chemin de last commande"),
-			cpy_env);
-		return (cpy_env);
+			&cpy_env, data);
+		return ;
 	}
 	i = 0;
 	while (env[i])
@@ -65,8 +68,8 @@ t_env	**get_env(char **env, t_env **cpy_env)
 		while (env[i][j] != '=')
 			j++;
 		add_cpy_env(ft_substr(env[i], 0, j), ft_substr(env[i], j + 1,
-				ft_strlen(env[i])), cpy_env);
+				ft_strlen(env[i])), &cpy_env, data);
 		i++;
 	}
-	return (cpy_env);
+	return ;
 }
