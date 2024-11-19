@@ -6,11 +6,25 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/19 15:36:59 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:50:27 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	free_tok(t_token *tok)
+{
+	t_token	*tmp;
+
+	while (tok)
+	{
+		tmp = tok->next;
+		// printf("%s = %s\n", env->type, env->value);
+		free(tok->value);
+		free(tok);
+		tok = tmp;
+	}
+}
 
 static void	free_env(t_env *env)
 {
@@ -30,6 +44,7 @@ static void	free_env(t_env *env)
 void	exit_prog(t_data *data, int code)
 {
 	free_env(data->cpy_env);
+	free_tok(data->token);
 	if (code == 130)
 		write(2, "exit\n", 5);
 	rl_clear_history();
@@ -53,7 +68,7 @@ int	main(int ac, char **av, char **env)
 			exit_prog(&data, 130);
 		if (*data.line)
 			add_history(data.line);
-		// ft_strtok(data->line);
+		ft_strtok(data.line, &data);
 		// 	parse(data->line);
 		free(data.line);
 	}

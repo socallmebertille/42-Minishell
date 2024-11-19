@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/19 15:45:26 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:39:08 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,21 +26,7 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
-typedef struct s_env
-{
-	char			*type;
-	char			*value;
-	struct s_env	*next;
-}					t_env;
-
-typedef struct s_data
-{
-	char			*line;
-	char			**env;
-	t_env			*cpy_env;
-}					t_data;
-
-typedef enum e_token
+typedef enum e_enum
 {
 	CMD,
 	FLGS,
@@ -50,7 +36,31 @@ typedef enum e_token
 	HEREDOC,
 	DELIM,
 	PIPE,
+}					t_enum;
+
+typedef struct s_env
+{
+	char			*type;
+	char			*value;
+	struct s_env	*next;
+}					t_env;
+
+typedef struct s_token
+{
+	t_enum			type;
+	char			*value;
+	struct s_token	*prev;
+	struct s_token	*next;
 }					t_token;
+
+typedef struct s_data
+{
+	char			*line;
+	t_token			*token;
+	char			**env;
+	t_env			*cpy_env;
+}					t_data;
+
 
 //----------------- signal.c ---------------------
 void				signal_handlers(void);
@@ -59,5 +69,11 @@ void				signal_handlers(void);
 void				add_cpy_env(char *type, char *value, t_env **env,
 						t_data *data);
 void				get_env(char **env, t_data *data);
+
+//----------------- token.c ----------------------
+void				ft_strtok(char *line, t_data *data);
+
+//----------------- split_charset.c --------------
+char				**split_charset(char *str, char *charset);
 
 #endif
