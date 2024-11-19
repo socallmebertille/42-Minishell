@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/19 15:35:28 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:45:26 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,18 @@ typedef struct s_data
 	char			**env;
 	t_env			*cpy_env;
 }					t_data;
+
+typedef enum e_token
+{
+	CMD,
+	FLGS,
+	INFILE,
+	OUTFILE,
+	APPEND,
+	HEREDOC,
+	DELIM,
+	PIPE,
+}					t_token;
 
 //----------------- signal.c ---------------------
 void				signal_handlers(void);
