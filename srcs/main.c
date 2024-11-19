@@ -3,29 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/15 18:24:26 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:36:59 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exit_prog(t_env *env, int code)
+static void	free_env(t_env *env)
 {
 	t_env	*tmp;
-	
-	tmp = env->next;
-	while(tmp)
+
+	while (env)
 	{
-		// printf("%s = %s\n", env->type, env->value);
 		tmp = env->next;
+		// printf("%s = %s\n", env->type, env->value);
 		free(env->type);
 		free(env->value);
 		free(env);
 		env = tmp;
 	}
+}
+
+void	exit_prog(t_data *data, int code)
+{
+	free_env(data->cpy_env);
 	if (code == 130)
 		write(2, "exit\n", 5);
 	rl_clear_history();
@@ -34,23 +38,24 @@ void	exit_prog(t_env *env, int code)
 
 int	main(int ac, char **av, char **env)
 {
-	char	*input;
-	t_env	*cpy_env;
+	t_data	data;
 
 	(void)av;
 	if (ac != 1)
 		return (1);
+	ft_bzero(&data, sizeof(t_data));
 	signal_handlers();
-	get_env(env, &cpy_env);
+	get_env(env, &data);
 	while (1)
 	{
-		input = readline(MAGENTA"minishell$ "RESET);
-		if (!input)
-			exit_prog(cpy_env, 130);
-		if (*input)
-			add_history(input);
-		// 	parse(input);
-		free(input);
+		data.line = readline(MAGENTA "minishell$ " RESET);
+		if (!data.line)
+			exit_prog(&data, 130);
+		if (*data.line)
+			add_history(data.line);
+		// ft_strtok(data->line);
+		// 	parse(data->line);
+		free(data.line);
 	}
 	rl_clear_history();
 	return (0);
