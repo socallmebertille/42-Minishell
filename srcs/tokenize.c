@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:55:18 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/20 18:13:33 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/20 18:21:14 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,7 +235,7 @@ char	*ft_enum_to_char(int num)
 	if (num == 124)
 		return ("PIPE");
 	if (num == HEREDOC)
-		return ("HEREDOk");
+		return ("HEREDOl");
 	if (num == OUTFILE)
 		return ("OUT");
     if (num == INFILE)
