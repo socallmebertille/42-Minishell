@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/19 16:39:08 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/20 17:09:24 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,16 @@
 typedef enum e_enum
 {
 	CMD,
+	WORD,
 	FLGS,
-	INFILE,
-	OUTFILE,
 	APPEND,
 	HEREDOC,
 	DELIM,
-	PIPE,
+	OPERATEUR,
+	INFILE = '<',
+	OUTFILE = '>',
+	PIPE = '|',
+
 }					t_enum;
 
 typedef struct s_env
@@ -61,7 +64,6 @@ typedef struct s_data
 	t_env			*cpy_env;
 }					t_data;
 
-
 //----------------- signal.c ---------------------
 void				signal_handlers(void);
 
@@ -72,6 +74,7 @@ void				get_env(char **env, t_data *data);
 
 //----------------- token.c ----------------------
 void				ft_strtok(char *line, t_data *data);
+void				tokenize(char *line, t_data *data);
 
 //----------------- split_charset.c --------------
 char				**split_charset(char *str, char *charset);

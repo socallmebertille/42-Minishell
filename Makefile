@@ -6,7 +6,7 @@ C_FLAGS		=	-Wall -Wextra -Werror -g3
 SRCS_DIR	=	srcs
 OBJ_DIR		=	objs
 SRCS_NAMES	=	signal.c env.c  split_charset.c token.c \
-				cd.c pwd.c \
+				cd.c pwd.c tokenize.c \
 				main.c
 OBJS_NAMES	=	$(SRCS_NAMES:.c=.o)
 SRCS		=	$(addprefix $(SRC_DIR)/,$(SRCS_NAMES))

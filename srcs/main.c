@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/19 16:50:27 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/20 16:49:21 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int	main(int ac, char **av, char **env)
 			exit_prog(&data, 130);
 		if (*data.line)
 			add_history(data.line);
-		ft_strtok(data.line, &data);
+		tokenize(data.line, &data);
+		// ft_strtok(data.line, &data);
 		// 	parse(data->line);
 		free(data.line);
 	}
