@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/20 19:09:44 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/22 18:47:27 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef enum e_enum
 	INFILE = '<',
 	OUTFILE = '>',
 	PIPE = '|',
-
+	FICHIER
 }					t_enum;
 
 typedef struct s_env
@@ -74,6 +74,7 @@ void				get_env(char **env, t_data *data);
 
 //----------------- token ----------------------
 int					is_word(char c);
+int					is_quote(char c);
 int					ft_isspace(char c);
 int					is_operateur(char c);
 int					is_pipe(char c);

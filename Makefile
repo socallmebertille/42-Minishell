@@ -12,6 +12,7 @@ SRCS_NAMES	=	main.c signal.c \
 				token/add_token.c \
 				token/check_token_type.c \
 				token/token_copy.c \
+				token/token_copy_word.c \
 				token/tokenize.c \
 				
 OBJS_NAMES	=	$(SRCS_NAMES:.c=.o)
