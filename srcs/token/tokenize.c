@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:55:18 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/22 17:02:35 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:26:34 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,14 @@ static int	dispatcheur(char *line, int *i, t_data *data, t_token **tok)
 		add_token_operateur(line, tok, data, i);
 	return (0);
 }
+
 void	tokenize(char *line, t_data *data)
 {
-	int i;
-	t_token *tok;
+	int		i;
+	t_token	*tok;
+	t_token	*tmp;
 
+	tmp = NULL;
 	tok = NULL;
 	i = 0;
 	while (line[i] && line[i] != '\0')
@@ -52,8 +55,6 @@ void	tokenize(char *line, t_data *data)
 			i++;
 		dispatcheur(line, &i, data, &tok);
 	}
-	t_token *tmp;
-	tmp = NULL;
 	while (tok)
 	{
 		tmp = tok->next;

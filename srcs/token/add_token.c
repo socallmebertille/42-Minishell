@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 18:59:55 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/20 19:02:34 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:21:13 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	add_token_word(char *line, t_token **tok, t_data *data, int *i)
 	}
 	return ;
 }
+
 void	add_token_pipe(t_token **tok, t_data *data, int *i)
 {
 	t_token	*node;
@@ -75,10 +76,11 @@ void	add_token_pipe(t_token **tok, t_data *data, int *i)
 	}
 	return ;
 }
+
 void	add_token_operateur(char *line, t_token **tok, t_data *data, int *i)
 {
-	t_token *node;
-	t_token *new_last_node;
+	t_token	*node;
+	t_token	*new_last_node;
 
 	new_last_node = (t_token *)malloc(sizeof(t_token));
 	if (!new_last_node)

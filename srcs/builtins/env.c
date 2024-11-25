@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:57:40 by bertille          #+#    #+#             */
-/*   Updated: 2024/11/19 15:39:03 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:19:21 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_env	*last_value(t_env *env)
 	return (env);
 }
 
-void add_cpy_env(char *type, char *value, t_env **env, t_data *data)
+void	add_cpy_env(char *type, char *value, t_env **env, t_data *data)
 {
 	t_env	*node;
 	t_env	*new_last_node;

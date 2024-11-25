@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/20 16:49:21 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/25 18:05:25 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ static void	free_tok(t_token *tok)
 	while (tok)
 	{
 		tmp = tok->next;
-		// printf("%s = %s\n", env->type, env->value);
-		free(tok->value);
+		if (tok->value)
+		{
+			free(tok->value);
+			tok->value = NULL;
+		}
 		free(tok);
 		tok = tmp;
 	}
@@ -33,7 +36,6 @@ static void	free_env(t_env *env)
 	while (env)
 	{
 		tmp = env->next;
-		// printf("%s = %s\n", env->type, env->value);
 		free(env->type);
 		free(env->value);
 		free(env);
@@ -69,8 +71,9 @@ int	main(int ac, char **av, char **env)
 		if (*data.line)
 			add_history(data.line);
 		tokenize(data.line, &data);
-		// ft_strtok(data.line, &data);
-		// 	parse(data->line);
+		parse(&data);
+		free_tok(data.token);
+		data.token = NULL;
 		free(data.line);
 	}
 	rl_clear_history();
