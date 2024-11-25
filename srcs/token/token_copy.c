@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:06:50 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/22 18:32:31 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/25 17:24:09 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ char	*ft_copy_pipe(int *i)
 	(*i)++;
 	return (dup);
 }
+
 char	*ft_copy_operateur(int *i, int j)
 {
-	char *dup;
+	char	*dup;
 
 	dup = malloc(sizeof(char) * 3);
 	if (!dup)
