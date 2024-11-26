@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:09:38 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/26 17:12:24 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:57:10 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	exit_with_exit_code(t_data *data)
 	if (!only_numeric(data->token->next->value))
 	{
 		exit_code = ft_atoi(data->token->next->value);
-		write(0, "exit\n", 6);
+		ft_putstr_fd("exit\n", 2);
 		exit_prog(data, exit_code);
 	}
 }
@@ -68,12 +68,11 @@ void	handle_exit(t_data *data)
 	}
 	if (data->token->next)
 	{
-		printf("ici\n");
 		exit_with_exit_code(data);
 	}
 	if (!data->token->next)
 	{
-		write(0, "exit\n", 6);
+		ft_putstr_fd("exit\n", 2);
 		exit_prog(data, 0);
 	}
 }

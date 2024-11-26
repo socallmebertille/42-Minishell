@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 18:59:55 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/25 17:21:13 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:14:21 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ void	add_token_word(char *line, t_token **tok, t_data *data, int *i)
 		return ;
 	new_last_node->type = WORD;
 	new_last_node->value = ft_copy_word(line, i);
-	// if (new_last_node->value == NULL)
-	//     (message erreur free et exit)
+	if (new_last_node->value == NULL)
+		return (perror("malloc failed"), exit_prog(data, 12));
 	new_last_node->next = NULL;
 	if (!*tok)
 	{
@@ -59,8 +59,8 @@ void	add_token_pipe(t_token **tok, t_data *data, int *i)
 		return ;
 	new_last_node->type = PIPE;
 	new_last_node->value = ft_copy_pipe(i);
-	// if (new_last_node->value == NULL)
-	//     (message erreur free et exit)
+	if (new_last_node->value == NULL)
+		return (perror("malloc failed"), exit_prog(data, 12));
 	new_last_node->next = NULL;
 	if (!*tok)
 	{
@@ -87,8 +87,8 @@ void	add_token_operateur(char *line, t_token **tok, t_data *data, int *i)
 		return ;
 	new_last_node->type = find_operateur(line, i);
 	new_last_node->value = ft_copy_operateur(i, new_last_node->type);
-	// / if (new_last_node->value == NULL)
-	//     (message erreur free et exit)
+	if (new_last_node->value == NULL)
+		return (perror("malloc failed"), exit_prog(data, 12));
 	new_last_node->next = NULL;
 	if (!*tok)
 	{

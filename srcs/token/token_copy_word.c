@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_copy_word.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:32:08 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/25 17:25:10 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:43:23 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@ int	len_in_quote(char *line, int *j, char quote)
 {
 	int	len;
 
-	len = 1;
+	len = 0;
 	(*j)++;
 	while (line[*j] && line[*j] != '\n' && line[*j] != quote)
 	{
 		len++;
 		(*j)++;
 	}
+	(*j)++;
 	return (len);
 }
 
@@ -57,8 +58,6 @@ int	handle_quote(char *line, char *dup, int *i, int *j)
 	char	quote;
 
 	quote = line[*i];
-	dup[*j] = line[*i];
-	(*j)++;
 	(*i)++;
 	while (line[*i] && line[*i] != '\n' && line[*i] != quote)
 	{
@@ -68,8 +67,6 @@ int	handle_quote(char *line, char *dup, int *i, int *j)
 	}
 	if (line[*i] != quote)
 		return (0);
-	dup[*j] = line[*i];
-	(*j)++;
 	(*i)++;
 	return (1);
 }

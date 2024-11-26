@@ -6,6 +6,7 @@ C_FLAGS		=	-Wall -Wextra -Werror -g3
 SRCS_DIR	=	srcs
 OBJ_DIR		=	objs
 SRCS_NAMES	=	main.c signal.c \
+				builtins/get_env.c \
 				builtins/env.c \
 				builtins/cd.c \
 				builtins/pwd.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:55:18 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/25 17:26:34 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:20:32 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,12 @@ void	tokenize(char *line, t_data *data)
 	tmp = NULL;
 	tok = NULL;
 	i = 0;
-	while (line[i] && line[i] != '\0')
+	while (line[i])
 	{
 		if (ft_isspace(line[i]))
 			i++;
-		dispatcheur(line, &i, data, &tok);
+		if (line[i])
+			dispatcheur(line, &i, data, &tok);
 	}
 	while (tok)
 	{
