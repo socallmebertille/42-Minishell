@@ -5,11 +5,20 @@ C_FLAGS		=	-Wall -Wextra -Werror -g3
 
 SRCS_DIR	=	srcs
 OBJ_DIR		=	objs
-SRCS_NAMES	=	signal.c env.c  split_charset.c token.c \
-				cd.c pwd.c \
-				main.c
+SRCS_NAMES	=	main.c signal.c \
+				builtins/env.c \
+				builtins/cd.c \
+				builtins/pwd.c \
+				builtins/exit.c \
+				token/add_token.c \
+				token/check_token_type.c \
+				token/token_copy.c \
+				token/token_copy_word.c \
+				token/tokenize.c \
+				parse/parse.c \
+				
 OBJS_NAMES	=	$(SRCS_NAMES:.c=.o)
-SRCS		=	$(addprefix $(SRC_DIR)/,$(SRCS_NAMES))
+SRCS		=	$(addprefix $(SRCS_DIR)/,$(SRCS_NAMES))
 OBJS		=	$(addprefix $(OBJ_DIR)/,$(OBJS_NAMES))
 
 HEADER		=	-Iincludes/
@@ -36,15 +45,13 @@ $(NAME): $(OBJS)
 	@$(CC) $(C_FLAGS) $(OBJS) $(HEADER) $(LIBFT) -lreadline -o $(NAME) || (echo "\n$(RED) ============ $(ERROR) Linking failed ! ====================================== $(RESET)\n"; exit 1)
 	@echo "$(GREEN) ============ $(SUCCESS) Executable created ! ================================== $(RESET)"
 
-$(LIBFT): #libft/includes/libft.h libft/$(SRC_DIR)/*.c
+$(LIBFT):
 	@make -C libft --no-print-directory
 
-$(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRCS_DIR)/%.c
+	@mkdir -p $(dir $@)
 	@$(CC) $(C_FLAGS) -c $< -o $@ $(HEADER) || (echo "\n$(RED) ============ $(ERROR) Compilation failed ! ================================== $(RESET)\n"; exit 1)
 	@echo "$(GREEN) ============ $(SUCCESS) Successful compilation ! ============================== $(RESET)"
-
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
 
 clean:
 	@make clean -C libft --no-print-directory

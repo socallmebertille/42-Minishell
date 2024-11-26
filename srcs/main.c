@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/19 16:50:27 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:05:24 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ static void	free_tok(t_token *tok)
 	while (tok)
 	{
 		tmp = tok->next;
-		// printf("%s = %s\n", env->type, env->value);
-		free(tok->value);
+		if (tok->value)
+		{
+			free(tok->value);
+			tok->value = NULL;
+		}
 		free(tok);
 		tok = tmp;
 	}
@@ -33,7 +36,6 @@ static void	free_env(t_env *env)
 	while (env)
 	{
 		tmp = env->next;
-		// printf("%s = %s\n", env->type, env->value);
 		free(env->type);
 		free(env->value);
 		free(env);
@@ -68,8 +70,10 @@ int	main(int ac, char **av, char **env)
 			exit_prog(&data, 130);
 		if (*data.line)
 			add_history(data.line);
-		ft_strtok(data.line, &data);
-		// 	parse(data->line);
+		tokenize(data.line, &data);
+		parse(&data);
+		free_tok(data.token);
+		data.token = NULL;
 		free(data.line);
 	}
 	rl_clear_history();

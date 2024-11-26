@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/19 16:39:08 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:00:36 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,16 @@
 typedef enum e_enum
 {
 	CMD,
+	WORD,
 	FLGS,
-	INFILE,
-	OUTFILE,
 	APPEND,
 	HEREDOC,
 	DELIM,
-	PIPE,
+	OPERATEUR,
+	INFILE = '<',
+	OUTFILE = '>',
+	PIPE = '|',
+	FICHIER
 }					t_enum;
 
 typedef struct s_env
@@ -61,19 +64,41 @@ typedef struct s_data
 	t_env			*cpy_env;
 }					t_data;
 
-
-//----------------- signal.c ---------------------
+//----------------- signal ---------------------
 void				signal_handlers(void);
 
-//----------------- env.c ------------------------
+//----------------- env ------------------------
 void				add_cpy_env(char *type, char *value, t_env **env,
 						t_data *data);
 void				get_env(char **env, t_data *data);
 
-//----------------- token.c ----------------------
-void				ft_strtok(char *line, t_data *data);
+//----------------- token ----------------------
+int					is_word(char c);
+int					is_quote(char c);
+int					ft_isspace(char c);
+int					is_operateur(char c);
+int					is_pipe(char c);
+int					find_operateur(char *line, int *i);
+char				*ft_copy_word(char *line, int *i);
+char				*ft_copy_pipe(int *i);
+char				*ft_copy_operateur(int *i, int j);
+void				tokenize(char *line, t_data *data);
+void				add_token_pipe(t_token **tok, t_data *data, int *i);
+void				add_token_operateur(char *line, t_token **tok, t_data *data,
+						int *i);
+void				add_token_word(char *line, t_token **tok, t_data *data,
+						int *i);
 
-//----------------- split_charset.c --------------
-char				**split_charset(char *str, char *charset);
+//----------------- builtins ----------------------
+
+void				handle_exit(t_data *data);
+
+//----------------- parse ----------------------
+
+void				parse(t_data *data);
+
+//----------------- exit ----------------------
+
+void				exit_prog(t_data *data, int code);
 
 #endif
