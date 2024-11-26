@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:09:38 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/26 17:03:32 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:05:13 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	handle_exit(t_data *data)
 			return (exit_too_many_args());
 		return (exit_num_arg_required(data));
 	}
-	if (data->token->next)
+	if (data->token->next->value)
 	{
 		printf("ici\n");
 		exit_with_exit_code(data);
