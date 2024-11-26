@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/25 18:32:03 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:00:36 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,14 +91,14 @@ void				add_token_word(char *line, t_token **tok, t_data *data,
 
 //----------------- builtins ----------------------
 
-void handle_exit(t_data *data);
+void				handle_exit(t_data *data);
 
 //----------------- parse ----------------------
 
-void parse(t_data *data);
+void				parse(t_data *data);
 
 //----------------- exit ----------------------
 
-void	exit_prog(t_data *data, int code);
+void				exit_prog(t_data *data, int code);
 
 #endif
