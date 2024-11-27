@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:35:01 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/27 17:58:28 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:03:57 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,5 @@ void	handle_pwd(t_data *data)
 		free(pwd);
 	}
 	else
-	{
-		perror("getcwd a échoué");
-	}
+		perror("getcwd malloc failed");
 }
