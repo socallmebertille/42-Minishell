@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 18:59:55 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/26 18:14:21 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/27 17:52:31 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,10 @@ void	add_token_word(char *line, t_token **tok, t_data *data, int *i)
 	new_last_node = (t_token *)malloc(sizeof(t_token));
 	if (!new_last_node)
 		return ;
-	new_last_node->type = WORD;
-	new_last_node->value = ft_copy_word(line, i);
-	if (new_last_node->value == NULL)
-		return (perror("malloc failed"), exit_prog(data, 12));
 	new_last_node->next = NULL;
+	new_last_node->type = WORD;
+	new_last_node->value = NULL;
+	new_last_node->value = ft_copy_word(line, i, data);
 	if (!*tok)
 	{
 		new_last_node->prev = NULL;
@@ -46,6 +45,10 @@ void	add_token_word(char *line, t_token **tok, t_data *data, int *i)
 		node->next = new_last_node;
 		new_last_node->prev = node;
 	}
+	if (new_last_node->value == NULL && data->err_quote)
+		open_quote_exit(data);
+	else if (new_last_node->value == NULL)
+		return (ft_putstr_fd("malloc failed\n", 2), exit_prog(data, 12));
 	return ;
 }
 
