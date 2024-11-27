@@ -1,77 +1,63 @@
-#Variables
-
 NAME = libft.a
+
+INC_DIR = includes/
+OBJS_DIR = objs/
+
+# Définir les répertoires pour chaque groupe de fichiers
+CHAR_DIR = srcs/char/
+CONVERT_DIR = srcs/convert/
+PUT_FD_DIR = srcs/put_fd/
+LIST_DIR = srcs/list/
+MEMORY_DIR = srcs/memory/
+STRING_DIR = srcs/string/
+PRINTF_DIR = srcs/printf/
+GNL_DIR = srcs/gnl/
+
+# Définir les fichiers sources pour chaque groupe
+CHAR_SRCS = ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c ft_tolower.c ft_toupper.c
+CONVERT_SRCS = ft_atoi.c ft_itoa.c
+PUT_FD_SRCS = ft_putchar_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c
+LIST_SRCS = ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c ft_lstdelone.c ft_lstiter.c ft_lstlast.c ft_lstmap.c ft_lstnew.c ft_lstsize.c
+MEMORY_SRCS = ft_bzero.c ft_calloc.c ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memmove.c ft_memset.c
+STRING_SRCS = ft_strchr.c ft_strdup.c ft_strlcat.c ft_strlcpy.c ft_strlen.c ft_strncmp.c ft_strnstr.c ft_strrchr.c ft_strjoin.c ft_strmapi.c ft_strtrim.c ft_substr.c ft_split.c ft_strcmp.c ft_free_tab.c
+PRINTF_SRCS = ft_printf.c ft_print_char.c ft_putnbr_base.c
+GNL_SRCS = get_next_line.c get_next_line_utils.c
+
+# Ajouter le préfixe du répertoire à chaque fichier source
+SRCS = $(addprefix $(CHAR_DIR),$(CHAR_SRCS)) \
+		$(addprefix $(CONVERT_DIR),$(CONVERT_SRCS)) \
+		$(addprefix $(PUT_FD_DIR),$(PUT_FD_SRCS)) \
+		$(addprefix $(LIST_DIR),$(LIST_SRCS)) \
+		$(addprefix $(MEMORY_DIR),$(MEMORY_SRCS)) \
+		$(addprefix $(STRING_DIR),$(STRING_SRCS)) \
+		$(addprefix $(PRINTF_DIR),$(PRINTF_SRCS)) \
+		$(addprefix $(GNL_DIR),$(GNL_SRCS))
+
+OBJS = $(addprefix $(OBJS_DIR),$(SRCS:.c=.o))
+
+DEPS = $(OBJS:.o=.d)
+
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
-AR = ar rcs
 
-#Sources et Objects
+CFLAGS = -Wall -Wextra -Werror -I${INC_DIR} -MMD
 
-SRC_DIR = sources
-SRCS = $(SRC_DIR)/ft_isalpha.c \
-		$(SRC_DIR)/ft_isdigit.c \
-		$(SRC_DIR)/ft_isalnum.c \
-		$(SRC_DIR)/ft_isascii.c \
-		$(SRC_DIR)/ft_isprint.c \
-		$(SRC_DIR)/ft_strlen.c \
-		$(SRC_DIR)/ft_memset.c \
-		$(SRC_DIR)/ft_bzero.c \
-		$(SRC_DIR)/ft_memcpy.c \
-		$(SRC_DIR)/ft_memmove.c \
-		$(SRC_DIR)/ft_strlcpy.c \
-		$(SRC_DIR)/ft_strlcat.c \
-		$(SRC_DIR)/ft_toupper.c \
-		$(SRC_DIR)/ft_tolower.c \
-		$(SRC_DIR)/ft_strchr.c \
-		$(SRC_DIR)/ft_strrchr.c \
-		$(SRC_DIR)/ft_strncmp.c \
-		$(SRC_DIR)/ft_memchr.c \
-		$(SRC_DIR)/ft_memcmp.c \
-		$(SRC_DIR)/ft_strnstr.c \
-		$(SRC_DIR)/ft_atoi.c \
-		$(SRC_DIR)/ft_calloc.c \
-		$(SRC_DIR)/ft_strdup.c \
-		$(SRC_DIR)/ft_substr.c \
-		$(SRC_DIR)/ft_strjoin.c \
-		$(SRC_DIR)/ft_strtrim.c \
-		$(SRC_DIR)/ft_split.c \
-		$(SRC_DIR)/ft_itoa.c \
-		$(SRC_DIR)/ft_strmapi.c \
-		$(SRC_DIR)/ft_striteri.c \
-		$(SRC_DIR)/ft_putchar_fd.c \
-		$(SRC_DIR)/ft_putstr_fd.c \
-		$(SRC_DIR)/ft_putendl_fd.c \
-		$(SRC_DIR)/ft_putnbr_fd.c \
-		$(SRC_DIR)/ft_lstnew_bonus.c \
-		$(SRC_DIR)/ft_lstadd_front_bonus.c \
-		$(SRC_DIR)/ft_lstsize_bonus.c \
-		$(SRC_DIR)/ft_lstlast_bonus.c \
-		$(SRC_DIR)/ft_lstadd_back_bonus.c \
-		$(SRC_DIR)/ft_lstdelone_bonus.c \
-		$(SRC_DIR)/ft_lstclear_bonus.c \
-		$(SRC_DIR)/ft_lstiter_bonus.c \
-		$(SRC_DIR)/ft_lstmap_bonus.c
-OBJ_DIR = objets
-OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
-HEADER = includes/libft.h
+all: ${NAME}
 
-#Rules
+${NAME}: ${OBJS}
+	@ar rcs ${NAME} ${OBJS}
 
-all: $(NAME)
-
-$(NAME): $(OBJS)
-	@$(AR) $(NAME) $(OBJS)
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADER)
-	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(C_FLAGS) $(INCLUDES) -I./includes -c $< -o $@
-
-clean: 
-	@rm -rf $(OBJ_DIR)
+clean:
+	@rm -rf ${OBJS_DIR}
 
 fclean: clean
-	@rm -rf $(NAME)
+	@rm -rf ${NAME}
 
-re: fclean all
+re: fclean ${NAME}
 
-.PHONY: all clean fclean bonus re
+.PHONY: all clean fclean re
+
+$(OBJS_DIR)%.o: %.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+-include $(DEPS)
