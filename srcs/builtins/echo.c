@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 12:53:43 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/27 15:00:40 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:15:56 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ void	handle_echo(t_data *data)
 	}
 	while (tmp)
 	{
-		ft_putstr_fd(tmp->value, 0);
+		ft_putstr_fd(tmp->value, 1);
 		if (tmp->next)
-			ft_putstr_fd(" ", 0);
+			ft_putstr_fd(" ", 1);
 		tmp = tmp->next;
 	}
 	if (flag_start == 1)
-		ft_putstr_fd("\n", 0);
+		ft_putstr_fd("\n", 1);
 }

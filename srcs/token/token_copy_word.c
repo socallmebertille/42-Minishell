@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   token_copy_word.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:32:08 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/26 17:43:23 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/27 17:58:52 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	open_quote_exit(t_data *data)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putstr_fd(&data->wich_quote_err, 2);
+	ft_putstr_fd("'\n", 2);
+}
 
 int	len_in_quote(char *line, int *j, char quote)
 {
@@ -18,11 +25,15 @@ int	len_in_quote(char *line, int *j, char quote)
 
 	len = 0;
 	(*j)++;
+	if (!line[*j])
+		return (len);
 	while (line[*j] && line[*j] != '\n' && line[*j] != quote)
 	{
 		len++;
 		(*j)++;
 	}
+	if (!line[*j])
+		return (len);
 	(*j)++;
 	return (len);
 }
@@ -34,6 +45,8 @@ int	word_size(char *line, int *i)
 
 	len = 0;
 	j = *i;
+	if (!line || !*line)
+		return (0);
 	while (line[j] && line[j] != '\n')
 	{
 		if (is_quote(line[j]))
@@ -71,14 +84,13 @@ int	handle_quote(char *line, char *dup, int *i, int *j)
 	return (1);
 }
 
-char	*ft_copy_word(char *line, int *i)
+char	*ft_copy_word(char *line, int *i, t_data *data)
 {
 	int		j;
 	char	*dup;
 
 	j = word_size(line, i);
-	printf("%d\n", j);
-	dup = malloc(sizeof(char) * j + 1);
+	dup = malloc(sizeof(char) * (j + 1));
 	if (!dup)
 		return (NULL);
 	j = 0;
@@ -86,8 +98,9 @@ char	*ft_copy_word(char *line, int *i)
 	{
 		if (is_quote(line[*i]))
 		{
+			data->wich_quote_err = line[*i];
 			if (!handle_quote(line, dup, i, &j))
-				return (free(dup), NULL);
+				return (free(dup), data->err_quote = 1, NULL);
 		}
 		else
 		{

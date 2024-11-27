@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/27 13:02:27 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/27 17:48:06 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ typedef struct s_token
 
 typedef struct s_data
 {
+	char			wich_quote_err;
+	int				err_quote;
 	char			*line;
 	t_token			*token;
 	char			**env;
@@ -79,7 +81,7 @@ int					ft_isspace(char c);
 int					is_operateur(char c);
 int					is_pipe(char c);
 int					find_operateur(char *line, int *i);
-char				*ft_copy_word(char *line, int *i);
+char				*ft_copy_word(char *line, int *i, t_data *data);
 char				*ft_copy_pipe(int *i);
 char				*ft_copy_operateur(int *i, int j);
 void				tokenize(char *line, t_data *data);
@@ -94,6 +96,7 @@ void				add_token_word(char *line, t_token **tok, t_data *data,
 void				handle_exit(t_data *data);
 void				handle_env(t_data *data);
 void				handle_echo(t_data *data);
+void				handle_pwd(t_data *data);
 
 //----------------- parse ----------------------
 
@@ -102,5 +105,6 @@ void				parse(t_data *data);
 //----------------- exit ----------------------
 
 void				exit_prog(t_data *data, int code);
+void				open_quote_exit(t_data *data);
 
 #endif
