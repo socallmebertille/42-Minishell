@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/26 18:24:19 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/27 13:02:27 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void				add_token_word(char *line, t_token **tok, t_data *data,
 
 void				handle_exit(t_data *data);
 void				handle_env(t_data *data);
+void				handle_echo(t_data *data);
 
 //----------------- parse ----------------------
 

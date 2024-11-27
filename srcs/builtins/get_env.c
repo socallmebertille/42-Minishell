@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:57:40 by bertille          #+#    #+#             */
-/*   Updated: 2024/11/26 18:30:16 by saberton         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:02:07 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	get_env(char **env, t_data *data)
 
 	cpy_env = NULL;
 	data->env = env;
-	if (len_env(env) == 5)//(!env || !*env) // launch "env -i bash" then "env"
+	if (len_env(env) == 5) //(!env || !*env) // launch "env -i bash" then "env"
 	{
 		add_cpy_env(ft_strdup("PWD"), ft_strdup("get_cwd()"), &cpy_env, data);
 		add_cpy_env(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env, data);

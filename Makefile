@@ -11,6 +11,7 @@ SRCS_NAMES	=	main.c signal.c \
 				builtins/cd.c \
 				builtins/pwd.c \
 				builtins/exit.c \
+				builtins/echo.c \
 				token/add_token.c \
 				token/check_token_type.c \
 				token/token_copy.c \
