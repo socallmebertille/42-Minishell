@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:57:40 by bertille          #+#    #+#             */
-/*   Updated: 2024/11/27 15:02:07 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/28 23:49:07 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	add_cpy_env(char *type, char *value, t_env **env, t_data *data)
 	if (!*env)
 	{
 		*env = new_last_node;
-		data->cpy_env = *env;
+		if (data != NULL)
+			data->cpy_env = *env;
 	}
 	else
 	{
