@@ -8,6 +8,7 @@ OBJ_DIR		=	objs
 SRCS_NAMES	=	main.c signal.c \
 				builtins/get_env.c \
 				builtins/env.c \
+				builtins/unset.c \
 				builtins/cd.c \
 				builtins/pwd.c \
 				builtins/exit.c \
