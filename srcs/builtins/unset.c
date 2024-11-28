@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:58:20 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/28 15:27:21 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/28 16:42:02 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void handle_unset(t_data *data)
     t_token *tmp_tok;
 
     tmp_tok = data->token->next;
-    while (tmp_tok)
+    while (tmp_tok && tmp_tok->type == WORD)
     {
         if (tmp_tok->value)
             find_node_to_unset(data->cpy_env, data, tmp_tok->value);
