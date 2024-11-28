@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/27 15:27:22 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/28 14:18:00 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static void	is_builtins(t_data *data)
 			handle_echo(data);
 		else if (ft_strcmp(data->token->value, "pwd") == 0)
 			handle_pwd(data);
+		else if (ft_strcmp(data->token->value, "unset") == 0)
+			handle_unset(data);
 	}		
 }
 

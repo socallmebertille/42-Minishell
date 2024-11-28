@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/27 17:48:06 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/28 14:18:43 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void				handle_exit(t_data *data);
 void				handle_env(t_data *data);
 void				handle_echo(t_data *data);
 void				handle_pwd(t_data *data);
+void				handle_unset(t_data *data);
 
 //----------------- parse ----------------------
 
