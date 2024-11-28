@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:51:15 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/28 19:06:28 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/28 23:57:16 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,24 +85,12 @@ static int	find_if_env_exist(t_env *env, char *value)
 	return (-1);
 }
 
-static t_env	*sort_list(t_env *env, int (*cmp)(const char *, const char *), t_data *data)
+static t_env	*sort_list(t_env *cpy, int (*cmp)(const char *, const char *))
 {
-	char	*temp;
 	t_env	*tmp;
-    t_env   *cpy;
+	char	*temp;
 
-	tmp = env;
-    while (tmp)
-    {
-        add_cpy_env(tmp->type, tmp->value, &data->cpy_env2, data);
-        // if (!data->cpy_env2)
-        // {
-        //     data->cpy_env2 = tmp;
-        //     data->cpy_env = data->cpy_env2;
-        // }
-        tmp = tmp->next;
-    }
-    cpy = data->cpy_env2;
+	tmp = cpy;
 	while (cpy && cpy->next)
 	{
 		if (cmp(cpy->type, cpy->next->type) > 0)
@@ -115,7 +103,22 @@ static t_env	*sort_list(t_env *env, int (*cmp)(const char *, const char *), t_da
 		else
 			cpy = cpy->next;
 	}
-	return (cpy);
+	return (tmp);
+}
+
+static t_env	*copy_env_for_export(t_env *env)
+{
+	t_env	*new_list;
+	t_env	*tmp;
+
+	new_list = NULL;
+	tmp = env;
+	while (tmp)
+	{
+		add_cpy_env(tmp->type, tmp->value, &new_list, NULL);
+		tmp = tmp->next;
+	}
+	return (new_list);
 }
 
 static void	display_export_order(t_data *data)
@@ -133,7 +136,7 @@ static void	display_export_order(t_data *data)
 			ft_putstr_fd(sort_tmp->value, 1);
 			ft_putstr_fd("\"", 1);
 		}
-        ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\n", 1);
 		sort_tmp = sort_tmp->next;
 	}
 }
@@ -146,7 +149,10 @@ void	handle_export(t_data *data)
 	exist = 0;
 	tmp_tok = data->token->next;
 	if (!data->cpy_env2)
-		data->cpy_env2 = sort_list(data->cpy_env, ft_strcmp, data);
+	{
+		data->cpy_env2 = copy_env_for_export(data->cpy_env);
+		data->cpy_env2 = sort_list(data->cpy_env, ft_strcmp);
+	}
 	if (!tmp_tok)
 		return (display_export_order(data));
 	if (tmp_tok->value[0] == '\0')
