@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/28 23:55:43 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:15:22 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void	free_env(t_env *env)
 void	exit_prog(t_data *data, int code)
 {
 	free_env(data->cpy_env);
+	free_env(data->cpy_env2);
 	free_tok(data->token);
 	if (code == 130)
 		write(2, "exit\n", 5);
