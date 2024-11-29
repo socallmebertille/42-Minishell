@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/28 18:44:51 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/29 17:13:57 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef enum e_enum
 typedef struct s_env
 {
 	char			*type;
+	char			equal;
 	char			*value;
 	struct s_env	*next;
 }					t_env;
@@ -74,6 +75,11 @@ void				signal_handlers(void);
 void				add_cpy_env(char *type, char *value, t_env **env,
 						t_data *data);
 void				get_env(char **env, t_data *data);
+int					len_env(char **env);
+t_env				*last_value(t_env *env);
+void				get_env2(char **env, t_data *data);
+void				add_cpy_env2(char *type, char *value, t_env **env,
+						t_data *data);
 
 //----------------- token ----------------------
 int					is_word(char c);

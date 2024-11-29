@@ -6,13 +6,13 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 18:59:55 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/27 17:52:31 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/11/29 16:13:09 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*last_value(t_token *tok)
+t_token	*last_token(t_token *tok)
 {
 	if (!tok)
 		return (NULL);
@@ -41,7 +41,7 @@ void	add_token_word(char *line, t_token **tok, t_data *data, int *i)
 	}
 	else
 	{
-		node = last_value(*tok);
+		node = last_token(*tok);
 		node->next = new_last_node;
 		new_last_node->prev = node;
 	}
@@ -73,7 +73,7 @@ void	add_token_pipe(t_token **tok, t_data *data, int *i)
 	}
 	else
 	{
-		node = last_value(*tok);
+		node = last_token(*tok);
 		node->next = new_last_node;
 		new_last_node->prev = node;
 	}
@@ -101,7 +101,7 @@ void	add_token_operateur(char *line, t_token **tok, t_data *data, int *i)
 	}
 	else
 	{
-		node = last_value(*tok);
+		node = last_token(*tok);
 		node->next = new_last_node;
 		new_last_node->prev = node;
 	}
