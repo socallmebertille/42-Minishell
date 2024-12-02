@@ -1,43 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 17:35:01 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/02 14:43:05 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/02 14:12:28 by saberton          #+#    #+#             */
+/*   Updated: 2024/12/02 14:43:14 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	handle_pwd(t_data *data)
+long	ft_atol(const char *str)
 {
-	char	*pwd;
+	long	nb;
+	int		sign;
+	int		i;
 
-	(void)data;
-	pwd = getcwd(NULL, 0);
-	if (pwd != NULL)
-	{
-		ft_putstr_fd(pwd, 1);
-		ft_putstr_fd("\n", 1);
-		free(pwd);
-	}
-	else
-		perror("getcwd malloc failed");
-}
-
-char	*get_pwd(char **env)
-{
-	int	i;
-
+	nb = 0;
+	sign = 1;
 	i = 0;
-	while (env[i])
+	while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'
+			|| str[i] == '\r' || str[i] == '\v' || str[i] == '\f'))
+		i++;
+	if (str[i] == '+')
+		i++;
+	else if (str[i] == '-')
 	{
-		if (!ft_strncmp(env[i], "PWD=", 4))
-			return (ft_strdup(env[i] + 4));
+		sign *= -1;
 		i++;
 	}
-	return (NULL);
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		nb = (nb * 10) + (str[i] - '0');
+		i++;
+	}
+	return (nb * sign);
 }
