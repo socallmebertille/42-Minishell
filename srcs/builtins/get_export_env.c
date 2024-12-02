@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_export_env.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:00:00 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/29 17:14:42 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:15:24 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	add_cpy_env2(char *type, char *value, t_env **env, t_data *data)
 	if (!new_last_node)
 		return ;
 	new_last_node->type = type;
-    new_last_node->equal = '=';
+	new_last_node->equal = '=';
 	new_last_node->value = value;
 	new_last_node->next = NULL;
 	if (!*env)
