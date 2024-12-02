@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/28 16:57:22 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/02 18:01:18 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	is_builtins(t_data *data)
+static int	is_builtins(t_data *data)
 {
 	if (data->token && data->token->value != NULL)
 	{
@@ -28,10 +28,17 @@ static void	is_builtins(t_data *data)
 			handle_unset(data);
 		else if (ft_strcmp(data->token->value, "export") == 0)
 			handle_export(data);
-	}		
+		return (1);
+	}
+	return (0);
 }
 
 void	parse(t_data *data)
 {
-	is_builtins(data);
+	if (!good_syntaxe(data))
+		return ;
+	else if (is_builtins(data))
+		return ;
+	// else if (is_cmd(data))
+	// 	return ;
 }

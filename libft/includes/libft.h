@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 18:29:02 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/27 13:48:08 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/02 14:13:50 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int					ft_tolower(int c);
 
 // ---------------- convert -----------------
 int					ft_atoi(const char *nptr);
+long				ft_atol(const char *str);
 char				*ft_itoa(int n);
 
 // ---------------- gnl -----------------

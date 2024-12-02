@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/29 16:15:22 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:01:37 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	main(int ac, char **av, char **env)
 	get_env(env, &data);
 	while (1)
 	{
-		data.line = readline(MAGENTA "minishell$ " RESET);
+		data.line = readline("minishell$ ");
 		if (!data.line)
 			exit_prog(&data, 130);
 		if (*data.line)
