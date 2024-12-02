@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/29 17:13:57 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/02 12:07:46 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+#define INVALID_VAL_EXPORT "minishell: export: `': not a valid identifier\n"
 
 typedef enum e_enum
 {
@@ -59,11 +61,12 @@ typedef struct s_token
 
 typedef struct s_data
 {
-	char			wich_quote_err;
 	int				err_quote;
+	int				err_export;
+	char			wich_quote_err;
 	char			*line;
-	t_token			*token;
 	char			**env;
+	t_token			*token;
 	t_env			*cpy_env;
 	t_env			*cpy_env2;
 }					t_data;
@@ -106,6 +109,15 @@ void				handle_echo(t_data *data);
 void				handle_pwd(t_data *data);
 void				handle_unset(t_data *data);
 void				handle_export(t_data *data);
+
+//----------------- //syntaxe_export.c ----------------------
+t_env				*sort_list(t_env *cpy, int (*cmp)(const char *,
+							const char *));
+int					check_syntax_export(char *value, t_data *data);
+void				no_equal_in_export(t_data *data, char *value);
+void				modif_export_node(t_data *data, char *value, int exist);
+void				modif_export(t_data *data, char *value);
+int					find_if_env_exist(t_env *env, char *value);
 
 //----------------- parse ----------------------
 
