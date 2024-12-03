@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/03 14:31:00 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:21:12 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,16 @@
 # include <unistd.h>
 
 # define INVALID_VAL_EXPORT "minishell: export: `': not a valid identifier\n"
+# define INVALID_DOUBLE_APPEND "minishell: syntax error near unexpected token \
+	`>>'\n"
+# define INVALID_SIMPLE_APPEND "minishell: syntax error near unexpected token \
+	`>'\n"
+# define INVALID_TRIPLE_HEREDOC "minishell: syntax error near unexpected token \
+	`<<<'\n"
+# define INVALID_DOUBLE_HEREDOC "minishell: syntax error near unexpected token \
+	`<<'\n"
+# define INVALID_SIMPLE_HEREDOC "minishell: syntax error near unexpected token \
+	`<'\n"
 
 typedef enum e_enum
 {
@@ -40,7 +50,8 @@ typedef enum e_enum
 	INFILE = '<',
 	OUTFILE = '>',
 	PIPE = '|',
-	FICHIER
+	FICHIER,
+	BUILD,
 }					t_enum;
 
 typedef struct s_env
@@ -124,6 +135,7 @@ int					good_syntaxe(t_data *data);
 //----------------- parse.c ----------------------
 void				parse(t_data *data);
 void				clean_line(char *line, t_data *data);
+int					is_builtins(t_data *data);
 
 //================== token =====================================//
 

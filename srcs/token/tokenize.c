@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:55:18 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/03 14:31:19 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:28:18 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_enum_to_char(int num)
 {
 	if (num == 1)
-		return ("WORD");
+		return ("FLAG");
 	if (num == 124)
 		return ("PIPE");
 	if (num == HEREDOC)
@@ -28,6 +28,8 @@ char	*ft_enum_to_char(int num)
 		return ("APPEND");
 	if (num == CMD)
 		return ("CMD");
+	if (num == BUILD)
+		return ("BUILTINS");
 	return ("");
 }
 
@@ -57,34 +59,5 @@ void	tokenize(char *line, t_data *data)
 			i++;
 		if (line[i])
 			dispatcheur(line, &i, data, &tok);
-	}
-	i = 0;
-	ft_change_word_to_cmd(data);
-	ft_check_access_cmd(data);
-	if (data->err_quote)
-		return ;
-	while (tok)
-	{
-		printf(MAGENTA "============== TOKEN %d ======================\n" RESET, i);
-		tmp = tok->next;
-		if (tok->prev)
-		{
-			printf("PREV = ");
-			printf(BLUE "%s\t" RESET, tok->prev->value);
-		}
-		else
-			printf("\t\t");
-		printf(RED "%s " RESET, tok->value);
-		printf(YELLOW "= %s" RESET, ft_enum_to_char(tok->type));
-		if (tok->next)
-		{
-			printf("\tNEXT = ");
-			printf(GREEN "%s\n" RESET, tok->next->value);
-		}
-		else 
-			printf("\n");
-		printf("\n");
-		tok = tmp;
-		i++;
 	}
 }

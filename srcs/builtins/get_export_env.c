@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:00:00 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/02 13:15:24 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:13:12 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	get_env2(char **env, t_data *data)
 
 	cpy_env2 = NULL;
 	data->env = env;
-	if (len_env(env) == 5) //(!env || !*env) // launch "env -i bash" then "env"
+	if (len_env(env) == 5)
 	{
 		add_cpy_env2(ft_strdup("PWD"), ft_strdup("get_cwd()"), &cpy_env2, data);
 		add_cpy_env2(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env2, data);

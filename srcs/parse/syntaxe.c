@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:56:18 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/02 18:53:32 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:29:18 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ static int	check_append(t_token *tok)
 	if (tok->next)
 	{
 		if (tok->type == APPEND && tok->next->type == APPEND)
-			return (ft_putstr_fd("minishell: syntax error near unexpected token `>>'\n",
-					2), 0);
+			return (ft_putstr_fd(INVALID_DOUBLE_APPEND, 2), 0);
 		else if (tok->type == APPEND && tok->next->type == OUTFILE)
-			return (ft_putstr_fd("minishell: syntax error near unexpected token `>'\n",
-					2), 0);
+			return (ft_putstr_fd(INVALID_SIMPLE_APPEND, 2), 0);
 	}
 	return (1);
 }
@@ -38,26 +36,22 @@ static int	check_heredoc(t_token *tok)
 		{
 			if (tok->type == HEREDOC && tok->next->type == HEREDOC
 				&& tok->next->next->type == HEREDOC)
-				return (ft_putstr_fd("minishell: syntax error near unexpected token `<<<'\n",
-						2), 0);
+				return (ft_putstr_fd(INVALID_TRIPLE_HEREDOC, 2), 0);
 			else if (tok->type == HEREDOC && tok->next->type == HEREDOC
 				&& tok->next->next->type == INFILE)
-				return (ft_putstr_fd("minishell: syntax error near unexpected token `<<'\n",
-						2), 0);
+				return (ft_putstr_fd(INVALID_DOUBLE_HEREDOC, 2), 0);
 		}
 		if (tok->type == HEREDOC && tok->next->type == HEREDOC)
-			return (ft_putstr_fd("minishell: syntax error near unexpected token `<'\n",
-					2), 0);
+			return (ft_putstr_fd(INVALID_SIMPLE_HEREDOC, 2), 0);
 		if (tok->type == HEREDOC && tok->next->type == INFILE)
-			return (ft_putstr_fd("minishell: syntax error near unexpected token `<'\n",
-					2), 0);
+			return (ft_putstr_fd(INVALID_SIMPLE_HEREDOC, 2), 0);
 	}
 	return (1);
 }
 
 int	good_syntaxe(t_data *data)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	tmp = data->token;
 	while (tmp)

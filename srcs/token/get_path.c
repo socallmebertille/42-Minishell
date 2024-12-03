@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 14:17:17 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/03 14:38:41 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:36:52 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ char	**recup_path(t_env *env)
 
 char	*valid_cmd(t_data *data, char *cmd)
 {
-	char **path;
-	char *cmd_path;
-	char *sub;
-	int i;
+	char	**path;
+	char	*cmd_path;
+	char	*sub;
+	int		i;
 
 	i = 0;
 	path = recup_path(data->cpy_env);

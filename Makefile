@@ -25,6 +25,7 @@ SRCS_NAMES	=	main.c signal.c \
 				token/token_utils.c \
 				parse/syntaxe.c \
 				parse/parse.c \
+				parse/check_new_line.c \
 				
 OBJS_NAMES	=	$(SRCS_NAMES:.c=.o)
 SRCS		=	$(addprefix $(SRCS_DIR)/,$(SRCS_NAMES))

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:54:47 by bertille          #+#    #+#             */
-/*   Updated: 2024/12/03 12:18:24 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:12:34 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ void	signal_handlers(void)
 {
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-	// signal(SIGTSTP, SIG_IGN); // CTRL + Z
+	signal(SIGTSTP, SIG_IGN);
 }
