@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:55:18 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/02 18:58:03 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/03 14:31:19 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char	*ft_enum_to_char(int num)
 		return ("IN");
 	if (num == APPEND)
 		return ("APPEND");
+	if (num == CMD)
+		return ("CMD");
 	return ("");
 }
 
@@ -57,6 +59,10 @@ void	tokenize(char *line, t_data *data)
 			dispatcheur(line, &i, data, &tok);
 	}
 	i = 0;
+	ft_change_word_to_cmd(data);
+	ft_check_access_cmd(data);
+	if (data->err_quote)
+		return ;
 	while (tok)
 	{
 		printf(MAGENTA "============== TOKEN %d ======================\n" RESET, i);

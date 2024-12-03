@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/02 15:01:37 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/03 13:45:02 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	main(int ac, char **av, char **env)
 		data.line = readline("minishell$ ");
 		if (!data.line)
 			exit_prog(&data, 130);
+		clean_line(data.line, &data);
 		if (*data.line)
 			add_history(data.line);
 		tokenize(data.line, &data);

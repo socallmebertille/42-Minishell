@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/02 17:57:28 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/03 14:31:00 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ int					good_syntaxe(t_data *data);
 
 //----------------- parse.c ----------------------
 void				parse(t_data *data);
+void				clean_line(char *line, t_data *data);
 
 //================== token =====================================//
 
@@ -141,6 +142,10 @@ int					is_operateur(char c);
 int					ft_isspace(char c);
 int					is_word(char c);
 
+//----------------- get_path.c ----------------------
+char				**recup_path(t_env *env);
+char				*valid_cmd(t_data *data, char *cmd);
+
 //----------------- token_copy_word.c ----------------------
 void				open_quote_exit(t_data *data);
 int					len_in_quote(char *line, int *j, char quote);
@@ -152,6 +157,10 @@ char				*ft_copy_word(char *line, int *i, t_data *data);
 int					find_operateur(char *line, int *i);
 char				*ft_copy_pipe(int *i);
 char				*ft_copy_operateur(int *i, int j);
+
+//----------------- token_utils.c ----------------------
+void				ft_change_word_to_cmd(t_data *data);
+void				ft_check_access_cmd(t_data *data);
 
 //----------------- tokenize.c ----------------------
 void				tokenize(char *line, t_data *data);

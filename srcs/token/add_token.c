@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 18:59:55 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/29 16:13:09 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/03 12:55:47 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	add_token_word(char *line, t_token **tok, t_data *data, int *i)
 	if (!*tok)
 	{
 		new_last_node->prev = NULL;
+		new_last_node->type = CMD;
 		*tok = new_last_node;
 		data->token = *tok;
 	}

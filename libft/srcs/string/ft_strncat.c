@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_strncat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/13 16:54:47 by bertille          #+#    #+#             */
-/*   Updated: 2024/12/03 12:18:24 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/03 13:03:53 by saberton          #+#    #+#             */
+/*   Updated: 2024/12/03 13:13:50 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-static void	handle_sigint(int signum)
+char	*ft_strncat(char *dst, const char *src, size_t siz)
 {
-	(void)signum;
-	write(2, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+	size_t	i;
+	size_t	j;
+	size_t	len;
 
-void	signal_handlers(void)
-{
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
-	// signal(SIGTSTP, SIG_IGN); // CTRL + Z
+	if (siz == 0 && (!dst || !src))
+		return (NULL);
+	len = ft_strlen(dst);
+	if (siz <= len)
+		return (NULL);
+	i = len;
+	j = 0;
+	while (src[j] && i + 1 < siz)
+		dst[i++] = src[j++];
+	dst[i] = '\0';
+	return (dst);
 }
