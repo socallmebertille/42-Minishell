@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/03 18:21:12 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:06:18 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,20 @@
 # include <unistd.h>
 
 # define INVALID_VAL_EXPORT "minishell: export: `': not a valid identifier\n"
-# define INVALID_DOUBLE_APPEND "minishell: syntax error near unexpected token \
+# define INVALID_DOUBLE_APPEND \
+	"minishell: syntax error near unexpected token \
 	`>>'\n"
-# define INVALID_SIMPLE_APPEND "minishell: syntax error near unexpected token \
+# define INVALID_SIMPLE_APPEND \
+	"minishell: syntax error near unexpected token \
 	`>'\n"
-# define INVALID_TRIPLE_HEREDOC "minishell: syntax error near unexpected token \
+# define INVALID_TRIPLE_HEREDOC \
+	"minishell: syntax error near unexpected token \
 	`<<<'\n"
-# define INVALID_DOUBLE_HEREDOC "minishell: syntax error near unexpected token \
+# define INVALID_DOUBLE_HEREDOC \
+	"minishell: syntax error near unexpected token \
 	`<<'\n"
-# define INVALID_SIMPLE_HEREDOC "minishell: syntax error near unexpected token \
+# define INVALID_SIMPLE_HEREDOC \
+	"minishell: syntax error near unexpected token \
 	`<'\n"
 
 typedef enum e_enum
@@ -72,6 +77,7 @@ typedef struct s_token
 
 typedef struct s_data
 {
+	int				nb_pipe;
 	int				err_quote;
 	int				err_export;
 	char			wich_quote_err;
@@ -87,17 +93,17 @@ typedef struct s_data
 //----------------- cd.c ------------------------
 
 //----------------- echo.c ------------------------
-void				handle_echo(t_data *data);
+void				handle_echo(t_token *tok);
 
 //----------------- env.c ------------------------
-void				handle_env(t_data *data);
+void				handle_env(t_data *data, t_token *tok);
 
 //----------------- exit.c ------------------------
-void				handle_exit(t_data *data);
+void				handle_exit(t_data *data, t_token *tok);
 
 //----------------- export.c ------------------------
 int					find_if_env_exist(t_env *env, char *value);
-void				handle_export(t_data *data);
+void				handle_export(t_data *data, t_token *tok);
 
 //----------------- get_env.c ------------------------
 void				get_env(char **env, t_data *data);
@@ -112,7 +118,7 @@ void				add_cpy_env2(char *type, char *value, t_env **env,
 void				get_env2(char **env, t_data *data);
 
 //----------------- pwd.c ----------------------
-void				handle_pwd(t_data *data);
+void				handle_pwd(void);
 char				*get_pwd(char **env);
 
 //----------------- syntaxe_export.c ----------------------
@@ -125,7 +131,7 @@ t_env				*sort_list(t_env *cpy, int (*cmp)(const char *,
 							const char *));
 
 //----------------- unset.c ----------------------
-void				handle_unset(t_data *data);
+void				handle_unset(t_data *data, t_token *tok);
 
 //================== parse =====================================//
 
@@ -136,6 +142,18 @@ int					good_syntaxe(t_data *data);
 void				parse(t_data *data);
 void				clean_line(char *line, t_data *data);
 int					is_builtins(t_data *data);
+int					handle_builtins(t_data *data, t_token *tok);
+
+//================== exec =====================================//
+
+//----------------- exec_utils.c ----------------------
+int					pipe_in_line(t_data *data);
+char				**recup_cmd(t_data *data, t_token *tok);
+t_enum				wich_type_exec(t_data *data);
+t_token				*recup_tok_after_pipe(t_token *tmp);
+
+//----------------- exec_utils.c ----------------------
+void				wich_exec(t_data *data);
 
 //================== token =====================================//
 

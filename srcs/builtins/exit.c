@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:09:38 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/02 18:00:41 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:03:36 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,23 +32,23 @@ static int	only_numeric(char *code)
 	return (0);
 }
 
-static void	exit_with_exit_code(t_data *data)
+static void	exit_with_exit_code(t_data *data, t_token *tok)
 {
 	int	exit_code;
 
 	exit_code = 0;
-	if (!only_numeric(data->token->next->value))
+	if (!only_numeric(tok->next->value))
 	{
-		exit_code = ft_atoi(data->token->next->value);
+		exit_code = ft_atoi(tok->next->value);
 		ft_putstr_fd("exit\n", 2);
 		exit_prog(data, exit_code);
 	}
 }
 
-static void	exit_num_arg_required(t_data *data)
+static void	exit_num_arg_required(t_data *data, t_token *tok)
 {
 	ft_putstr_fd("exit\nminishell: exit: ", 2);
-	ft_putstr_fd(data->token->next->value, 2);
+	ft_putstr_fd(tok->next->value, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
 	exit_prog(data, 2);
 }
@@ -73,7 +73,7 @@ static void	check_overflow(t_data *data, char *nb)
 		free(overflow);
 		ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(data->token->next->value, 2);
+		ft_putstr_fd(nb, 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		exit_prog(data, 2);
 	}
@@ -81,21 +81,21 @@ static void	check_overflow(t_data *data, char *nb)
 	return ;
 }
 
-void	handle_exit(t_data *data)
+void	handle_exit(t_data *data, t_token *tok)
 {
-	if (data->token->next)
-		check_overflow(data, data->token->next->value);
-	if (data->token->next && data->token->next->next)
+	if (tok->next)
+		check_overflow(data, tok->next->value);
+	if (tok->next && tok->next->next)
 	{
-		if (!only_numeric(data->token->next->value))
+		if (!only_numeric(tok->next->value))
 			return (ft_putstr_fd("minishell: exit: too many arguments\n", 2));
-		return (exit_num_arg_required(data));
+		return (exit_num_arg_required(data, tok));
 	}
-	if (data->token->next)
+	if (tok->next)
 	{
-		exit_with_exit_code(data);
+		exit_with_exit_code(data, tok);
 	}
-	if (!data->token->next)
+	if (!tok->next)
 	{
 		ft_putstr_fd("exit\n", 1);
 		exit_prog(data, 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:15:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/27 14:59:53 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/04 19:11:59 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,32 +34,25 @@ static void	print_env(t_data *data)
 	}
 }
 
-static void	check_only_env(t_data *data)
+static void	check_only_env(t_data *data, t_token *tok)
 {
 	t_token	*tmp;
 	int		err;
 
 	err = 0;
-	tmp = data->token;
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->value, "env") != 0)
-		{
-			err = 1;
-			break ;
-		}
-		tmp = tmp->next;
-	}
+	tmp = tok;
+	if (tmp->next->type == WORD)
+		err = 1;
 	if (err == 0)
 		print_env(data);
 	else
 		error_env(tmp->value);
 }
 
-void	handle_env(t_data *data)
+void	handle_env(t_data *data, t_token *tok)
 {
-	if (!data->token->next)
+	if (!tok->next)
 		print_env(data);
 	else
-		check_only_env(data);
+		check_only_env(data, tok);
 }

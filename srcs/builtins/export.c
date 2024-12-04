@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:51:15 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/02 12:07:52 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:07:45 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ static void	display_export_order(t_data *data)
 	}
 }
 
-void	handle_export(t_data *data)
+void	handle_export(t_data *data, t_token *tok)
 {
 	t_token	*tmp_tok;
 	int		exist;
 
 	exist = 0;
-	tmp_tok = data->token->next;
+	tmp_tok = tok->next;
 	if (!data->cpy_env2)
 	{
 		get_env2(data->env, data);

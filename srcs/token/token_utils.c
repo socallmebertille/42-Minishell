@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:54:11 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/03 18:37:16 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/04 17:57:19 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	ft_change_word_to_cmd(t_data *data)
 	t_token	*tmp;
 
 	tmp = data->token;
+	if (!tmp->next)
+		return ;
 	while (tmp->next)
 	{
 		if (tmp->type == PIPE)
@@ -26,50 +28,6 @@ void	ft_change_word_to_cmd(t_data *data)
 			tmp->type = CMD;
 		tmp = tmp->next;
 	}
-}
-
-static int	len_cmd(t_token *tok)
-{
-	t_token	*tmp;
-	int		i;
-
-	i = 1;
-	tmp = tok->next;
-	if (!tmp)
-		return (i);
-	while (tmp)
-	{
-		if (tmp->type != WORD)
-			break ;
-		i++;
-		tmp = tmp->next;
-	}
-	return (i);
-}
-
-static char	**recup_cmd(t_data *data, t_token *tok)
-{
-	char	**cmd;
-	t_token	*tmp;
-	int		i;
-
-	i = 1;
-	(void)data;
-	cmd = malloc(sizeof(char *) * (len_cmd(tok) + 1));
-	cmd[0] = ft_strdup(tok->value);
-	tmp = tok->next;
-	if (!tmp || len_cmd(tok) == 1)
-		return (cmd[i] = NULL, cmd);
-	while (tmp)
-	{
-		if (tmp->type != WORD)
-			break ;
-		cmd[i] = ft_strdup(tmp->value);
-		tmp = tmp->next;
-		i++;
-	}
-	cmd[i] = NULL;
-	return (cmd);
 }
 
 void	ft_check_access_cmd(t_data *data)

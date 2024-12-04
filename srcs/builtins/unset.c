@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:58:20 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/02 13:16:05 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:07:31 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ static void	find_node_to_unset2(t_env *env, t_data *data, char *value)
 	}
 }
 
-void	handle_unset(t_data *data)
+void	handle_unset(t_data *data, t_token *tok)
 {
 	t_token	*tmp_tok;
 
-	tmp_tok = data->token->next;
+	tmp_tok = tok->next;
 	while (tmp_tok && tmp_tok->type == WORD)
 	{
 		if (tmp_tok->value)

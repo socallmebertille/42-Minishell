@@ -6,17 +6,16 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:35:01 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/02 14:43:05 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:06:05 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_pwd(t_data *data)
+void	handle_pwd()
 {
 	char	*pwd;
 
-	(void)data;
 	pwd = getcwd(NULL, 0);
 	if (pwd != NULL)
 	{
