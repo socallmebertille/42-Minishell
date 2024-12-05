@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:54:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/04 17:59:59 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:14:24 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,26 @@
 int	pipe_in_line(t_data *data)
 {
 	t_token	*tmp;
-	int		pipe;
+	// t_pipe	pipe;
+	int		nb_pipe;
 
+	// pipe = NULL;
+	// ft_bzero(pipe, sizeof(t_pipe));
+	// pipe.data = data;
+	// data->pipe = &pipe;
 	tmp = data->token;
-	pipe = 0;
+	nb_pipe = 0;
 	if (!tmp)
 		return (0);
 	while (tmp)
 	{
 		if (tmp->type == PIPE)
-			pipe++;
+			nb_pipe++;
 		tmp = tmp->next;
 	}
-	return (pipe);
+	// if (!nb_pipe)
+	// 	return (-1);
+	return (nb_pipe);
 }
 
 t_enum	wich_type_exec(t_data *data)

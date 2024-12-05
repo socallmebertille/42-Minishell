@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/04 18:06:18 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:12:40 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,14 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
+// typedef struct s_pipe
+// {
+// 	int				nb_pipe;
+// 	int				is_child;
+// 	int				pipe_fd[2];
+// 	struct s_data	*data;
+// }					t_pipe;
+
 typedef struct s_data
 {
 	int				nb_pipe;
@@ -86,6 +94,7 @@ typedef struct s_data
 	t_token			*token;
 	t_env			*cpy_env;
 	t_env			*cpy_env2;
+	// t_pipe			*pipe;
 }					t_data;
 
 //================== builtins =====================================//

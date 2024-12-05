@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 12:53:43 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/04 16:18:02 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:06:16 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	handle_echo(t_token *tok)
 	t_token	*tmp;
 
 	tmp = tok;
+	printf("je suis dan sle builtins\n");
 	flag = flag_detector(tok);
 	flag_start = flag;
 	while (flag)
@@ -57,6 +58,8 @@ void	handle_echo(t_token *tok)
 	}
 	while (tmp)
 	{
+		if (tmp->type != WORD)
+			break ;
 		ft_putstr_fd(tmp->value, 1);
 		if (tmp->next)
 			ft_putstr_fd(" ", 1);

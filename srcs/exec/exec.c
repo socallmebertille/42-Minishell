@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/04 19:24:10 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/05 18:18:21 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 {
 	char	*cmd_path;
 
-	if (tok->type == BUILD)
-	{
-		handle_builtins(data, tok);
-	}
+	// if (tok->type == BUILD)
+	// {
+	// 	handle_builtins(data, tok);
+	// }
 	if (!cmd || !*cmd)
 		return ;
 	cmd_path = valid_cmd(data, tok->value);
@@ -42,7 +42,7 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 			// a change pour re display readline(minishell$ )
 		}
 	}
-    exit(EXIT_SUCCESS);
+	// exit(EXIT_SUCCESS);
 	free(cmd_path);
 }
 
@@ -61,9 +61,10 @@ static void	ft_pipes(t_data *data, t_token *tok, char **cmd)
 		close(fds[0]);
 		dup2(fds[1], STDOUT_FILENO);
 		close(fds[1]);
-		exec_cmd(data, data->env, cmd, tok);
-        printf("je rentre ici\n");
-		// exit(EXIT_SUCCESS);
+		if (tok->type == BUILD)
+			handle_builtins(data, tok);
+		else
+			exec_cmd(data, data->env, cmd, tok);
 	}
 	else
 	{
@@ -84,8 +85,13 @@ static void	exec_choice(t_data *data, t_token *tok)
 	if (choice == CMD)
 	{
 		cmd = recup_cmd(data, tok);
-		if (!data->nb_pipe)
-			exec_cmd(data, data->env, cmd, tok);
+		if (data->nb_pipe == 0)
+		{
+			if (tok->type == BUILD)
+				handle_builtins(data, tok);
+			else
+				exec_cmd(data, data->env, cmd, tok);
+		}
 		else
 			ft_pipes(data, tok, cmd);
 		ft_free_tab(cmd);
@@ -105,14 +111,14 @@ void	wich_exec(t_data *data)
 	t_token	*tmp;
 	pid_t	pid;
 
-	pid = fork();
-	if (pid == -1)
-		exit_prog(data, EXIT_FAILURE);
-	if (pid == 0)
+	tmp = data->token;
+	data->nb_pipe = pipe_in_line(data);
+	if (data->nb_pipe)
 	{
-		tmp = data->token;
-		data->nb_pipe = pipe_in_line(data);
-		if (data->nb_pipe)
+		pid = fork();
+		if (pid == -1)
+			exit_prog(data, EXIT_FAILURE);
+		if (pid == 0)
 		{
 			while (tmp)
 			{
@@ -120,16 +126,26 @@ void	wich_exec(t_data *data)
 				data->nb_pipe--;
 				tmp = recup_tok_after_pipe(tmp);
 			}
+			// char **cmd = recup_cmd(data, tmp);
+			// ft_pipes(data, tmp, cmd);
+			// ft_free_tab(cmd);
 		}
 		else
-        {
-            // dup2(fds[0], STDIN_FILENO);
-			exec_choice(data, tmp);
-        }
-		// exit(EXIT_SUCCESS);
-        printf("je rentre icic\n");
-		exit_prog(data, 1);
+			waitpid(pid, NULL, 0);
 	}
 	else
-		waitpid(pid, NULL, 0);
+	{
+		if (tmp->type == BUILD)
+			handle_builtins(data, tmp);
+		else
+		{
+			pid = fork();
+			if (pid == -1)
+				exit_prog(data, EXIT_FAILURE);
+			if (pid == 0)
+				exec_choice(data, tmp);
+			else
+				waitpid(pid, NULL, 0);
+		}
+	}
 }
