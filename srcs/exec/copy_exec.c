@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   copy_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/09 19:00:14 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/06 13:27:08 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 {
 	char	*cmd_path;
 
+	// if (tok->type == BUILD)
+	// {
+	// 	handle_builtins(data, tok);
+	// }
 	if (!cmd || !*cmd)
 		return ;
 	cmd_path = valid_cmd(data, tok->value);
@@ -28,17 +32,50 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 		if (!cmd_path)
 			return ;
 	}
-	if (execve(cmd_path, cmd, env) == -1)
+	if (tok->type != BUILD)
 	{
-		free(cmd_path);
-		perror("Error executing execve\n");
-		exit_prog(data, EXIT_FAILURE);
-		// a change pour re display readline(minishell$ )
+		if (execve(cmd_path, cmd, env) == -1)
+		{
+			free(cmd_path);
+			perror("Error executing execve\n");
+			exit_prog(data, EXIT_FAILURE);
+			// a change pour re display readline(minishell$ )
+		}
 	}
+	// exit(EXIT_SUCCESS);
 	free(cmd_path);
 }
 
-void	exec_choice(t_data *data, t_token *tok)
+static void	ft_pipes(t_data *data, t_token *tok, char **cmd)
+{
+	pid_t	pid;
+	int		fds[2];
+
+	if (pipe(fds) == -1)
+		exit_prog(data, EXIT_FAILURE);
+	pid = fork();
+	if (pid == -1)
+		exit_prog(data, EXIT_FAILURE);
+	if (pid == 0)
+	{
+		close(fds[0]);
+		dup2(fds[1], STDOUT_FILENO);
+		close(fds[1]);
+		if (tok->type == BUILD)
+			handle_builtins(data, tok);
+		else
+			exec_cmd(data, data->env, cmd, tok);
+	}
+	else
+	{
+		close(fds[1]);
+		dup2(fds[0], STDIN_FILENO);
+		close(fds[0]);
+		waitpid(pid, NULL, 0);
+	}
+}
+
+static void	exec_choice(t_data *data, t_token *tok)
 {
 	t_enum	choice;
 	char	**cmd;
@@ -48,10 +85,15 @@ void	exec_choice(t_data *data, t_token *tok)
 	if (choice == CMD)
 	{
 		cmd = recup_cmd(data, tok);
-		if (tok->type == BUILD)
-			handle_builtins(data, tok, STDOUT_FILENO);
+		if (data->nb_pipe == 0)
+		{
+			if (tok->type == BUILD)
+				handle_builtins(data, tok);
+			else
+				exec_cmd(data, data->env, cmd, tok);
+		}
 		else
-			exec_cmd(data, data->env, cmd, tok);
+			ft_pipes(data, tok, cmd);
 		ft_free_tab(cmd);
 	}
 	// else if (choice == INFILE)
@@ -67,30 +109,39 @@ void	exec_choice(t_data *data, t_token *tok)
 void	wich_exec(t_data *data)
 {
 	t_token	*tmp;
-	t_pipe	data_pipe;
 	pid_t	pid;
 
 	tmp = data->token;
-	ft_bzero(&data_pipe, sizeof(t_pipe));
-	data_pipe.data = data;
-	data_pipe.fds = NULL;
-	data_pipe.pid = NULL;
-	data->pipe = &data_pipe;
-	data_pipe.nb_pipe = pipe_in_line(data);
 	data->nb_pipe = pipe_in_line(data);
-	if (data->nb_pipe > 0)
+	if (data->nb_pipe)
 	{
-		ft_pipes(data);
+		pid = fork();
+		if (pid == -1)
+			exit_prog(data, EXIT_FAILURE);
+		if (pid == 0)
+		{
+			while (tmp)
+			{
+				exec_choice(data, tmp);
+				data->nb_pipe--;
+				tmp = recup_tok_after_pipe(tmp);
+			}
+			// char **cmd = recup_cmd(data, tmp);
+			// ft_pipes(data, tmp, cmd);
+			// ft_free_tab(cmd);
+		}
+		else
+			waitpid(pid, NULL, 0);
 	}
 	else
 	{
 		if (tmp->type == BUILD)
-			handle_builtins(data, tmp, STDOUT_FILENO);
+			handle_builtins(data, tmp);
 		else
 		{
 			pid = fork();
 			if (pid == -1)
-				return ; // exit & redisplay
+				exit_prog(data, EXIT_FAILURE);
 			if (pid == 0)
 				exec_choice(data, tmp);
 			else
@@ -98,8 +149,3 @@ void	wich_exec(t_data *data)
 		}
 	}
 }
-
-// echo "cc
-// les
-// petis
-// potes"

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:51:15 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/04 16:07:45 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:25:26 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,27 +62,27 @@ static void	add_env_node(t_data *data, char *value)
 			ft_strlen(value)), &data->cpy_env, data);
 }
 
-static void	display_export_order(t_data *data)
+static void	display_export_order(t_data *data, int fd_out)
 {
 	t_env	*sort_tmp;
 
 	sort_tmp = data->cpy_env2;
 	while (sort_tmp)
 	{
-		ft_putstr_fd("declare -x ", 1);
-		ft_putstr_fd(sort_tmp->type, 1);
+		ft_putstr_fd("declare -x ", fd_out);
+		ft_putstr_fd(sort_tmp->type, fd_out);
 		if (sort_tmp->equal)
-			ft_putstr_fd("=\"", 1);
+			ft_putstr_fd("=\"", fd_out);
 		if (sort_tmp->value)
-			ft_putstr_fd(sort_tmp->value, 1);
+			ft_putstr_fd(sort_tmp->value, fd_out);
 		if (sort_tmp->equal)
-			ft_putstr_fd("\"", 1);
-		ft_putstr_fd("\n", 1);
+			ft_putstr_fd("\"", fd_out);
+		ft_putstr_fd("\n", fd_out);
 		sort_tmp = sort_tmp->next;
 	}
 }
 
-void	handle_export(t_data *data, t_token *tok)
+void	handle_export(t_data *data, t_token *tok, int fd_out)
 {
 	t_token	*tmp_tok;
 	int		exist;
@@ -95,7 +95,7 @@ void	handle_export(t_data *data, t_token *tok)
 		data->cpy_env2 = sort_list(data->cpy_env2, ft_strcmp);
 	}
 	if (!tmp_tok)
-		return (display_export_order(data));
+		return (display_export_order(data, fd_out));
 	if (tmp_tok->value[0] == '\0')
 		return (ft_putstr_fd(INVALID_VAL_EXPORT, 2));
 	while (tmp_tok && tmp_tok->type == WORD)

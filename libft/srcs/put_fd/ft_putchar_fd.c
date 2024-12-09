@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 19:44:12 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/03 17:19:09 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/09 16:52:58 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,15 @@
 
 void	ft_putchar_fd(char c, int fd)
 {
+	// if (fd > -1)
+	// 	write(fd, &c, 1);
 	if (fd > -1)
-		write(fd, &c, 1);
+    {
+        if (write(fd, &c, 1) == -1)
+        {
+            perror("cmd: write error : no space left on device\n");
+        }
+    }
 }
 
 /*#include <fcntl.h>

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/05 18:12:40 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:22:42 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,18 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-// typedef struct s_pipe
-// {
-// 	int				nb_pipe;
-// 	int				is_child;
-// 	int				pipe_fd[2];
-// 	struct s_data	*data;
-// }					t_pipe;
+typedef struct s_pipe
+{
+	int				nb_pipe;
+	int				i;
+	int				**fds;
+	pid_t			*pid;
+	struct s_data	*data;
+}					t_pipe;
 
 typedef struct s_data
 {
+	int				exit_code;
 	int				nb_pipe;
 	int				err_quote;
 	int				err_export;
@@ -94,7 +96,7 @@ typedef struct s_data
 	t_token			*token;
 	t_env			*cpy_env;
 	t_env			*cpy_env2;
-	// t_pipe			*pipe;
+	t_pipe			*pipe;
 }					t_data;
 
 //================== builtins =====================================//
@@ -102,17 +104,17 @@ typedef struct s_data
 //----------------- cd.c ------------------------
 
 //----------------- echo.c ------------------------
-void				handle_echo(t_token *tok);
+void				handle_echo(t_token *tok, int fd_out);
 
 //----------------- env.c ------------------------
-void				handle_env(t_data *data, t_token *tok);
+void				handle_env(t_data *data, t_token *tok, int fd_out);
 
 //----------------- exit.c ------------------------
-void				handle_exit(t_data *data, t_token *tok);
+void				handle_exit(t_data *data, t_token *tok, int fd_out);
 
 //----------------- export.c ------------------------
 int					find_if_env_exist(t_env *env, char *value);
-void				handle_export(t_data *data, t_token *tok);
+void				handle_export(t_data *data, t_token *tok, int fd_out);
 
 //----------------- get_env.c ------------------------
 void				get_env(char **env, t_data *data);
@@ -127,7 +129,7 @@ void				add_cpy_env2(char *type, char *value, t_env **env,
 void				get_env2(char **env, t_data *data);
 
 //----------------- pwd.c ----------------------
-void				handle_pwd(void);
+void				handle_pwd(int fd_out);
 char				*get_pwd(char **env);
 
 //----------------- syntaxe_export.c ----------------------
@@ -151,9 +153,12 @@ int					good_syntaxe(t_data *data);
 void				parse(t_data *data);
 void				clean_line(char *line, t_data *data);
 int					is_builtins(t_data *data);
-int					handle_builtins(t_data *data, t_token *tok);
+int					handle_builtins(t_data *data, t_token *tok, int fd_out);
 
 //================== exec =====================================//
+
+//----------------- exec_pipes.c ----------------------
+void				ft_pipes(t_data *data);
 
 //----------------- exec_utils.c ----------------------
 int					pipe_in_line(t_data *data);
@@ -161,7 +166,8 @@ char				**recup_cmd(t_data *data, t_token *tok);
 t_enum				wich_type_exec(t_data *data);
 t_token				*recup_tok_after_pipe(t_token *tmp);
 
-//----------------- exec_utils.c ----------------------
+//----------------- exec.c ----------------------
+void				exec_choice(t_data *data, t_token *tok);
 void				wich_exec(t_data *data);
 
 //================== token =====================================//
@@ -206,6 +212,11 @@ void				tokenize(char *line, t_data *data);
 char				*ft_enum_to_char(int num);
 
 //================== main =====================================//
+
+//----------------- free_data.c ----------------------
+void				free_tok(t_token *tok);
+void				free_env(t_env *env);
+void				free_pipe(t_data *data);
 
 //----------------- signal.c ----------------------
 void				signal_handlers(void);

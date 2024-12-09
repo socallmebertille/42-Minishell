@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:09:38 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/05 15:37:44 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:23:16 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void	check_overflow(t_data *data, char *nb)
 	return ;
 }
 
-void	handle_exit(t_data *data, t_token *tok)
+void	handle_exit(t_data *data, t_token *tok, int fd_out)
 {
 	if (tok->next)
 		check_overflow(data, tok->next->value);
@@ -97,7 +97,7 @@ void	handle_exit(t_data *data, t_token *tok)
 	}
 	if (!tok->next)
 	{
-		ft_putstr_fd("exit\n", 1);
+		ft_putstr_fd("exit\n", fd_out);
 		exit_prog(data, 0);
 	}
 }

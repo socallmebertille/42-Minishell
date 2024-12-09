@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:54:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/05 18:14:24 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/09 10:11:27 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,8 @@
 int	pipe_in_line(t_data *data)
 {
 	t_token	*tmp;
-	// t_pipe	pipe;
 	int		nb_pipe;
 
-	// pipe = NULL;
-	// ft_bzero(pipe, sizeof(t_pipe));
-	// pipe.data = data;
-	// data->pipe = &pipe;
 	tmp = data->token;
 	nb_pipe = 0;
 	if (!tmp)
@@ -100,7 +95,7 @@ char	**recup_cmd(t_data *data, t_token *tok)
 	cmd = malloc(sizeof(char *) * (len_cmd(tok) + 1));
 	cmd[0] = ft_strdup(tok->value);
 	tmp = tok->next;
-	if (!tmp || len_cmd(tok) == 1)
+	if (!tmp || len_cmd(tok) == 1 || !cmd[0])
 		return (cmd[i] = NULL, cmd);
 	while (tmp)
 	{

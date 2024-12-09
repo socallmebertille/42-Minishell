@@ -5,7 +5,7 @@ C_FLAGS		=	-Wall -Wextra -Werror -g3
 
 SRCS_DIR	=	srcs
 OBJ_DIR		=	objs
-SRCS_NAMES	=	main.c signal.c \
+SRCS_NAMES	=	main.c signal.c free_data.c\
 				builtins/get_env.c \
 				builtins/env.c \
 				builtins/unset.c \
@@ -27,6 +27,7 @@ SRCS_NAMES	=	main.c signal.c \
 				parse/parse.c \
 				parse/check_new_line.c \
 				exec/exec_utils.c \
+				exec/exec_pipes.c \
 				exec/exec.c \
 				
 OBJS_NAMES	=	$(SRCS_NAMES:.c=.o)

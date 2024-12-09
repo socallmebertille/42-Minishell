@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:15:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/05 17:54:59 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:58:38 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	print_env(t_data *data, int fd)
 		ft_putstr_fd("\n", fd);
 		tmp = tmp->next;
 	}
+	ft_putstr_fd("PWD : je suis DANS LE BUILTINS\n", fd);
 }
 
 static void	check_only_env(t_data *data, t_token *tok, int fd)
@@ -49,16 +50,16 @@ static void	check_only_env(t_data *data, t_token *tok, int fd)
 		error_env(tmp->value);
 }
 
-void	handle_env(t_data *data, t_token *tok)
+void	handle_env(t_data *data, t_token *tok, int fd_out)
 {
-	int	fd;
+	// int	fd;
 
-	fd = 1;
+	// fd = 1;
 	// if (data->pipe->nb_pipe > 0)
 	// 	fd = data->pipe->pipe_fd[1];
-	ft_putstr_fd("je suis DANS LE BUILTINS\n", 1);
+	// ft_putstr_fd("je suis DANS LE BUILTINS\n", fd_out);
 	if (!tok->next)
-		print_env(data, fd);
+		print_env(data, fd_out);
 	else
-		check_only_env(data, tok, fd);
+		check_only_env(data, tok, fd_out);
 }

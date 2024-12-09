@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:30:41 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/03 18:36:12 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/07 19:10:06 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static void	check_new_line(char *line, t_data *data)
 			open_quote = 1;
 		else if ((line[i] == '\"' || line[i] == '\'') && open_quote)
 			open_quote = 0;
-		if (((line[i] == '&' && line[i + 1] == '&') || (line[i] == '|'
-					&& line[i + 1] == '|')) && !open_quote)
+		if (((line[i] == '&' && line[i + 1] == '&') || (line[i] == '|' && line[i
+					+ 1] == '|')) && !open_quote)
 			print_err_syntaxe(data, line[i], 2);
 		if ((line[i] == ';' || line[i] == '\\' || line[i] == '&')
 			&& !open_quote)
@@ -55,18 +55,47 @@ static void	check_new_line(char *line, t_data *data)
 	}
 }
 
+static int	check_nl_in_quote(char *line, int open_quote, int i, char quote)
+{
+	if (!line[i])
+		return (1);
+	while (line[i])
+	{
+		if (!open_quote && (line[i] == '\'' || line[i] == '\"'))
+		{
+			quote = line[i];
+			open_quote++;
+		}
+		else
+		{
+			if (line[i] == '\"' && line[i] == quote)
+			{
+				open_quote--;
+				quote = '\0';
+			}
+		}
+		if (line[i] == '\n' && !open_quote)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	clean_line(char *line, t_data *data)
 {
 	char	*newline_pos;
+	int		nl_in_quote;
 
 	if (!line)
 		return ;
+	nl_in_quote = check_nl_in_quote(line, 0, 0, '\0');
 	newline_pos = ft_strchr(line, '\n');
 	while (newline_pos)
 	{
-		if (newline_pos)
+		if (newline_pos && !nl_in_quote)
 			*newline_pos = '&';
 		newline_pos = ft_strchr(line, '\n');
 	}
+	printf("comment je comprends ma line [%s]\n", line);
 	check_new_line(line, data);
 }

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/04 18:47:10 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/09 18:22:50 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,22 @@ int	is_builtins(t_data *data)
 	return (0);
 }
 
-int	handle_builtins(t_data *data, t_token *tok)
+int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 {
 	if (tok && tok->value != NULL && tok->type == BUILD)
 	{
 		if (ft_strcmp(tok->value, "exit") == 0)
-			handle_exit(data, tok);
+			handle_exit(data, tok, fd_out);
 		else if (ft_strcmp(tok->value, "env") == 0)
-			handle_env(data, tok);
+			handle_env(data, tok, fd_out);
 		else if (ft_strcmp(tok->value, "echo") == 0)
-			handle_echo(tok);
+			handle_echo(tok, fd_out);
 		else if (ft_strcmp(tok->value, "pwd") == 0)
-			handle_pwd();
+			handle_pwd(fd_out);
 		else if (ft_strcmp(tok->value, "unset") == 0)
 			handle_unset(data, tok);
 		else if (ft_strcmp(tok->value, "export") == 0)
-			handle_export(data, tok);
+			handle_export(data, tok, fd_out);
 		return (1);
 	}
 	return (0);
