@@ -6,7 +6,11 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/12/11 15:01:08 by saberton         ###   ########.fr       */
+=======
+/*   Updated: 2024/12/10 14:53:04 by saberton         ###   ########.fr       */
+>>>>>>> 0cf0219 (try something)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +90,21 @@ void	exec_choice(t_data *data, t_token *tok)
 	}
 	else if (choice == INFILE)
 		exec_in();
+<<<<<<< HEAD
 	// else if (choice == OUTFILE)
 	// 	exec_out();
 	// else if (choice == APPEND)
 	// 	exec_append();
 	// else if (choice == HEREDOC)
 	// 	exec_heredoc();
+=======
+	else if (choice == OUTFILE)
+		exec_out();
+	else if (choice == APPEND)
+		exec_append();
+	else if (choice == HEREDOC)
+		exec_heredoc();
+>>>>>>> 0cf0219 (try something)
 }
 
 void	wich_exec(t_data *data)

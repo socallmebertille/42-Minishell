@@ -6,7 +6,11 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/12/10 19:38:47 by saberton         ###   ########.fr       */
+=======
+/*   Updated: 2024/12/10 14:52:52 by saberton         ###   ########.fr       */
+>>>>>>> 0cf0219 (try something)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +80,10 @@ typedef struct s_data
 	int				err_export;
 	int				infile;
 	int				outfile;
+<<<<<<< HEAD
 	int				exit_status;
+=======
+>>>>>>> 0cf0219 (try something)
 	char			wich_quote_err;
 	char			*line;
 	char			**env;
