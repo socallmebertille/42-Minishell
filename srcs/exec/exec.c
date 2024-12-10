@@ -6,11 +6,40 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 19:36:41 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 19:39:00 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	update_last_cmd(t_data *data, char *cmd_path)
+{
+	t_env	*env;
+	t_env	*export;
+
+	env = data->cpy_env;
+	export = data->cpy_env2;
+	while (env)
+	{
+		if (!ft_strcmp(env->type, "_"))
+		{
+			free(env->value);
+			env->value = ft_strdup(cmd_path);
+			break ;
+		}
+		env = env->next;
+	}
+	while (export)
+	{
+		if (!ft_strcmp(export->type, "_"))
+		{
+			free(export->value);
+			export->value = ft_strdup(cmd_path);
+			break ;
+		}
+		export = export->next;
+	}
+}
 
 void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 {
@@ -28,6 +57,7 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 		if (!cmd_path)
 			return ;
 	}
+	update_last_cmd(data, cmd_path);
 	if (execve(cmd_path, cmd, env) == -1)
 	{
 		free(cmd_path);

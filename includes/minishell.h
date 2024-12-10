@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 19:36:59 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 19:38:47 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ void				handle_export(t_data *data, t_token *tok, int fd_out);
 void				get_env(char **env, t_data *data);
 void				add_cpy_env(char *type, char *value, t_env **env,
 						t_data *data);
-int					len_env(char **env);
 t_env				*last_value(t_env *env);
 
 //----------------- get_export_env.c.c ----------------------
@@ -130,7 +129,6 @@ void				get_env2(char **env, t_data *data);
 
 //----------------- pwd.c ----------------------
 void				handle_pwd(int fd_out);
-char				*get_pwd(char **env);
 
 //----------------- syntaxe_export.c ----------------------
 int					check_syntax_export(char *value, t_data *data);
@@ -170,6 +168,9 @@ t_enum				wich_type_exec(t_data *data);
 t_token				*recup_tok_after_pipe(t_token *tmp);
 
 //----------------- exec.c ----------------------
+void				update_last_cmd(t_data *data, char *cmd_path);
+void				exec_cmd(t_data *data, char **env, char **cmd,
+						t_token *tok);
 void				exec_choice(t_data *data, t_token *tok);
 void				wich_exec(t_data *data);
 
