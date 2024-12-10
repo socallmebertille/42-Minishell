@@ -7,10 +7,14 @@
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*   Updated: 2024/12/10 19:38:47 by saberton         ###   ########.fr       */
 =======
 /*   Updated: 2024/12/10 14:52:52 by saberton         ###   ########.fr       */
 >>>>>>> 0cf0219 (try something)
+=======
+/*   Updated: 2024/12/10 15:51:59 by saberton         ###   ########.fr       */
+>>>>>>> 760bd57 (cd not finish)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +101,7 @@ typedef struct s_data
 
 //----------------- cd.c ------------------------
 void				handle_cd(t_data *data, int fd_out);
+<<<<<<< HEAD
 
 //----------------- cd_utils.c ------------------------
 void				change_old_env_pwd(t_data *data, char *path);
@@ -109,6 +114,8 @@ void				change_old_env_pwd(t_data *data, char *path);
 void				change_env_pwd(t_data *data);
 char				*get_actual_env_path(t_data *data);
 char				*get_home_env(t_data *data);
+=======
+>>>>>>> 760bd57 (cd not finish)
 
 //----------------- echo.c ------------------------
 void				handle_echo(t_token *tok, int fd_out);
