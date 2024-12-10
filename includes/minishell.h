@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 19:35:37 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 19:35:50 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_data
 	int				err_export;
 	int				infile;
 	int				outfile;
+	int				exit_status;
 	char			wich_quote_err;
 	char			*line;
 	char			**env;
@@ -149,6 +150,9 @@ int					is_builtins(t_token *token);
 int					handle_builtins(t_data *data, t_token *tok, int fd_out);
 
 //================== exec =====================================//
+
+//----------------- exec_infile.c ----------------------
+void				exec_in(void);
 
 //----------------- exec_pipes.c ----------------------
 void				ft_pipes(t_data *data);

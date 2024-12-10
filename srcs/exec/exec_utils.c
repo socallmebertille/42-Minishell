@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:54:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/09 10:11:27 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:47:34 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ int	pipe_in_line(t_data *data)
 			nb_pipe++;
 		tmp = tmp->next;
 	}
-	// if (!nb_pipe)
-	// 	return (-1);
 	return (nb_pipe);
 }
 
