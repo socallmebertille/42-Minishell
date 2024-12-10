@@ -6,28 +6,28 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/09 18:22:50 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:23:49 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_builtins(t_data *data)
+int	is_builtins(t_token *token)
 {
-	if (data->token && data->token->value != NULL)
+	if (token && token->value != NULL)
 	{
-		if (ft_strcmp(data->token->value, "exit") == 0)
-			return (data->token->type = BUILD, 1);
-		else if (ft_strcmp(data->token->value, "env") == 0)
-			return (data->token->type = BUILD, 1);
-		else if (ft_strcmp(data->token->value, "echo") == 0)
-			return (data->token->type = BUILD, 1);
-		else if (ft_strcmp(data->token->value, "pwd") == 0)
-			return (data->token->type = BUILD, 1);
-		else if (ft_strcmp(data->token->value, "unset") == 0)
-			return (data->token->type = BUILD, 1);
-		else if (ft_strcmp(data->token->value, "export") == 0)
-			return (data->token->type = BUILD, 1);
+		if (ft_strcmp(token->value, "exit") == 0)
+			return (token->type = BUILD, 1);
+		else if (ft_strcmp(token->value, "env") == 0)
+			return (token->type = BUILD, 1);
+		else if (ft_strcmp(token->value, "echo") == 0)
+			return (token->type = BUILD, 1);
+		else if (ft_strcmp(token->value, "pwd") == 0)
+			return (token->type = BUILD, 1);
+		else if (ft_strcmp(token->value, "unset") == 0)
+			return (token->type = BUILD, 1);
+		else if (ft_strcmp(token->value, "export") == 0)
+			return (token->type = BUILD, 1);
 	}
 	return (0);
 }

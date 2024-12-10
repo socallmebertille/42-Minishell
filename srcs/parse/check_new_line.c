@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:30:41 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/07 19:10:06 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:35:05 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static void	check_new_line(char *line, t_data *data)
 			open_quote = 1;
 		else if ((line[i] == '\"' || line[i] == '\'') && open_quote)
 			open_quote = 0;
-		if (((line[i] == '&' && line[i + 1] == '&') || (line[i] == '|' && line[i
-					+ 1] == '|')) && !open_quote)
+		if (((line[i] == '&' && line[i + 1] == '&')
+				|| (line[i] == '|' && line[i + 1] == '|')) && !open_quote)
 			print_err_syntaxe(data, line[i], 2);
 		if ((line[i] == ';' || line[i] == '\\' || line[i] == '&')
 			&& !open_quote)
@@ -96,6 +96,6 @@ void	clean_line(char *line, t_data *data)
 			*newline_pos = '&';
 		newline_pos = ft_strchr(line, '\n');
 	}
-	printf("comment je comprends ma line [%s]\n", line);
+	// printf("comment je comprends ma line [%s]\n", line);
 	check_new_line(line, data);
 }

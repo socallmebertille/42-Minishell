@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/09 17:56:55 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:32:21 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static void	loop(t_data *data)
 	tokenize(data->line, data);
 	if (!data->err_quote)
 		parse(data);
-	// free_pipe(data);
 	data->err_quote = 0;
 	free_tok(data->token);
 	data->token = NULL;
@@ -46,7 +45,7 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	data;
 
-	(void)av;
+	(void) av;
 	if (ac != 1)
 		return (1);
 	ft_bzero(&data, sizeof(t_data));

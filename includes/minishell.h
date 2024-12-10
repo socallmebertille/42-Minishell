@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/09 18:22:42 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:28:35 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../libft/includes/libft.h"
 # include "colors.h"
+# include "define.h"
 # include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
@@ -25,23 +26,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
-# define INVALID_VAL_EXPORT "minishell: export: `': not a valid identifier\n"
-# define INVALID_DOUBLE_APPEND \
-	"minishell: syntax error near unexpected token \
-	`>>'\n"
-# define INVALID_SIMPLE_APPEND \
-	"minishell: syntax error near unexpected token \
-	`>'\n"
-# define INVALID_TRIPLE_HEREDOC \
-	"minishell: syntax error near unexpected token \
-	`<<<'\n"
-# define INVALID_DOUBLE_HEREDOC \
-	"minishell: syntax error near unexpected token \
-	`<<'\n"
-# define INVALID_SIMPLE_HEREDOC \
-	"minishell: syntax error near unexpected token \
-	`<'\n"
 
 typedef enum e_enum
 {
@@ -152,7 +136,7 @@ int					good_syntaxe(t_data *data);
 //----------------- parse.c ----------------------
 void				parse(t_data *data);
 void				clean_line(char *line, t_data *data);
-int					is_builtins(t_data *data);
+int					is_builtins(t_token *token);
 int					handle_builtins(t_data *data, t_token *tok, int fd_out);
 
 //================== exec =====================================//

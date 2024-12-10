@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:39 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/09 17:58:34 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:33:29 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void	free_env(t_env *env)
 
 void	free_pipe(t_data *data)
 {
-    int i;
-    
-    i = 0;
+	int	i;
+
+	i = 0;
 	if (!data || !data->pipe || !data->nb_pipe)
 		return ;
 	if (data->pipe->fds)
@@ -60,7 +60,7 @@ void	free_pipe(t_data *data)
 				free(data->pipe->fds[i]);
 				data->pipe->fds[i] = NULL;
 			}
-            i++;
+			i++;
 		}
 		free(data->pipe->fds);
 		data->pipe->fds = NULL;

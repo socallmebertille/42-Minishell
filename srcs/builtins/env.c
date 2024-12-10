@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:15:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/09 18:58:38 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:33:59 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,6 @@ static void	check_only_env(t_data *data, t_token *tok, int fd)
 
 void	handle_env(t_data *data, t_token *tok, int fd_out)
 {
-	// int	fd;
-
-	// fd = 1;
-	// if (data->pipe->nb_pipe > 0)
-	// 	fd = data->pipe->pipe_fd[1];
-	// ft_putstr_fd("je suis DANS LE BUILTINS\n", fd_out);
 	if (!tok->next)
 		print_env(data, fd_out);
 	else

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/09 19:01:06 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 12:24:42 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 static void	first_pipe(t_data *data)
 {
-	printf("je rentre dans la cmd 0 pour ecrire dans %d\n",
-		data->pipe->fds[0][1]);
 	dup2(data->pipe->fds[0][1], STDOUT_FILENO);
 	close(data->pipe->fds[0][0]);
 	close(data->pipe->fds[0][1]);
@@ -23,8 +21,6 @@ static void	first_pipe(t_data *data)
 
 static void	mid_pipe(t_data *data, int pipe_num)
 {
-	printf("je rentre dans la cmd %d pour lire %d & ecrire %d\n", pipe_num,
-		data->pipe->fds[pipe_num - 1][0], data->pipe->fds[pipe_num][0]);
 	dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO);
 	dup2(data->pipe->fds[pipe_num][1], STDOUT_FILENO);
 	close(data->pipe->fds[pipe_num - 1][0]);
@@ -35,8 +31,6 @@ static void	mid_pipe(t_data *data, int pipe_num)
 
 static void	last_pipe(t_data *data, int pipe_num)
 {
-	printf("je rentre dans la cmd %d pour lire dans %d\n", pipe_num,
-		data->pipe->fds[pipe_num - 1][0]);
 	dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO);
 	close(data->pipe->fds[pipe_num - 1][0]);
 	close(data->pipe->fds[pipe_num - 1][1]);
@@ -77,14 +71,15 @@ void	ft_pipes(t_data *data)
 	int		orig_fds[2];
 	int		status;
 
-	// t_token	*prev;
 	tmp = data->token;
 	i = 0;
-	data->pipe->pid = malloc(sizeof(pid_t) * (data->pipe->nb_pipe + 1));
+	data->pipe->pid = (pid_t *)ft_calloc(data->nb_pipe + 1, sizeof(pid_t));
 	if (!data->pipe->pid)
 		return ; // exit_&_redisplay
 	orig_fds[0] = dup(STDIN_FILENO);
 	orig_fds[1] = dup(STDOUT_FILENO);
+	if (orig_fds[0] == -1 || orig_fds[1] == -1)
+		return ; // exit_&_redisplay
 	init_fds(data->pipe);
 	data->pipe->i = i;
 	while (tmp)
@@ -97,18 +92,16 @@ void	ft_pipes(t_data *data)
 			else if (data->pipe->pid[i] == 0)
 			{
 				if (i == 0)
-				{
 					first_pipe(data);
-				}
 				else if (!recup_tok_after_pipe(tmp))
 					last_pipe(data, i);
 				else
 					mid_pipe(data, i);
 				for (int j = 0; j < data->pipe->nb_pipe; j++)
 				{
-					if (data->pipe->fds[j][0] >= 0)
+					if (data->pipe->fds[j][0] >= 1)
 						close(data->pipe->fds[j][0]);
-					if (data->pipe->fds[j][1] >= 0)
+					if (data->pipe->fds[j][1] >= 1)
 						close(data->pipe->fds[j][1]);
 				}
 				exec_choice(data, tmp);
@@ -116,55 +109,25 @@ void	ft_pipes(t_data *data)
 		}
 		else
 		{
-			if (i == 0)
-			{
-				first_pipe(data);
-			}
-			else if (!recup_tok_after_pipe(tmp))
-				last_pipe(data, i);
-			else
-				mid_pipe(data, i);
+			if (dup2(data->pipe->fds[i][0], STDIN_FILENO) == -1
+				|| dup2(data->pipe->fds[i][1], STDOUT_FILENO) == -1)
+				return ; // exit_&_redisplay
 			exec_choice(data, tmp);
 			if (dup2(orig_fds[0], STDIN_FILENO) == -1 || dup2(orig_fds[1],
 					STDOUT_FILENO) == -1)
 				return ;
-			if (!recup_tok_after_pipe(tmp))
-				close(STDOUT_FILENO);
 		}
-		// for (int j = 0; j < i; j++)
-		// {
-		// 	waitpid(data->pipe->pid[j], NULL, 0);
-		// }
-		// }
-		// else
-		// {
-		// 	data->pipe->pid[i] = -1;
-		// 	prev = tmp;
-		// 	if (i == 0)
-		// 	{
-		// 		first_pipe(data);
-		// 	}
-		// 	else if (!recup_tok_after_pipe(tmp))
-		// 		last_pipe(data, i);
-		// 	else
-		// 		mid_pipe(data, i);
-		// 	exec_choice(data, tmp);
-		// }
 		i++;
 		data->pipe->i = i;
 		tmp = recup_tok_after_pipe(tmp);
 	}
 	for (int j = 0; j < data->pipe->nb_pipe; j++)
 	{
-		if (data->pipe->fds[j][0] >= 0)
+		if (data->pipe->fds[j][0] >= 1)
 			close(data->pipe->fds[j][0]);
-		if (data->pipe->fds[j][1] >= 0)
+		if (data->pipe->fds[j][1] >= 1)
 			close(data->pipe->fds[j][1]);
 	}
-	// for (int j = 0; j < i; j++)
-	// {
-	// 	waitpid(data->pipe->pid[j], NULL, 0);
-	// }
 	for (int j = 0; j < i; j++)
 	{
 		waitpid(data->pipe->pid[j], &status, 0);
