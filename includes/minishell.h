@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 12:28:35 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 14:11:15 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_data
 //================== builtins =====================================//
 
 //----------------- cd.c ------------------------
+void				handle_cd(t_data *data, int fd_out);
 
 //----------------- echo.c ------------------------
 void				handle_echo(t_token *tok, int fd_out);

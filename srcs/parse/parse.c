@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/10 12:23:49 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 14:11:30 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,9 @@ int	is_builtins(t_token *token)
 			return (token->type = BUILD, 1);
 		else if (ft_strcmp(token->value, "export") == 0)
 			return (token->type = BUILD, 1);
+		else if (ft_strcmp(token->value, "cd") == 0)
+			return (token->type = BUILD, 1);
+		
 	}
 	return (0);
 }
@@ -48,6 +51,8 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 			handle_unset(data, tok);
 		else if (ft_strcmp(tok->value, "export") == 0)
 			handle_export(data, tok, fd_out);
+		else if (ft_strcmp(tok->value, "cd") == 0)
+			handle_cd(data, fd_out);
 		return (1);
 	}
 	return (0);
