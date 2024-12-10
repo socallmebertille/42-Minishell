@@ -6,27 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-/*   Updated: 2024/12/10 19:38:47 by saberton         ###   ########.fr       */
-=======
-/*   Updated: 2024/12/10 14:52:52 by saberton         ###   ########.fr       */
->>>>>>> 0cf0219 (try something)
-=======
-/*   Updated: 2024/12/10 15:51:59 by saberton         ###   ########.fr       */
->>>>>>> 760bd57 (cd not finish)
-=======
-/*   Updated: 2024/12/10 15:53:56 by saberton         ###   ########.fr       */
->>>>>>> 20416d9 (try something)
-=======
-/*   Updated: 2024/12/10 16:48:24 by saberton         ###   ########.fr       */
->>>>>>> a7dbe5c (go get infile)
-=======
-/*   Updated: 2024/12/10 17:35:34 by saberton         ###   ########.fr       */
->>>>>>> 01e7c74 (cd not finish)
+/*   Updated: 2024/12/11 15:04:53 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

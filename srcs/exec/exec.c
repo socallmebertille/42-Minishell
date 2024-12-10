@@ -6,23 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-/*   Updated: 2024/12/11 15:01:08 by saberton         ###   ########.fr       */
-=======
-/*   Updated: 2024/12/10 14:53:04 by saberton         ###   ########.fr       */
->>>>>>> 0cf0219 (try something)
-=======
-/*   Updated: 2024/12/10 15:53:15 by saberton         ###   ########.fr       */
->>>>>>> 8670016 (pipes jump ok)
-=======
-/*   Updated: 2024/12/10 15:54:17 by saberton         ###   ########.fr       */
->>>>>>> 20416d9 (try something)
-=======
-/*   Updated: 2024/12/10 16:43:23 by saberton         ###   ########.fr       */
->>>>>>> a7dbe5c (go get infile)
+/*   Updated: 2024/12/11 15:05:51 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
