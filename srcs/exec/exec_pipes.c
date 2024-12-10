@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 12:24:42 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 14:06:28 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,25 @@
 static void	first_pipe(t_data *data)
 {
 	dup2(data->pipe->fds[0][1], STDOUT_FILENO);
-	close(data->pipe->fds[0][0]);
-	close(data->pipe->fds[0][1]);
+	// close(data->pipe->fds[0][0]);
+	// close(data->pipe->fds[0][1]);
 }
 
 static void	mid_pipe(t_data *data, int pipe_num)
 {
 	dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO);
 	dup2(data->pipe->fds[pipe_num][1], STDOUT_FILENO);
-	close(data->pipe->fds[pipe_num - 1][0]);
-	close(data->pipe->fds[pipe_num - 1][1]);
-	close(data->pipe->fds[pipe_num][0]);
-	close(data->pipe->fds[pipe_num][1]);
+	// close(data->pipe->fds[pipe_num - 1][0]);
+	// close(data->pipe->fds[pipe_num - 1][1]);
+	// close(data->pipe->fds[pipe_num][0]);
+	// close(data->pipe->fds[pipe_num][1]);
 }
 
 static void	last_pipe(t_data *data, int pipe_num)
 {
 	dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO);
-	close(data->pipe->fds[pipe_num - 1][0]);
-	close(data->pipe->fds[pipe_num - 1][1]);
+	// close(data->pipe->fds[pipe_num - 1][0]);
+	// close(data->pipe->fds[pipe_num - 1][1]);
 }
 
 static void	init_fds(t_pipe *data_pipe)
@@ -49,9 +49,15 @@ static void	init_fds(t_pipe *data_pipe)
 	{
 		data_pipe->fds[i] = malloc(sizeof(int) * 2);
 		if (!data_pipe->fds[i])
-			return ; // exit_&_redisplay
+		{
+			perror("pipe allocation failed");
+			exit_prog(data_pipe->data, EXIT_FAILURE);
+		} // exit_&_redisplay
 		if (pipe(data_pipe->fds[i]) == -1)
-			return ; // exit_&_redisplay
+		{
+			perror("pipe allocation failed");
+			exit_prog(data_pipe->data, EXIT_FAILURE);
+		} // exit_&_redisplay
 		i++;
 	}
 	data_pipe->fds[data_pipe->nb_pipe] = NULL;
@@ -81,6 +87,8 @@ void	ft_pipes(t_data *data)
 	if (orig_fds[0] == -1 || orig_fds[1] == -1)
 		return ; // exit_&_redisplay
 	init_fds(data->pipe);
+	if (!data->pipe || !data->pipe->fds)
+		exit_prog(data, EXIT_FAILURE);
 	data->pipe->i = i;
 	while (tmp)
 	{
@@ -109,9 +117,16 @@ void	ft_pipes(t_data *data)
 		}
 		else
 		{
-			if (dup2(data->pipe->fds[i][0], STDIN_FILENO) == -1
-				|| dup2(data->pipe->fds[i][1], STDOUT_FILENO) == -1)
-				return ; // exit_&_redisplay
+			// if (dup2(data->pipe->fds[i][0], STDIN_FILENO) == -1
+			// 	|| dup2(data->pipe->fds[i][1], STDOUT_FILENO) == -1)
+			// 	return ; // exit_&_redisplay
+			data->pipe->pid[i] = -1;
+			if (i == 0)
+				first_pipe(data);
+			else if (!recup_tok_after_pipe(tmp))
+				last_pipe(data, i);
+			else
+				mid_pipe(data, i);
 			exec_choice(data, tmp);
 			if (dup2(orig_fds[0], STDIN_FILENO) == -1 || dup2(orig_fds[1],
 					STDOUT_FILENO) == -1)
@@ -128,19 +143,22 @@ void	ft_pipes(t_data *data)
 		if (data->pipe->fds[j][1] >= 1)
 			close(data->pipe->fds[j][1]);
 	}
+	close(orig_fds[0]);
+	close(orig_fds[1]);
 	for (int j = 0; j < i; j++)
 	{
-		waitpid(data->pipe->pid[j], &status, 0);
-		if (WIFEXITED(status))
-		{
-			printf("Child process %d finished with exit status %d\n",
-				data->pipe->pid[j], WEXITSTATUS(status));
-		}
-		else if (WIFSIGNALED(status))
-		{
-			printf("Child process %d terminated by signal %d\n",
-				data->pipe->pid[j], WTERMSIG(status));
-		}
+		if (data->pipe->pid[j] != -1)
+			waitpid(data->pipe->pid[j], &status, 0);
+		// if (WIFEXITED(status))
+		// {
+		// 	printf("Child process %d finished with exit status %d\n",
+		// 		data->pipe->pid[j], WEXITSTATUS(status));
+		// }
+		// else if (WIFSIGNALED(status))
+		// {
+		// 	printf("Child process %d terminated by signal %d\n",
+		// 		data->pipe->pid[j], WTERMSIG(status));
+		// }
 	}
 	free_pipe(data);
 }

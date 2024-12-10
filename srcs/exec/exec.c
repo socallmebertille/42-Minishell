@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/09 19:00:14 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 13:45:03 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	wich_exec(t_data *data)
 	t_token	*tmp;
 	t_pipe	data_pipe;
 	pid_t	pid;
+	int		status;
 
 	tmp = data->token;
 	ft_bzero(&data_pipe, sizeof(t_pipe));
@@ -94,7 +95,19 @@ void	wich_exec(t_data *data)
 			if (pid == 0)
 				exec_choice(data, tmp);
 			else
-				waitpid(pid, NULL, 0);
+			{
+				waitpid(pid, &status, 0);
+				if (WIFEXITED(status))
+				{
+					printf("Child process %d finished with exit status %d\n",
+						pid, WEXITSTATUS(status));
+				}
+				else if (WIFSIGNALED(status))
+				{
+					printf("Child process %d terminated by signal %d\n", pid,
+						WTERMSIG(status));
+				}
+			}
 		}
 	}
 }
