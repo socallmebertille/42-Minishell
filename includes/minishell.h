@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 15:05:58 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:07:32 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,9 @@ t_enum				wich_type_exec(t_data *data);
 t_token				*recup_tok_after_pipe(t_token *tmp);
 
 //----------------- exec.c ----------------------
+void				update_last_cmd(t_data *data, char *cmd_path);
+void				exec_cmd(t_data *data, char **env, char **cmd,
+						t_token *tok);
 void				update_last_cmd(t_data *data, char *cmd_path);
 void				exec_cmd(t_data *data, char **env, char **cmd,
 						t_token *tok);

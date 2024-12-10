@@ -6,19 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-/*   Updated: 2024/12/11 13:18:05 by kepouliq         ###   ########.fr       */
-=======
-/*   Updated: 2024/12/10 14:11:30 by kepouliq         ###   ########.fr       */
->>>>>>> 760bd57 (cd not finish)
-=======
-/*   Updated: 2024/12/10 16:47:11 by saberton         ###   ########.fr       */
->>>>>>> a7dbe5c (go get infile)
-=======
-/*   Updated: 2024/12/10 17:35:42 by saberton         ###   ########.fr       */
->>>>>>> 01e7c74 (cd not finish)
+/*   Updated: 2024/12/11 15:07:53 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +39,7 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 {
 	if (tok && tok->value != NULL && tok->type == BUILD)
 	{
+		update_last_cmd(data, tok->value);
 		update_last_cmd(data, tok->value);
 		if (ft_strcmp(tok->value, "exit") == 0)
 			handle_exit(data, tok, fd_out);
