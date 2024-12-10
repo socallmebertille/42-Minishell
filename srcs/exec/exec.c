@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 14:53:04 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 16:47:22 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,14 @@ void	exec_choice(t_data *data, t_token *tok)
 			exec_cmd(data, data->env, cmd, tok);
 		ft_free_tab(cmd);
 	}
-	else if (choice == INFILE)
-		exec_in();
-	else if (choice == OUTFILE)
-		exec_out();
-	else if (choice == APPEND)
-		exec_append();
-	else if (choice == HEREDOC)
-		exec_heredoc();
+	// else if (choice == INFILE)
+	// 	exec_in();
+	// else if (choice == OUTFILE)
+	// 	exec_out();
+	// else if (choice == APPEND)
+	// 	exec_append();
+	// else if (choice == HEREDOC)
+	// 	exec_heredoc();
 }
 
 void	wich_exec(t_data *data)

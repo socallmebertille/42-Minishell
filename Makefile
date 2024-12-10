@@ -13,6 +13,7 @@ SRCS_NAMES	=	main.c signal.c free_data.c\
 				builtins/syntaxe_export.c \
 				builtins/export.c \
 				builtins/cd.c \
+				builtins/cd_utils.c \
 				builtins/pwd.c \
 				builtins/exit.c \
 				builtins/echo.c \

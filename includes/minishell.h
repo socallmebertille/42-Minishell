@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 15:49:25 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 17:28:31 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,12 @@ typedef struct s_data
 
 //----------------- cd.c ------------------------
 void				handle_cd(t_data *data, int fd_out);
+
+//----------------- cd_utils.c ------------------------
+void				change_old_env_pwd(t_data *data, char *path);
+void				change_env_pwd(t_data *data);
+char				*get_actual_env_path(t_data *data);
+char				*get_home_env(t_data *data);
 
 //----------------- echo.c ------------------------
 void				handle_echo(t_token *tok, int fd_out);
