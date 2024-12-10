@@ -9,6 +9,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*   Updated: 2024/12/10 19:38:47 by saberton         ###   ########.fr       */
 =======
 /*   Updated: 2024/12/10 14:52:52 by saberton         ###   ########.fr       */
@@ -19,6 +20,9 @@
 =======
 /*   Updated: 2024/12/10 15:53:56 by saberton         ###   ########.fr       */
 >>>>>>> 20416d9 (try something)
+=======
+/*   Updated: 2024/12/10 16:48:24 by saberton         ###   ########.fr       */
+>>>>>>> a7dbe5c (go get infile)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +93,13 @@ typedef struct s_data
 	int				infile;
 	int				outfile;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	int				exit_status;
 =======
 >>>>>>> 0cf0219 (try something)
+=======
+	int				exit_status;
+>>>>>>> a7dbe5c (go get infile)
 	char			wich_quote_err;
 	char			*line;
 	char			**env;

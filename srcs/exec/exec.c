@@ -9,6 +9,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*   Updated: 2024/12/11 15:01:08 by saberton         ###   ########.fr       */
 =======
 /*   Updated: 2024/12/10 14:53:04 by saberton         ###   ########.fr       */
@@ -19,6 +20,9 @@
 =======
 /*   Updated: 2024/12/10 15:54:17 by saberton         ###   ########.fr       */
 >>>>>>> 20416d9 (try something)
+=======
+/*   Updated: 2024/12/10 16:43:23 by saberton         ###   ########.fr       */
+>>>>>>> a7dbe5c (go get infile)
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +103,16 @@ void	exec_choice(t_data *data, t_token *tok)
 	else if (choice == INFILE)
 		exec_in();
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a7dbe5c (go get infile)
 	// else if (choice == OUTFILE)
 	// 	exec_out();
 	// else if (choice == APPEND)
 	// 	exec_append();
 	// else if (choice == HEREDOC)
 	// 	exec_heredoc();
+<<<<<<< HEAD
 =======
 	else if (choice == OUTFILE)
 		exec_out();
@@ -113,6 +121,8 @@ void	exec_choice(t_data *data, t_token *tok)
 	else if (choice == HEREDOC)
 		exec_heredoc();
 >>>>>>> 0cf0219 (try something)
+=======
+>>>>>>> a7dbe5c (go get infile)
 }
 
 void	wich_exec(t_data *data)

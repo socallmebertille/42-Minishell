@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
+<<<<<<< HEAD
 <<<<<<< HEAD
 /*   Updated: 2024/12/11 13:18:05 by kepouliq         ###   ########.fr       */
 =======
 /*   Updated: 2024/12/10 14:11:30 by kepouliq         ###   ########.fr       */
 >>>>>>> 760bd57 (cd not finish)
+=======
+/*   Updated: 2024/12/10 16:47:11 by saberton         ###   ########.fr       */
+>>>>>>> a7dbe5c (go get infile)
 /*                                                                            */
 /* ************************************************************************** */
 
