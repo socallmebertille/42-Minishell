@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 19:36:24 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 19:36:59 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,12 @@ typedef struct s_data
 
 //----------------- cd.c ------------------------
 void				handle_cd(t_data *data, int fd_out);
+
+//----------------- cd_utils.c ------------------------
+void				change_old_env_pwd(t_data *data, char *path);
+void				change_env_pwd(t_data *data);
+char				*get_actual_env_path(t_data *data);
+char				*get_home_env(t_data *data);
 
 //----------------- cd_utils.c ------------------------
 void				change_old_env_pwd(t_data *data, char *path);
