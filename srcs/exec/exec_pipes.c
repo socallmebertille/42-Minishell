@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 14:06:28 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 14:56:02 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,38 @@
 
 static void	first_pipe(t_data *data)
 {
-	dup2(data->pipe->fds[0][1], STDOUT_FILENO);
-	// close(data->pipe->fds[0][0]);
-	// close(data->pipe->fds[0][1]);
+	if (data->infile)
+	{
+		if (dup2(data->pipe->fds[0][1], STDIN_FILENO) == -1)
+		{
+			data->infile = 0;
+			return ;
+		}
+	}
+	if (dup2(data->pipe->fds[0][1], STDOUT_FILENO) == -1)
+		return ;
 }
 
 static void	mid_pipe(t_data *data, int pipe_num)
 {
-	dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO);
-	dup2(data->pipe->fds[pipe_num][1], STDOUT_FILENO);
-	// close(data->pipe->fds[pipe_num - 1][0]);
-	// close(data->pipe->fds[pipe_num - 1][1]);
-	// close(data->pipe->fds[pipe_num][0]);
-	// close(data->pipe->fds[pipe_num][1]);
+	if (dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO) == -1)
+		return ;
+	if (dup2(data->pipe->fds[pipe_num][1], STDOUT_FILENO) == -1)
+		return ;
 }
 
 static void	last_pipe(t_data *data, int pipe_num)
 {
-	dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO);
-	// close(data->pipe->fds[pipe_num - 1][0]);
-	// close(data->pipe->fds[pipe_num - 1][1]);
+	if (dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO) == -1)
+		return ;
+	if (data->outfile)
+	{
+		if (dup2(data->pipe->fds[pipe_num][1], STDOUT_FILENO) == -1)
+		{
+			data->outfile = 0;
+			return ;
+		}
+	}
 }
 
 static void	init_fds(t_pipe *data_pipe)

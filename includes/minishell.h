@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 14:11:15 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/10 15:49:25 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ typedef struct s_data
 	int				nb_pipe;
 	int				err_quote;
 	int				err_export;
+	int				infile;
+	int				outfile;
 	char			wich_quote_err;
 	char			*line;
 	char			**env;
