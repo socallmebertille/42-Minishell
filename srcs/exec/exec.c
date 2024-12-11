@@ -6,40 +6,11 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 15:08:37 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:11:02 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	update_last_cmd(t_data *data, char *cmd_path)
-{
-	t_env	*env;
-	t_env	*export;
-
-	env = data->cpy_env;
-	export = data->cpy_env2;
-	while (env)
-	{
-		if (!ft_strcmp(env->type, "_"))
-		{
-			free(env->value);
-			env->value = ft_strdup(cmd_path);
-			break ;
-		}
-		env = env->next;
-	}
-	while (export)
-	{
-		if (!ft_strcmp(export->type, "_"))
-		{
-			free(export->value);
-			export->value = ft_strdup(cmd_path);
-			break ;
-		}
-		export = export->next;
-	}
-}
 
 void	update_last_cmd(t_data *data, char *cmd_path)
 {
@@ -116,27 +87,12 @@ void	exec_choice(t_data *data, t_token *tok)
 	}
 	else if (choice == INFILE)
 		exec_in();
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a7dbe5c (go get infile)
 	// else if (choice == OUTFILE)
 	// 	exec_out();
 	// else if (choice == APPEND)
 	// 	exec_append();
 	// else if (choice == HEREDOC)
 	// 	exec_heredoc();
-<<<<<<< HEAD
-=======
-	else if (choice == OUTFILE)
-		exec_out();
-	else if (choice == APPEND)
-		exec_append();
-	else if (choice == HEREDOC)
-		exec_heredoc();
->>>>>>> 0cf0219 (try something)
-=======
->>>>>>> a7dbe5c (go get infile)
 }
 
 void	wich_exec(t_data *data)

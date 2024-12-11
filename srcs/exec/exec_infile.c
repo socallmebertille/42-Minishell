@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 15:05:42 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:09:56 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,3 @@
 void	exec_in(void)
 {
 }
-=======
-/*   Updated: 2024/12/10 14:57:06 by saberton         ###   ########.fr       */
-=======
-/*   Updated: 2024/12/10 16:47:57 by saberton         ###   ########.fr       */
->>>>>>> a7dbe5c (go get infile)
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minishell.h"
-<<<<<<< HEAD
->>>>>>> 0cf0219 (try something)
-=======
-
-void	exec_in(void)
-{
-}
->>>>>>> a7dbe5c (go get infile)

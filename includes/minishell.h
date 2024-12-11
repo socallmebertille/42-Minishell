@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 15:08:05 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:14:34 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,7 @@ typedef struct s_data
 	int				err;
 	int				infile;
 	int				outfile;
-<<<<<<< HEAD
-<<<<<<< HEAD
 	int				exit_status;
-=======
->>>>>>> 0cf0219 (try something)
-=======
-	int				exit_status;
->>>>>>> a7dbe5c (go get infile)
 	char			wich_quote_err;
 	char			*line;
 	char			**env;
@@ -97,7 +90,15 @@ typedef struct s_data
 //================== builtins =====================================//
 
 //----------------- cd.c ------------------------
+void				cd_go_home(t_data *data);
+void				change_directory(t_data *data);
 void				handle_cd(t_data *data, int fd_out);
+
+//----------------- cd_utils.c ------------------------
+void				change_old_env_pwd(t_data *data, char *path);
+void				change_env_pwd(t_data *data);
+char				*get_actual_env_path(t_data *data);
+char				*get_home_env(t_data *data);
 
 //----------------- echo.c ------------------------
 void				handle_echo(t_token *tok, int fd_out);
