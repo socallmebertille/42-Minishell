@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:54:11 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 13:32:35 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:59:16 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static char	*check_err_messages(t_data *data, t_token *tok, char *exist, int err
 	else if (err == 12)
 	{
 		if (!exist)
-			return (malloc_failed_mess(data), NULL);
+			return (failed_mess(data, "malloc failed", 1), NULL);
 		if (exist[0] == '\0')
 		{
 			free(exist);
 			exist = ft_strdup(tok->value);
 			if (!exist)
-				return (malloc_failed_mess(data), NULL);
+				return (failed_mess(data, "malloc failed", 1), NULL);
 		}
 	}
 	return (exist);

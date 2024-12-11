@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 15:11:02 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:14:31 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,13 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 		free(cmd_path);
 		cmd_path = ft_strdup(*cmd);
 		if (!cmd_path)
-			redisplay_prog(data);
+			return (failed_mess(data, "malloc failed", 1));
 	}
 	update_last_cmd(data, cmd_path);
 	// if (!ft_strcmp("./minishell", cmd[0]))
 	// 	data->keep_env = 1;
 	if (execve(cmd_path, cmd, env) == -1)
-	{
-		free(cmd_path);
-		perror("Error executing execve\n");
-		redisplay_prog(data);
-	}
+		failed_mess(data, "execve failed", 1);
 	free(cmd_path);
 }
 
@@ -120,7 +116,7 @@ void	wich_exec(t_data *data)
 		{
 			pid = fork();
 			if (pid == -1)
-				return (malloc_failed_mess(data));
+				return (failed_mess(data, "malloc failed", 1));
 			if (pid == 0)
 				exec_choice(data, tmp);
 			else

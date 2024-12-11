@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/11 15:48:53 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 17:45:46 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 {
 	if (tok && tok->value != NULL && tok->type == BUILD)
 	{
-		update_last_cmd(data, tok->value);
 		update_last_cmd(data, tok->value);
 		if (ft_strcmp(tok->value, "exit") == 0)
 			handle_exit(data, tok, fd_out);
@@ -107,7 +106,6 @@ void	parse(t_data *data)
 	ft_check_access_cmd(data);
 	if (data->err)
 		return ;
-	print_token(data);
 	// print_token(data);
 	wich_exec(data);
 	if (data->err)

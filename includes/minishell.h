@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 15:49:03 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:40:20 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_pipe
 {
 	int				nb_pipe;
 	int				i;
+	int				orig_fds[2];
 	int				**fds;
 	pid_t			*pid;
 	struct s_data	*data;
@@ -221,19 +222,18 @@ char				*ft_enum_to_char(int num);
 //================== main =====================================//
 
 //----------------- exit_status.c ----------------------
-void				malloc_failed_mess(t_data *data);
 void				failed_mess(t_data *data, char *mess, int code);
 
 //----------------- free_data.c ----------------------
 void				free_tok(t_data *data);
-void				free_env(t_env *env);
+void				free_env(t_data *data, t_env *env, int cpy);
 void				free_pipe(t_data *data);
+void				free_close_fds(t_data *data, int sous_process);
 
 //----------------- signal.c ---------------------expor-
 void				signal_handlers(void);
 
 //----------------- main.c ----------------------
-void				redisplay_prog(t_data *data);
 void				exit_prog(t_data *data, int code);
 
 #endif

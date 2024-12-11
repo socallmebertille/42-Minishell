@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:39 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 13:09:04 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:40:49 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,32 @@ void	free_tok(t_data *data)
 	data->token = NULL;
 }
 
-void	free_env(t_env *env)
+void	free_env(t_data *data, t_env *env, int cpy)
 {
 	t_env	*tmp;
 
+	if (cpy == 1 && !data->cpy_env)
+			return ;
+
+	if (cpy == 2 && !data->cpy_env2)
+			return ;
+	tmp = env;
 	while (env)
 	{
 		tmp = env->next;
-		free(env->type);
-		free(env->value);
+		if (env->type)
+			free(env->type);
+		if (env->value)
+			free(env->value);
+		env->type = NULL;
+		env->value = NULL;
 		free(env);
 		env = tmp;
 	}
+	if (cpy == 1)
+		data->cpy_env = NULL;
+	else if (cpy == 2)
+		data->cpy_env2 = NULL;
 }
 
 void	free_pipe(t_data *data)
@@ -54,26 +68,46 @@ void	free_pipe(t_data *data)
 	int	i;
 
 	i = 0;
-	if (!data || !data->pipe || !data->nb_pipe)
+	if (!data || !data->pipe)
 		return ;
-	if (data->pipe->fds)
-	{
-		while (i < data->pipe->nb_pipe)
-		{
-			if (data->pipe->fds[i])
-			{
-				free(data->pipe->fds[i]);
-				data->pipe->fds[i] = NULL;
-			}
-			i++;
-		}
-		free(data->pipe->fds);
-		data->pipe->fds = NULL;
-	}
 	if (data->pipe->pid)
 	{
 		free(data->pipe->pid);
 		data->pipe->pid = NULL;
 	}
 	data->pipe = NULL;
+}
+
+static void	close_one_fd(int fd)
+{
+	if (fd >= 3)
+		close(fd);
+}
+
+void	free_close_fds(t_data *data, int sous_process)
+{
+	int	i;
+
+	i = 0;
+	if (!data->pipe->nb_pipe)
+		return ;
+	while (i < data->pipe->nb_pipe)
+	{
+		close_one_fd(data->pipe->fds[i][0]);
+		close_one_fd(data->pipe->fds[i][1]);
+		if (data->pipe->fds[i] && !sous_process)
+		{
+			free(data->pipe->fds[i]);
+			data->pipe->fds[i] = NULL;
+		}
+		i++;
+	}
+	close_one_fd(data->pipe->orig_fds[0]);
+	close_one_fd(data->pipe->orig_fds[1]);
+	if (sous_process)
+		return ;
+	if (data->pipe->fds)
+		free(data->pipe->fds);
+	data->pipe->fds = NULL;
+	data->pipe->nb_pipe = 0;
 }

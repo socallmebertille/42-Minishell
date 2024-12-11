@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 13:34:07 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:06:53 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,19 +33,12 @@ static void	loop(t_data *data)
 	}
 }
 
-void	redisplay_prog(t_data *data)
-{
-	free_tok(data);
-	free_pipe(data);
-	// loop(data);
-}
-
 void	exit_prog(t_data *data, int code)
 {
-	free_env(data->cpy_env);
+	free_env(data, data->cpy_env, 1);
 	// if (!data->keep_env)
 	// 	free_env(data->cpy_env);
-	free_env(data->cpy_env2);
+	free_env(data, data->cpy_env2, 2);
 	free_tok(data);
 	free_pipe(data);
 	if (code == 130)
