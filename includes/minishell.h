@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 15:14:34 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:49:03 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,6 +192,7 @@ int					is_pipe(char c);
 int					is_operateur(char c);
 int					ft_isspace(char c);
 int					is_word(char c);
+int					is_word_and_space(char c);
 
 //----------------- get_path.c ----------------------
 char				**recup_path(t_env *env);
