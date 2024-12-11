@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:32:08 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/27 17:58:52 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:46:31 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,6 @@ int	word_size(char *line, int *i)
 		{
 			len += len_in_quote(line, &j, line[j]);
 		}
-		if (!line[j])
-			break ;
-		if (!is_word(line[j]))
-			break ;
 		else
 		{
 			j++;

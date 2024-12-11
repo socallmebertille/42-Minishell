@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 12:53:43 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/09 18:23:57 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:21:30 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	handle_echo(t_token *tok, int fd_out)
 	}
 	while (tmp)
 	{
-		if (tmp->type != WORD)
+		if (tmp->type != WORD || !tmp->value)
 			break ;
 		ft_putstr_fd(tmp->value, fd_out);
 		if (tmp->next)
