@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 15:05:46 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:08:14 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,31 @@ static void	first_pipe(t_data *data)
 		if (dup2(data->pipe->fds[0][1], STDIN_FILENO) == -1)
 		{
 			data->infile = 0;
-			return ;
+			redisplay_prog(data);
 		}
 	}
 	if (dup2(data->pipe->fds[0][1], STDOUT_FILENO) == -1)
-		return ;
+		redisplay_prog(data);
 }
 
 static void	mid_pipe(t_data *data, int pipe_num)
 {
 	if (dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO) == -1)
-		return ;
+		redisplay_prog(data);
 	if (dup2(data->pipe->fds[pipe_num][1], STDOUT_FILENO) == -1)
-		return ;
+		redisplay_prog(data);
 }
 
 static void	last_pipe(t_data *data, int pipe_num)
 {
 	if (dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO) == -1)
-		return ;
+		redisplay_prog(data);
 	if (data->outfile)
 	{
 		if (dup2(data->pipe->fds[pipe_num][1], STDOUT_FILENO) == -1)
 		{
 			data->outfile = 0;
-			return ;
+			redisplay_prog(data);
 		}
 	}
 }
@@ -55,7 +55,7 @@ static void	init_fds(t_pipe *data_pipe)
 	data_pipe->fds = malloc(sizeof(int *) * (data_pipe->nb_pipe + 1));
 	ft_bzero(data_pipe->fds, sizeof(int *));
 	if (!data_pipe->fds)
-		return ; // exit_&_redisplay
+		redisplay_prog(data_pipe->data);
 	i = 0;
 	while (i < data_pipe->nb_pipe)
 	{
@@ -63,13 +63,13 @@ static void	init_fds(t_pipe *data_pipe)
 		if (!data_pipe->fds[i])
 		{
 			perror("pipe allocation failed");
-			exit_prog(data_pipe->data, EXIT_FAILURE);
-		} // exit_&_redisplay
+			redisplay_prog(data_pipe->data);
+		}
 		if (pipe(data_pipe->fds[i]) == -1)
 		{
 			perror("pipe allocation failed");
-			exit_prog(data_pipe->data, EXIT_FAILURE);
-		} // exit_&_redisplay
+			redisplay_prog(data_pipe->data);
+		}
 		i++;
 	}
 	data_pipe->fds[data_pipe->nb_pipe] = NULL;
@@ -93,14 +93,14 @@ void	ft_pipes(t_data *data)
 	i = 0;
 	data->pipe->pid = (pid_t *)ft_calloc(data->nb_pipe + 1, sizeof(pid_t));
 	if (!data->pipe->pid)
-		return ; // exit_&_redisplay
+		return (malloc_failed_mess(data));
 	orig_fds[0] = dup(STDIN_FILENO);
 	orig_fds[1] = dup(STDOUT_FILENO);
 	if (orig_fds[0] == -1 || orig_fds[1] == -1)
-		return ; // exit_&_redisplay
+		return (malloc_failed_mess(data));
 	init_fds(data->pipe);
 	if (!data->pipe || !data->pipe->fds)
-		exit_prog(data, EXIT_FAILURE);
+		redisplay_prog(data);
 	data->pipe->i = i;
 	while (tmp)
 	{
@@ -108,7 +108,7 @@ void	ft_pipes(t_data *data)
 		{
 			data->pipe->pid[i] = fork();
 			if (data->pipe->pid[i] < 0)
-				exit_prog(data, EXIT_FAILURE);
+				redisplay_prog(data);
 			else if (data->pipe->pid[i] == 0)
 			{
 				if (i == 0)
@@ -142,7 +142,7 @@ void	ft_pipes(t_data *data)
 			exec_choice(data, tmp);
 			if (dup2(orig_fds[0], STDIN_FILENO) == -1 || dup2(orig_fds[1],
 					STDOUT_FILENO) == -1)
-				return ;
+				redisplay_prog(data);
 		}
 		i++;
 		data->pipe->i = i;

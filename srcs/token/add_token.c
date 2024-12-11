@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 18:59:55 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/10 17:59:40 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 13:37:55 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	add_token_word(char *line, t_token **tok, t_data *data, int *i)
 
 	new_last_node = (t_token *)malloc(sizeof(t_token));
 	if (!new_last_node)
-		return ;
+		return (malloc_failed_mess(data));
 	new_last_node->next = NULL;
 	new_last_node->type = WORD;
 	new_last_node->value = NULL;
@@ -43,14 +43,15 @@ void	add_token_word(char *line, t_token **tok, t_data *data, int *i)
 	else
 	{
 		node = last_token(*tok);
+		if (!node)
+			return (malloc_failed_mess(data));
 		node->next = new_last_node;
 		new_last_node->prev = node;
 	}
 	if (new_last_node->value == NULL && data->err_quote)
 		open_quote_exit(data);
 	else if (new_last_node->value == NULL)
-		return (ft_putstr_fd("malloc failed\n", 2), exit_prog(data, 12));
-	return ;
+		return (malloc_failed_mess(data));
 }
 
 void	add_token_pipe(t_token **tok, t_data *data, int *i)
@@ -60,11 +61,11 @@ void	add_token_pipe(t_token **tok, t_data *data, int *i)
 
 	new_last_node = (t_token *)malloc(sizeof(t_token));
 	if (!new_last_node)
-		return ;
+		return (malloc_failed_mess(data));
 	new_last_node->type = PIPE;
 	new_last_node->value = ft_copy_pipe(i);
 	if (new_last_node->value == NULL)
-		return (perror("malloc failed"), exit_prog(data, 12));
+		return (malloc_failed_mess(data));
 	new_last_node->next = NULL;
 	if (!*tok)
 	{
@@ -75,10 +76,11 @@ void	add_token_pipe(t_token **tok, t_data *data, int *i)
 	else
 	{
 		node = last_token(*tok);
+		if (!node)
+			return (malloc_failed_mess(data));
 		node->next = new_last_node;
 		new_last_node->prev = node;
 	}
-	return ;
 }
 
 void	add_token_operateur(char *line, t_token **tok, t_data *data, int *i)
@@ -88,11 +90,11 @@ void	add_token_operateur(char *line, t_token **tok, t_data *data, int *i)
 
 	new_last_node = (t_token *)malloc(sizeof(t_token));
 	if (!new_last_node)
-		return ;
+		return (malloc_failed_mess(data));
 	new_last_node->type = find_operateur(line, i);
 	new_last_node->value = ft_copy_operateur(i, new_last_node->type);
 	if (new_last_node->value == NULL)
-		return (perror("malloc failed"), exit_prog(data, 12));
+		return (malloc_failed_mess(data));
 	new_last_node->next = NULL;
 	if (!*tok)
 	{
@@ -103,8 +105,9 @@ void	add_token_operateur(char *line, t_token **tok, t_data *data, int *i)
 	else
 	{
 		node = last_token(*tok);
+		if (!node)
+			return (malloc_failed_mess(data));
 		node->next = new_last_node;
 		new_last_node->prev = node;
 	}
-	return ;
 }

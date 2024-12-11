@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 18:29:02 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/09 16:53:24 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:32:31 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include <limits.h>
 # include <stdarg.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
 
 # define U_MAX 4294967295
 # define DEC_BASE "0123456789"
@@ -48,6 +48,7 @@ int					ft_toupper(int c);
 int					ft_tolower(int c);
 
 // ---------------- convert -----------------
+long				ft_atol_under_lldmax(const char *str);
 int					ft_atoi(const char *nptr);
 long				ft_atol(const char *str);
 char				*ft_itoa(int n);

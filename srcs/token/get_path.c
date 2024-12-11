@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 14:17:17 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 18:19:16 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 13:28:10 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ char	*valid_cmd(t_data *data, char *cmd)
 	int		i;
 
 	i = 0;
+	if (!data->cpy_env)
+		return (data->err = 1, NULL);
 	path = recup_path(data->cpy_env);
 	if (!*path || !path)
 		return (NULL);
@@ -59,7 +61,7 @@ char	*valid_cmd(t_data *data, char *cmd)
 	{
 		cmd_path = ft_strjoin(path[i], sub);
 		if (!cmd_path)
-			return (ft_free_tab(path), free(sub), NULL);
+			return (ft_free_tab(path), free(sub), data->err = 1, NULL);
 		if (access(cmd_path, F_OK | X_OK) == 0)
 			return (ft_free_tab(path), free(sub), cmd_path);
 		free(cmd_path);

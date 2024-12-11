@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 15:07:45 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:08:37 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,16 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 		free(cmd_path);
 		cmd_path = ft_strdup(*cmd);
 		if (!cmd_path)
-			return ;
+			redisplay_prog(data);
 	}
 	update_last_cmd(data, cmd_path);
-	update_last_cmd(data, cmd_path);
+	// if (!ft_strcmp("./minishell", cmd[0]))
+	// 	data->keep_env = 1;
 	if (execve(cmd_path, cmd, env) == -1)
 	{
 		free(cmd_path);
 		perror("Error executing execve\n");
-		exit_prog(data, EXIT_FAILURE);
-		// a change pour re display readline(minishell$ )
+		redisplay_prog(data);
 	}
 	free(cmd_path);
 }
@@ -155,9 +155,7 @@ void	wich_exec(t_data *data)
 	data_pipe.nb_pipe = pipe_in_line(data);
 	data->nb_pipe = pipe_in_line(data);
 	if (data->nb_pipe > 0)
-	{
 		ft_pipes(data);
-	}
 	else
 	{
 		if (tmp->type == BUILD)
@@ -166,7 +164,7 @@ void	wich_exec(t_data *data)
 		{
 			pid = fork();
 			if (pid == -1)
-				return ; // exit & redisplay
+				return (malloc_failed_mess(data));
 			if (pid == 0)
 				exec_choice(data, tmp);
 			else

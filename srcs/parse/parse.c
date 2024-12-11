@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/11 15:07:53 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:08:48 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,10 @@ void	parse(t_data *data)
 	if (!good_syntaxe(data))
 		return ;
 	ft_check_access_cmd(data);
+	if (data->err)
+		return ;
 	print_token(data);
 	wich_exec(data);
+	if (data->err)
+		return ;
 }

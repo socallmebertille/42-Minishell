@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:00:00 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/10 19:30:54 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 09:26:27 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	add_cpy_env2(char *type, char *value, t_env **env, t_data *data)
 	return ;
 }
 
-static void	get_shlvl(t_data *data)
+void	get_shlvl_export(t_data *data)
 {
 	t_env	*export;
 	int		lvl;
@@ -69,7 +69,7 @@ static void	get_shlvl(t_data *data)
 			if (!lvl)
 				lvl = ft_atol(export->value) + 1;
 			free(export->value);
-			export->value = ft_strdup(ft_itoa(lvl));
+			export->value = ft_itoa(lvl);
 			break ;
 		}
 		export = export->next;
@@ -90,7 +90,7 @@ void	get_env2(char **env, t_data *data)
 		add_cpy_env2(ft_strdup("OLDPWD"), ft_strdup(""), &cpy_env2, data);
 		add_cpy_env2(ft_strdup("PWD"), getcwd(NULL, 0), &cpy_env2, data);
 		add_cpy_env2(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env2, data);
-		get_shlvl(data);
+		get_shlvl_export(data);
 		return ;
 	}
 	i = 0;
@@ -106,6 +106,6 @@ void	get_env2(char **env, t_data *data)
 		}
 		i++;
 	}
-	get_shlvl(data);
+	get_shlvl_export(data);
 	return ;
 }

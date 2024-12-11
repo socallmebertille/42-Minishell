@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:09:38 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/09 18:23:16 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 14:55:57 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static void	check_overflow(t_data *data, char *nb)
 {
 	int		i;
 	char	*overflow;
+	char	*nbr;
 
 	i = ft_strlen(nb);
 	if (nb[0] == '-')
@@ -64,11 +65,31 @@ static void	check_overflow(t_data *data, char *nb)
 	if (i <= 18)
 		return ;
 	if (nb[0] == '-')
+	{
 		overflow = ft_substr(nb, 1, 18);
+		nbr = ft_substr(nb, 18, i - 18);
+	}
 	else
+	{
 		overflow = ft_substr(nb, 0, 18);
+		nbr = ft_substr(nb, 17, i - 18);
+	}
+	printf("%ld\n", ft_atol(overflow) - 922337203685477580);
+	if (!overflow)
+		return (failed_mess(data, "malloc failed", 1));
+	printf("%ld\n", ft_atol_under_lldmax(nb + 18));
+	if (((ft_atol_under_lldmax(nb + 18) > 7 && nb[0] != '-')
+			|| (ft_atol_under_lldmax(nb + 19) > 8 && nb[0] == '-')))
+	{
+		free(overflow);
+		ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(nb, 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		exit_prog(data, 2);
+	}
 	if (ft_atol(overflow) >= 922337203685477580 && ((ft_atol(nb + 18) > 7
-				&& nb[0] != '-') || (ft_atol(nb + 18) > 8 && nb[0] == '-')))
+            && nb[0] != '-') || (ft_atol(nb + 19) > 8 && nb[0] == '-')))
 	{
 		free(overflow);
 		ft_putstr_fd("exit\n", 2);
@@ -78,7 +99,6 @@ static void	check_overflow(t_data *data, char *nb)
 		exit_prog(data, 2);
 	}
 	free(overflow);
-	return ;
 }
 
 void	handle_exit(t_data *data, t_token *tok, int fd_out)

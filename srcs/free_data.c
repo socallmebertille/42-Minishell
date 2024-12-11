@@ -6,16 +6,20 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:39 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 12:33:29 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 13:09:04 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_tok(t_token *tok)
+void	free_tok(t_data *data)
 {
+	t_token	*tok;
 	t_token	*tmp;
 
+	if (!data->token)
+		return ;
+	tok = data->token;
 	tmp = tok;
 	while (tmp)
 	{
@@ -28,6 +32,7 @@ void	free_tok(t_token *tok)
 		free(tmp);
 		tmp = tok;
 	}
+	data->token = NULL;
 }
 
 void	free_env(t_env *env)

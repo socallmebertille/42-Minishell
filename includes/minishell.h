@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 15:07:32 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:08:05 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_data
 	int				nb_pipe;
 	int				err_quote;
 	int				err_export;
+	int				err;
 	int				infile;
 	int				outfile;
 <<<<<<< HEAD
@@ -112,6 +113,7 @@ int					find_if_env_exist(t_env *env, char *value);
 void				handle_export(t_data *data, t_token *tok, int fd_out);
 
 //----------------- get_env.c ------------------------
+void				get_shlvl_env(t_data *data);
 void				get_env(char **env, t_data *data);
 void				add_cpy_env(char *type, char *value, t_env **env,
 						t_data *data);
@@ -120,6 +122,7 @@ t_env				*last_value(t_env *env);
 //----------------- get_export_env.c.c ----------------------
 void				add_cpy_env2(char *type, char *value, t_env **env,
 						t_data *data);
+void				get_shlvl_export(t_data *data);
 void				get_env2(char **env, t_data *data);
 
 //----------------- pwd.c ----------------------
@@ -215,15 +218,20 @@ char				*ft_enum_to_char(int num);
 
 //================== main =====================================//
 
+//----------------- exit_status.c ----------------------
+void				malloc_failed_mess(t_data *data);
+void				failed_mess(t_data *data, char *mess, int code);
+
 //----------------- free_data.c ----------------------
-void				free_tok(t_token *tok);
+void				free_tok(t_data *data);
 void				free_env(t_env *env);
 void				free_pipe(t_data *data);
 
-//----------------- signal.c ----------------------
+//----------------- signal.c ---------------------expor-
 void				signal_handlers(void);
 
 //----------------- main.c ----------------------
+void				redisplay_prog(t_data *data);
 void				exit_prog(t_data *data, int code);
 
 #endif

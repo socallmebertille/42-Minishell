@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atol.c                                          :+:      :+:    :+:   */
+/*   ft_atol_under_lldmax.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 14:12:28 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 14:42:48 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/11 14:31:54 by saberton          #+#    #+#             */
+/*   Updated: 2024/12/11 14:42:17 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long	ft_atol(const char *str)
+long	ft_atol_under_lldmax(const char *str)
 {
 	long	nb;
+	// long	over;
 	int		sign;
 	int		i;
 
@@ -28,9 +29,12 @@ long	ft_atol(const char *str)
 		sign *= -1;
 	if (str[i] == '+' || str[i] == '-')
 		i++;
-	while (str[i] >= '0' && str[i] <= '9')
+	while (str[i] >= '0' && str[i] <= '9' && str[i])
 	{
+		// over = nb;
 		nb = (nb * 10) + (str[i] - '0');
+		// if (sign == 1 && nb < 0)
+		// 	return (over);
 		i++;
 	}
 	return (nb * sign);
