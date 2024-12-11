@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 18:41:10 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 20:46:25 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	first_pipe(t_data *data)
 {
+	if (data->err)
+		return ;
 	if (data->infile)
 	{
 		if (dup2(data->pipe->fds[0][1], STDIN_FILENO) == -1)
@@ -28,6 +30,8 @@ static void	first_pipe(t_data *data)
 
 static void	mid_pipe(t_data *data, int pipe_num)
 {
+	if (data->err)
+		return ;
 	if (dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO) == -1)
 		failed_mess(data, "dup2 failed", 1);
 	if (dup2(data->pipe->fds[pipe_num][1], STDOUT_FILENO) == -1)
@@ -36,6 +40,8 @@ static void	mid_pipe(t_data *data, int pipe_num)
 
 static void	last_pipe(t_data *data, int pipe_num)
 {
+	if (data->err)
+		return ;
 	if (dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO) == -1)
 		failed_mess(data, "dup2 failed", 1);
 	if (data->outfile)
@@ -74,17 +80,16 @@ void	ft_pipes(t_data *data)
 {
 	int		i;
 	t_token	*tmp;
-	int		status;
 
 	tmp = data->token;
 	i = 0;
 	data->pipe->pid = (pid_t *)ft_calloc(data->nb_pipe + 1, sizeof(pid_t));
 	if (!data->pipe->pid)
-		return (failed_mess(data, "malloc failed", 1));
+		return (quit_pipe(data, i), failed_mess(data, "malloc failed", 1));
 	data->pipe->orig_fds[0] = dup(STDIN_FILENO);
 	data->pipe->orig_fds[1] = dup(STDOUT_FILENO);
 	if (data->pipe->orig_fds[0] == -1 || data->pipe->orig_fds[1] == -1)
-		return (failed_mess(data, "dup failed", 1));
+		return (quit_pipe(data, i), failed_mess(data, "dup failed", 1));
 	if (!init_fds(data->pipe))
 		return ;
 	while (tmp)
@@ -93,7 +98,7 @@ void	ft_pipes(t_data *data)
 		{
 			data->pipe->pid[i] = fork();
 			if (data->pipe->pid[i] < 0)
-				return (failed_mess(data, "fork failed", 1));
+				return (quit_pipe(data, i), failed_mess(data, "fork failed", 1));
 			else if (data->pipe->pid[i] == 0)
 			{
 				if (i == 0)
@@ -105,6 +110,14 @@ void	ft_pipes(t_data *data)
 				free_close_fds(data, 0);
 				exec_choice(data, tmp);
 			}
+			// else if (data->err)
+			// {
+			// 	if (dup2(data->pipe->orig_fds[0], STDIN_FILENO) == -1
+			// 	|| dup2(data->pipe->orig_fds[1], STDOUT_FILENO) == -1)
+			// 		return (quit_pipe(data, i), failed_mess(data, "dup2 failed", 1));
+			// 	return (quit_pipe(data, i), failed_mess(data, "", data->exit_status));
+
+			// }
 		}
 		else
 		{
@@ -118,26 +131,12 @@ void	ft_pipes(t_data *data)
 			exec_choice(data, tmp);
 			if (dup2(data->pipe->orig_fds[0], STDIN_FILENO) == -1
 				|| dup2(data->pipe->orig_fds[1], STDOUT_FILENO) == -1)
-				return (failed_mess(data, "dup2 failed", 1));
+				return (quit_pipe(data, i), failed_mess(data, "dup2 failed", 1));
+			// if (data->err)
+			// 	return (quit_pipe(data, i), failed_mess(data, "", data->exit_status));
 		}
 		i++;
 		tmp = recup_tok_after_pipe(tmp);
 	}
-	free_close_fds(data, 0);
-	for (int j = 0; j < i; j++)
-	{
-		if (data->pipe->pid[j] != -1)
-			waitpid(data->pipe->pid[j], &status, 0);
-		// if (WIFEXITED(status))
-		// {
-		// 	printf("Child process %d finished with exit status %d\n",
-		// 		data->pipe->pid[j], WEXITSTATUS(status));
-		// }
-		// else if (WIFSIGNALED(status))
-		// {
-		// 	printf("Child process %d terminated by signal %d\n",
-		// 		data->pipe->pid[j], WTERMSIG(status));
-		// }
-	}
-	free_pipe(data);
+	quit_pipe(data, i);
 }

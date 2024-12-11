@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 18:06:53 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 20:49:48 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ static void	loop(t_data *data)
 		tokenize(data->line, data);
 		if (!data->err_quote && !data->err)
 			parse(data);
+		printf("my final exit status %d\n", data->exit_status);
 		data->err_quote = 0;
+		data->exit_status = 0;
 		data->err = 0;
 		free_tok(data);
 		data->token = NULL;
@@ -36,11 +38,8 @@ static void	loop(t_data *data)
 void	exit_prog(t_data *data, int code)
 {
 	free_env(data, data->cpy_env, 1);
-	// if (!data->keep_env)
-	// 	free_env(data->cpy_env);
 	free_env(data, data->cpy_env2, 2);
 	free_tok(data);
-	free_pipe(data);
 	if (code == 130)
 		write(2, "exit\n", 5);
 	rl_clear_history();
@@ -57,10 +56,6 @@ int	main(int ac, char **av, char **env)
 	ft_bzero(&data, sizeof(t_data));
 	signal_handlers();
 	get_env(env, &data);
-	// if (!data.keep_env)
-	// 	get_env(env, &data);
-	// else
-	// 	get_shlvl_env(&data);
 	data.pipe = NULL;
 	loop(&data);
 	rl_clear_history();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 18:40:20 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 20:22:11 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,8 @@ char				*ft_enum_to_char(int num);
 //================== main =====================================//
 
 //----------------- exit_status.c ----------------------
+void				get_end_exec(t_data *data, int i, pid_t pid);
+void				quit_pipe(t_data *data, int i);
 void				failed_mess(t_data *data, char *mess, int code);
 
 //----------------- free_data.c ----------------------

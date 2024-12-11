@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 18:29:02 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 14:32:31 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/11 19:42:13 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int					ft_toupper(int c);
 int					ft_tolower(int c);
 
 // ---------------- convert -----------------
-long				ft_atol_under_lldmax(const char *str);
 int					ft_atoi(const char *nptr);
 long				ft_atol(const char *str);
 char				*ft_itoa(int n);

@@ -33,3 +33,20 @@ Ensuite, on peut lancer la commande suivante pour lire valgrind sans les leaks l
 ```
 valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp ./minishell
 ```
+
+## Step 2 : learn how to merge your work on a common repo 
+
+De my_branch sur common_branch :
+
+```
+git:(my_branch)$ git pull
+git:(my_branch)$ git add .
+git:(my_branch)$ git commit -m "comment of your advanced"
+git:(my_branch)$ git push
+git:(my_branch)$ git merge common_branch
+git:(my_branch)$ git push
+git:(my_branch)$ git checkout common_branch
+git:(common_branch)$ git pull
+git:(common_branch)$ git merge my_branch
+git:(common_branch)$ git push
+```

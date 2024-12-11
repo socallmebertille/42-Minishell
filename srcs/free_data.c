@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:39 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 18:40:49 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 20:21:58 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,9 @@ void	free_env(t_data *data, t_env *env, int cpy)
 	t_env	*tmp;
 
 	if (cpy == 1 && !data->cpy_env)
-			return ;
-
+		return ;
 	if (cpy == 2 && !data->cpy_env2)
-			return ;
+		return ;
 	tmp = env;
 	while (env)
 	{
@@ -110,4 +109,11 @@ void	free_close_fds(t_data *data, int sous_process)
 		free(data->pipe->fds);
 	data->pipe->fds = NULL;
 	data->pipe->nb_pipe = 0;
+}
+
+void	quit_pipe(t_data *data, int i)
+{
+	free_close_fds(data, 0);
+	get_end_exec(data, i, -1);
+	free_pipe(data);
 }

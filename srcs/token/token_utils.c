@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:54:11 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 17:59:16 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 20:30:19 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static char	*check_err_messages(t_data *data, t_token *tok, char *exist, int err
 		ft_putstr_fd(tok->value, 2);
 		ft_putstr_fd(": command not found\n", 2);
 		data->exit_status = 127;
-		data->err = 1;
 	}
 	else if (err == 12)
 	{

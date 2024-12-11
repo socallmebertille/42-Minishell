@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 18:14:31 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 21:16:30 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 	update_last_cmd(data, cmd_path);
 	// if (!ft_strcmp("./minishell", cmd[0]))
 	// 	data->keep_env = 1;
+	// ft_check_access_cmd(data);
 	if (execve(cmd_path, cmd, env) == -1)
-		failed_mess(data, "execve failed", 1);
+		data->err = 1;
 	free(cmd_path);
 }
 
@@ -96,7 +97,6 @@ void	wich_exec(t_data *data)
 	t_token	*tmp;
 	t_pipe	data_pipe;
 	pid_t	pid;
-	int		status;
 
 	tmp = data->token;
 	ft_bzero(&data_pipe, sizeof(t_pipe));
@@ -118,21 +118,13 @@ void	wich_exec(t_data *data)
 			if (pid == -1)
 				return (failed_mess(data, "malloc failed", 1));
 			if (pid == 0)
-				exec_choice(data, tmp);
-			else
 			{
-				waitpid(pid, &status, 0);
-				if (WIFEXITED(status))
-				{
-					printf("Child process %d finished with exit status %d\n",
-						pid, WEXITSTATUS(status));
-				}
-				else if (WIFSIGNALED(status))
-				{
-					printf("Child process %d terminated by signal %d\n", pid,
-						WTERMSIG(status));
-				}
+				exec_choice(data, tmp);
 			}
+			else if (data->err)
+				return (failed_mess(data, "", data->exit_status));
+			else
+				get_end_exec(data, 0, pid);
 		}
 	}
 }
@@ -141,3 +133,5 @@ void	wich_exec(t_data *data)
 // les
 // petis
 // potes"
+
+//ls| cat kk | prout | hey

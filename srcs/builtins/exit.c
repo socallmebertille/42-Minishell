@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:09:38 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/11 17:54:09 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 20:51:06 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	handle_exit(t_data *data, t_token *tok, int fd_out)
 	if (tok->next && tok->next->next)
 	{
 		if (!only_numeric(tok->next->value))
-			return (ft_putstr_fd("minishell: exit: too many arguments\n", 2));
+			return (data->exit_status = 1, ft_putstr_fd("minishell: exit: too many arguments\n", 2));
 		return (exit_num_arg_required(data, tok));
 	}
 	if (tok->next)
