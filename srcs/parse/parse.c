@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/11 15:48:53 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:51:08 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 	if (tok && tok->value != NULL && tok->type == BUILD)
 	{
 		update_last_cmd(data, tok->value);
-		update_last_cmd(data, tok->value);
 		if (ft_strcmp(tok->value, "exit") == 0)
 			handle_exit(data, tok, fd_out);
 		else if (ft_strcmp(tok->value, "env") == 0)
@@ -60,43 +59,43 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 	return (0);
 }
 
-// static void	print_token(t_data *data)
-// {
-// 	int		i;
-// 	t_token	*tok;
-// 	t_token	*tmp;
+static void	print_token(t_data *data)
+{
+	int		i;
+	t_token	*tok;
+	t_token	*tmp;
 
-// 	tmp = NULL;
-// 	tok = data->token;
-// 	if (data->err_quote)
-// 		return ;
-// 	i = 0;
-// 	while (tok)
-// 	{
-// 		printf(MAGENTA "============== TOKEN %d ======================\n" RESET,
-// 			i);
-// 		tmp = tok->next;
-// 		if (tok->prev)
-// 		{
-// 			printf("PREV = ");
-// 			printf(BLUE "%s\t" RESET, tok->prev->value);
-// 		}
-// 		else
-// 			printf("\t\t");
-// 		printf(RED "%s " RESET, tok->value);
-// 		printf(YELLOW "= %s" RESET, ft_enum_to_char(tok->type));
-// 		if (tok->next)
-// 		{
-// 			printf("\tNEXT = ");
-// 			printf(GREEN "%s\n" RESET, tok->next->value);
-// 		}
-// 		else
-// 			printf("\n");
-// 		printf("\n");
-// 		tok = tmp;
-// 		i++;
-// 	}
-// }
+	tmp = NULL;
+	tok = data->token;
+	if (data->err_quote)
+		return ;
+	i = 0;
+	while (tok)
+	{
+		printf(MAGENTA "============== TOKEN %d ======================\n" RESET,
+			i);
+		tmp = tok->next;
+		if (tok->prev)
+		{
+			printf("PREV = ");
+			printf(BLUE "%s\t" RESET, tok->prev->value);
+		}
+		else
+			printf("\t\t");
+		printf(RED "%s " RESET, tok->value);
+		printf(YELLOW "= %s" RESET, ft_enum_to_char(tok->type));
+		if (tok->next)
+		{
+			printf("\tNEXT = ");
+			printf(GREEN "%s\n" RESET, tok->next->value);
+		}
+		else
+			printf("\n");
+		printf("\n");
+		tok = tmp;
+		i++;
+	}
+}
 
 void	parse(t_data *data)
 {
@@ -108,7 +107,6 @@ void	parse(t_data *data)
 	if (data->err)
 		return ;
 	print_token(data);
-	// print_token(data);
 	wich_exec(data);
 	if (data->err)
 		return ;
