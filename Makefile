@@ -27,6 +27,7 @@ SRCS_NAMES	=	main.c signal.c free_data.c\
 				parse/syntaxe.c \
 				parse/parse.c \
 				parse/check_new_line.c \
+				exec/exec_infile.c \
 				exec/exec_utils.c \
 				exec/exec_pipes.c \
 				exec/exec.c \

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:57:40 by bertille          #+#    #+#             */
-/*   Updated: 2024/12/03 18:13:28 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/10 19:30:47 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,42 @@ void	add_cpy_env(char *type, char *value, t_env **env, t_data *data)
 	return ;
 }
 
-int	len_env(char **env)
+static void	get_shlvl(t_data *data)
 {
-	int	len;
+	t_env	*env;
+	int		lvl;
 
-	len = 0;
-	while (env[len])
-		len++;
-	return (len);
+	env = data->cpy_env;
+	lvl = 0;
+	if (data->env)
+	{
+		int i = 0;
+		while (data->env[i])
+		{
+			if (!ft_strcmp(data->env[i], "SHLVL"))
+			{
+				if (!lvl)
+					lvl = ft_atol(data->env[i] + 7) + 1;
+				// data->env = ft_itoa(lvl);
+				break ;
+			}
+			i++;
+		}
+		// return ;
+	}
+	while (env)
+	{
+		if (!ft_strcmp(env->type, "SHLVL"))
+		{
+			if (!lvl)
+				lvl = ft_atol(env->value) + 1;
+			free(env->value);
+			env->value = ft_strdup(ft_itoa(lvl));
+			break ;
+		}
+		env = env->next;
+	}
+	return ;
 }
 
 void	get_env(char **env, t_data *data)
@@ -65,12 +93,13 @@ void	get_env(char **env, t_data *data)
 
 	cpy_env = NULL;
 	data->env = env;
-	if (len_env(env) == 5)
+	if (!*env)
 	{
-		add_cpy_env(ft_strdup("PWD"), get_pwd(env), &cpy_env, data);
+		add_cpy_env(ft_strdup("PWD"), getcwd(NULL, 0), &cpy_env, data);
 		add_cpy_env(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env, data);
 		add_cpy_env(ft_strdup("_"), ft_strdup("chemin de last commande"),
 			&cpy_env, data);
+		get_shlvl(data);
 		return ;
 	}
 	i = 0;
@@ -83,5 +112,6 @@ void	get_env(char **env, t_data *data)
 				ft_strlen(env[i])), &cpy_env, data);
 		i++;
 	}
+	get_shlvl(data);
 	return ;
 }
