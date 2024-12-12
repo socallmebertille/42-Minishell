@@ -6,48 +6,11 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:20:10 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/11 19:25:27 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:30:02 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	dollar_in_str(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-static size_t	get_var_len(char *str)
-{
-	size_t	len;
-	int		i;
-
-	i = 0;
-	len = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
-		{
-			i++;
-			while (ft_isalnum(str[i]) || str[i] == '_')
-			{
-				len++;
-				i++;
-			}
-			return (len);
-		}
-	}
-	return (0);
-}
 
 static char	*give_me_inside_var(char *var, t_data *data)
 {
@@ -68,97 +31,85 @@ static char	*give_me_inside_var(char *var, t_data *data)
 	return (NULL);
 }
 
-static int	is_exist_in_env(char *var, t_data *data)
-{
-	t_env	*tmp;
-
-	tmp = data->cpy_env;
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->type, var) == 0)
-			return (1);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-static void	ft_concate(t_token *tok)
-{
-	(void)tok;
-	printf("CONCATE\n");
-}
-
 static char	*extract_var(char *str, int *i)
 {
 	char	*var;
 	size_t	var_len;
 
+	if (!str)
+		return (NULL);
 	var_len = 0;
 	var = NULL;
 	var_len = get_var_len(str);
-    printf("var_len = %zu\n", var_len);
-    (*i)++;
-	var = ft_substr(str, *i, var_len);
-    printf("i avant %d\n", *i);
+	if (!var_len)
+		return (NULL);
+	(*i)++;
+	var = ft_substr(str, 1, var_len);
 	(*i) += var_len;
-    printf("i apres %d\n", *i);
-    free(str);
-    return (var);
+	return (var);
 }
+
+static char	*ft_concate(char *before, char *in_var)
+{
+	char	*result;
+	size_t	total_len;
+
+	total_len = strlen(before) + strlen(in_var);
+	result = malloc(sizeof(char) * (total_len + 1));
+	if (!result)
+		return (NULL);
+	ft_strcpy(result, before);
+	ft_strcat(result, in_var);
+	return (result);
+}
+
 static void	expan_var(char *str, t_data *data, t_token *tok)
 {
 	int		i;
-	int		len_total;
+	char	*before;
 	char	*var;
 	char	*in_var;
-    int j;
-                                    // int j pour depart de sub
-    j = 0;
-	var = NULL;
-	in_var = NULL;
-	len_total = ft_strlen(str);
+	char	*expanded_str;
+	char	*tmp;
+
+	tmp = NULL;
 	i = 0;
+	expanded_str = ft_strdup("");
+	if (!expanded_str)
+		return ;
 	while (str[i])
 	{
-		if (str[i] == '$')
+		if (str[i] == '$' && !is_in_single_quotes(str, i))
 		{
-            printf("ce que j'envoi dans extract -> %s\n", ft_substr(str, i, len_total));
-			var = extract_var(ft_substr(str, j, len_total), &i);
-            printf("vac que j'ai extarct - > %s\n", var);
+			before = ft_substr(expanded_str, 0, ft_strlen(expanded_str));
+			var = extract_var(str + i, &i);
 			if (is_exist_in_env(var, data))
-			{
 				in_var = give_me_inside_var(var, data);
-				ft_concate(tok);
-			}
-            free(var);
-			// else
-			// si existe pas surement delete la var du token->value
+			else
+				in_var = ft_strdup("");
+			tmp = expanded_str;
+			expanded_str = ft_concate(before, in_var);
+			free(tmp);
+			free(before);
+			free(var);
+			free(in_var);
 		}
 		else
+		{
+			tmp = expanded_str;
+			expanded_str = ft_strjoin_char(tmp, str[i]);
+			free(tmp);
 			i++;
+		}
 	}
-    printf("je m'arrete\n");
+	replace_in_tok(tok, expanded_str);
+	free(expanded_str);
 }
-
-// static int	is_var_in_tok_value(char *str, t_data *data)
-// {
-// 	t_token	*tok;
-// 	char	*var;
-
-// 	var = NULL;
-// 	tok = data->token;
-// 	while (tok)
-// 	{
-// 		if (dollar_in_str(tok->value))
-// 			return (1);
-// 		tok = tok->next;
-// 	}
-// 	return (0);
-// }
 
 void	expand(t_data *data)
 {
-	t_token *tok;
-	char *var_in_str;
+	t_token	*tok;
+	char	*var_in_str;
 
 	var_in_str = NULL;
 	tok = data->token;

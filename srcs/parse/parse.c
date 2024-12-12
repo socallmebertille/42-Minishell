@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/11 21:19:21 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:08:29 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,15 @@ static void	print_token(t_data *data)
 
 void	parse(t_data *data)
 {
-	ft_change_word_to_cmd(data);
 	expand(data);
+	ft_change_word_to_cmd(data);
+	print_token(data);
 	// ft_change_word_to_expand(data);
 	if (!good_syntaxe(data))
 		return ;
 	ft_check_access_cmd(data);
 	if (data->err)
 		return ;
-	// print_token(data);
 	wich_exec(data);
 	if (data->err)
 		return ;

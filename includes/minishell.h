@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 21:19:44 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:04:59 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,13 @@ void				exec_choice(t_data *data, t_token *tok);
 void				wich_exec(t_data *data);
 
 //================== expand =====================================//
+
+void				replace_in_tok(t_token *tok, char *expanded_str);
+int					dollar_in_str(char *str);
+size_t				get_var_len(char *str);
+int					is_exist_in_env(char *var, t_data *data);
+int					is_in_single_quotes(char *str, int index);
+char				*ft_strjoin_char(char *str, char c);
 
 //----------------- expand.c ----------------------
 void				expand(t_data *data);

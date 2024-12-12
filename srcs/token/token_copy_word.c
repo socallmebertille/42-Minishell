@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:32:08 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/11 15:47:59 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:50:11 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	len_in_quote(char *line, int *j, char quote)
 {
 	int	len;
 
-	len = 0;
+	len = 1;
 	(*j)++;
 	if (!line[*j])
 		return (len);
@@ -34,7 +34,6 @@ int	len_in_quote(char *line, int *j, char quote)
 	}
 	if (!line[*j])
 		return (len);
-	(*j)++;
 	return (len);
 }
 
@@ -53,12 +52,15 @@ int	word_size(char *line, int *i)
 		{
 			len += len_in_quote(line, &j, line[j]);
 		}
+		if (!is_word(line[j]))
+			break;
 		else
 		{
 			j++;
 			len++;
 		}
 	}
+	printf("len du mot == %d\n", len);
 	return (len);
 }
 
@@ -67,7 +69,9 @@ int	handle_quote(char *line, char *dup, int *i, int *j)
 	char	quote;
 
 	quote = line[*i];
+	dup[*j] = line[*i];
 	(*i)++;
+	(*j)++;
 	while (line[*i] && line[*i] != '\n' && line[*i] != quote)
 	{
 		dup[*j] = line[*i];
@@ -76,7 +80,9 @@ int	handle_quote(char *line, char *dup, int *i, int *j)
 	}
 	if (line[*i] != quote)
 		return (0);
+	dup[*j] = line[*i];
 	(*i)++;
+	(*j)++;
 	return (1);
 }
 
