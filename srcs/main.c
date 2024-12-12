@@ -6,19 +6,29 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 20:49:48 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:28:33 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static volatile sig_atomic_t	g_signal_received = 0;
+
 static void	loop(t_data *data)
 {
 	while (1)
 	{
+		g_signal_received = 0;
+		reset_signal_handler();
 		data->line = readline("minishell$ ");
 		if (!data->line)
-			exit_prog(data, 130);
+			return (write(2, "exit\n", 5), exit_prog(data, 0));
+		if (g_signal_received)
+		{
+			data->exit_status = 130;
+			free(data->line);
+			continue ;
+		}
 		clean_line(data->line, data);
 		if (*data->line)
 			add_history(data->line);
@@ -40,8 +50,6 @@ void	exit_prog(t_data *data, int code)
 	free_env(data, data->cpy_env, 1);
 	free_env(data, data->cpy_env2, 2);
 	free_tok(data);
-	if (code == 130)
-		write(2, "exit\n", 5);
 	rl_clear_history();
 	exit(code);
 }
@@ -50,7 +58,7 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	data;
 
-	(void) av;
+	(void)av;
 	if (ac != 1)
 		return (1);
 	ft_bzero(&data, sizeof(t_data));

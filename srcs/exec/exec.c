@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 21:16:30 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:17:22 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	update_last_cmd(t_data *data, char *cmd_path)
 void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 {
 	char	*cmd_path;
+	int		exec;
 
 	if (!cmd || !*cmd)
 		return ;
@@ -61,7 +62,8 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 	// if (!ft_strcmp("./minishell", cmd[0]))
 	// 	data->keep_env = 1;
 	// ft_check_access_cmd(data);
-	if (execve(cmd_path, cmd, env) == -1)
+	exec = execve(cmd_path, cmd, env);
+	if (exec == -1)
 		data->err = 1;
 	free(cmd_path);
 }
@@ -78,7 +80,7 @@ void	exec_choice(t_data *data, t_token *tok)
 		cmd = recup_cmd(data, tok);
 		if (tok->type == BUILD)
 			handle_builtins(data, tok, STDOUT_FILENO);
-		else
+		else if (tok->type == CMD)
 			exec_cmd(data, data->env, cmd, tok);
 		ft_free_tab(cmd);
 	}
@@ -112,17 +114,16 @@ void	wich_exec(t_data *data)
 	{
 		if (tmp->type == BUILD)
 			handle_builtins(data, tmp, STDOUT_FILENO);
-		else
+		else if (tmp->type == CMD)
 		{
 			pid = fork();
 			if (pid == -1)
 				return (failed_mess(data, "malloc failed", 1));
 			if (pid == 0)
 			{
+				// child_signal_handler();
 				exec_choice(data, tmp);
 			}
-			else if (data->err)
-				return (failed_mess(data, "", data->exit_status));
 			else
 				get_end_exec(data, 0, pid);
 		}
@@ -133,5 +134,3 @@ void	wich_exec(t_data *data)
 // les
 // petis
 // potes"
-
-//ls| cat kk | prout | hey

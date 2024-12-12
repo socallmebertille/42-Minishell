@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 18:04:59 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:36:08 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef enum e_enum
 	PIPE = '|',
 	FICHIER,
 	BUILD,
+	NOT_FOUND,
 }					t_enum;
 
 typedef struct s_env
@@ -246,6 +247,8 @@ void				free_close_fds(t_data *data, int sous_process);
 
 //----------------- signal.c ---------------------expor-
 void				signal_handlers(void);
+void				reset_signal_handler(void);
+void				child_signal_handler(void);
 
 //----------------- main.c ----------------------
 void				exit_prog(t_data *data, int code);

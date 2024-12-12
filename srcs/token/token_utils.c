@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:54:11 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 20:30:19 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/12 14:41:42 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static char	*check_err_messages(t_data *data, t_token *tok, char *exist, int err
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(tok->value, 2);
 		ft_putstr_fd(": command not found\n", 2);
+		tok->type = NOT_FOUND;
 		data->exit_status = 127;
 	}
 	else if (err == 12)
