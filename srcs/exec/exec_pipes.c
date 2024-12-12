@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 17:25:52 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:32:47 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void	ft_pipes(t_data *data)
 		if (tmp->type == CMD)
 		{
 			data->pipe->pid[i] = fork();
-			data->pipe->pid[i] = -1;
 			if (data->pipe->pid[i] < 0)
 				return (free_close_fds(data, 0), get_end_exec(data, i, -1), quit_pipe(data, i), failed_mess(data, "fork failed", 1));
 			else if (data->pipe->pid[i] == 0)
