@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 18:32:47 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/12 19:09:13 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ void	ft_pipes(t_data *data)
 				last_pipe(data, i);
 			else
 				mid_pipe(data, i);
-			exec_choice(data, tmp);
+			if (!ft_strcmp(tmp->value, "export") && tmp->next->type != WORD)
+				exec_choice(data, tmp);
 			if (dup2(data->pipe->orig_fds[0], STDIN_FILENO) == -1
 				|| dup2(data->pipe->orig_fds[1], STDOUT_FILENO) == -1)
 				return (quit_pipe(data, i), failed_mess(data, "dup2 failed", 1));
