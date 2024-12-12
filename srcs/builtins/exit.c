@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:09:38 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/26 18:57:10 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:28:36 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,47 +32,75 @@ static int	only_numeric(char *code)
 	return (0);
 }
 
-static void	exit_with_exit_code(t_data *data)
+static void	exit_with_exit_code(t_data *data, t_token *tok)
 {
 	int	exit_code;
 
 	exit_code = 0;
-	if (!only_numeric(data->token->next->value))
+	if (!only_numeric(tok->next->value))
 	{
-		exit_code = ft_atoi(data->token->next->value);
+		exit_code = ft_atoi(tok->next->value);
 		ft_putstr_fd("exit\n", 2);
 		exit_prog(data, exit_code);
 	}
 }
 
-static void	exit_too_many_args(void)
-{
-	ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-}
-
-static void	exit_num_arg_required(t_data *data)
+static void	exit_num_arg_required(t_data *data, t_token *tok)
 {
 	ft_putstr_fd("exit\nminishell: exit: ", 2);
-	ft_putstr_fd(data->token->next->value, 2);
+	ft_putstr_fd(tok->next->value, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
 	exit_prog(data, 2);
 }
 
-void	handle_exit(t_data *data)
+static void	check_overflow(t_data *data, char *nb)
 {
-	if (data->token->next && data->token->next->next)
+	int                    i;
+    int                    sign;
+    unsigned long long    result;
+    unsigned long long    limit;
+
+    i = 0;
+    sign = 1;
+    result = 0;
+    limit = (unsigned long long)LLONG_MAX + 1;
+    while (nb[i] == ' ' || (nb[i] >= 9 && nb[i] <= 13))
+        i++;
+    if (nb[i] == '+' || nb[i] == '-')
+        if (nb[i++] == '-')
+            sign = -1;
+    while (nb[i] >= '0' && nb[i] <= '9')
+    {
+        result = result * 10 + (nb[i++] - '0');
+        if ((sign == 1 && result > (unsigned long long)LLONG_MAX) ||
+            (sign == -1 && result > limit))
+        {
+			ft_putstr_fd("exit\n", 2);
+			ft_putstr_fd("minishell: exit: ", 2);
+			ft_putstr_fd(nb, 2);
+			ft_putstr_fd(": numeric argument required\n", 2);
+			exit_prog(data, 2);
+		}
+    }
+}
+
+void	handle_exit(t_data *data, t_token *tok, int fd_out)
+{
+	if (tok->next)
+		check_overflow(data, tok->next->value);
+	if (tok->next && tok->next->next)
 	{
-		if (!only_numeric(data->token->next->value))
-			return (exit_too_many_args());
-		return (exit_num_arg_required(data));
+		if (!only_numeric(tok->next->value))
+			return (data->exit_status = 1, ft_putstr_fd("minishell: exit: too many arguments\n", 2));
+		return (exit_num_arg_required(data, tok));
 	}
-	if (data->token->next)
+	if (tok->next)
 	{
-		exit_with_exit_code(data);
+		exit_with_exit_code(data, tok);
 	}
-	if (!data->token->next)
+	if (!tok->next)
 	{
-		ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("exit\n", fd_out);
 		exit_prog(data, 0);
 	}
 }

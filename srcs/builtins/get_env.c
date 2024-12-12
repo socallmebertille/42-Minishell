@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:57:40 by bertille          #+#    #+#             */
-/*   Updated: 2024/11/27 15:02:07 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 10:56:16 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_env	*last_value(t_env *env)
+t_env	*last_value(t_env *env)
 {
 	if (!env)
 		return (NULL);
@@ -30,12 +30,14 @@ void	add_cpy_env(char *type, char *value, t_env **env, t_data *data)
 	if (!new_last_node)
 		return ;
 	new_last_node->type = type;
+	new_last_node->equal = '=';
 	new_last_node->value = value;
 	new_last_node->next = NULL;
 	if (!*env)
 	{
 		*env = new_last_node;
-		data->cpy_env = *env;
+		if (data != NULL)
+			data->cpy_env = *env;
 	}
 	else
 	{
@@ -45,14 +47,42 @@ void	add_cpy_env(char *type, char *value, t_env **env, t_data *data)
 	return ;
 }
 
-static int	len_env(char **env)
+void	get_shlvl_env(t_data *data)
 {
-	int	len;
+	t_env	*env;
+	static int		lvl = -1;
 
-	len = 0;
-	while (env[len])
-		len++;
-	return (len);
+	printf("%d\n", lvl);
+	env = data->cpy_env;
+	if (data->env && lvl == -1)
+	{
+		int i = 0;
+		while (data->env[i])
+		{
+			if (!ft_strncmp(data->env[i], "SHLVL=", 6))
+			{
+				if (!lvl)
+					lvl = ft_atol(data->env[i] + 6) + 1;
+				break ;
+			}
+			i++;
+		}
+	}
+	while (env)
+	{
+		if (!ft_strcmp(env->type, "SHLVL"))
+		{
+			if (lvl != 1)
+				lvl = ft_atol(env->value) + 1;
+			else
+				lvl = 1;
+			free(env->value);
+			env->value = ft_itoa(lvl);
+			break ;
+		}
+		env = env->next;
+	}
+	return ;
 }
 
 void	get_env(char **env, t_data *data)
@@ -63,12 +93,13 @@ void	get_env(char **env, t_data *data)
 
 	cpy_env = NULL;
 	data->env = env;
-	if (len_env(env) == 5) //(!env || !*env) // launch "env -i bash" then "env"
+	if (!*env)
 	{
-		add_cpy_env(ft_strdup("PWD"), ft_strdup("get_cwd()"), &cpy_env, data);
+		add_cpy_env(ft_strdup("PWD"), getcwd(NULL, 0), &cpy_env, data);
 		add_cpy_env(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env, data);
 		add_cpy_env(ft_strdup("_"), ft_strdup("chemin de last commande"),
 			&cpy_env, data);
+		get_shlvl_env(data);
 		return ;
 	}
 	i = 0;
@@ -81,5 +112,6 @@ void	get_env(char **env, t_data *data)
 				ft_strlen(env[i])), &cpy_env, data);
 		i++;
 	}
+	get_shlvl_env(data);
 	return ;
 }

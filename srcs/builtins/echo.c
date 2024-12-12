@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 12:53:43 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/27 15:00:40 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:21:30 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ static int	is_valid_flag(const char *line)
 	return (0);
 }
 
-static int	flag_detector(t_data *data)
+static int	flag_detector(t_token *tok)
 {
 	t_token	*tmp;
 	int		i;
 
 	i = 1;
-	tmp = data->token->next;
+	tmp = tok->next;
 	while (tmp && is_valid_flag(tmp->value))
 	{
 		tmp = tmp->next;
@@ -41,14 +41,15 @@ static int	flag_detector(t_data *data)
 	return (i);
 }
 
-void	handle_echo(t_data *data)
+void	handle_echo(t_token *tok, int fd_out)
 {
 	int		flag;
 	int		flag_start;
 	t_token	*tmp;
 
-	tmp = data->token;
-	flag = flag_detector(data);
+	tmp = tok;
+	printf("je suis dan sle builtins\n");
+	flag = flag_detector(tok);
 	flag_start = flag;
 	while (flag)
 	{
@@ -57,11 +58,13 @@ void	handle_echo(t_data *data)
 	}
 	while (tmp)
 	{
-		ft_putstr_fd(tmp->value, 0);
+		if (tmp->type != WORD || !tmp->value)
+			break ;
+		ft_putstr_fd(tmp->value, fd_out);
 		if (tmp->next)
-			ft_putstr_fd(" ", 0);
+			ft_putstr_fd(" ", fd_out);
 		tmp = tmp->next;
 	}
 	if (flag_start == 1)
-		ft_putstr_fd("\n", 0);
+		ft_putstr_fd("\n", fd_out);
 }

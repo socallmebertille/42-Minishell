@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 17:35:01 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/10 18:34:48 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/12 18:10:41 by kepouliq          #+#    #+#             */
+/*   Updated: 2024/12/12 18:11:57 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	handle_pwd(int fd_out)
+void	ft_strcpy(char *dst, const char *src)
 {
-	char	*pwd;
+	unsigned int	i;
 
-	pwd = getcwd(NULL, 0);
-	if (pwd != NULL)
+	i = 0;
+	if (!src)
+		return ;
+	while (src[i])
 	{
-		ft_putstr_fd(pwd, fd_out);
-		ft_putstr_fd("\n", fd_out);
-		free(pwd);
+		dst[i] = src[i];
+		i++;
 	}
-	else
-		perror("getcwd malloc failed");
+	dst[i] = '\0';
+	return ;
 }

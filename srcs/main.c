@@ -3,52 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/26 16:05:24 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:28:33 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	free_tok(t_token *tok)
-{
-	t_token	*tmp;
+static volatile sig_atomic_t	g_signal_received = 0;
 
-	while (tok)
+static void	loop(t_data *data)
+{
+	while (1)
 	{
-		tmp = tok->next;
-		if (tok->value)
+		g_signal_received = 0;
+		reset_signal_handler();
+		data->line = readline("minishell$ ");
+		if (!data->line)
+			return (write(2, "exit\n", 5), exit_prog(data, 0));
+		if (g_signal_received)
 		{
-			free(tok->value);
-			tok->value = NULL;
+			data->exit_status = 130;
+			free(data->line);
+			continue ;
 		}
-		free(tok);
-		tok = tmp;
-	}
-}
-
-static void	free_env(t_env *env)
-{
-	t_env	*tmp;
-
-	while (env)
-	{
-		tmp = env->next;
-		free(env->type);
-		free(env->value);
-		free(env);
-		env = tmp;
+		clean_line(data->line, data);
+		if (*data->line)
+			add_history(data->line);
+		tokenize(data->line, data);
+		if (!data->err_quote && !data->err)
+			parse(data);
+		printf("my final exit status %d\n", data->exit_status);
+		data->err_quote = 0;
+		data->exit_status = 0;
+		data->err = 0;
+		free_tok(data);
+		data->token = NULL;
+		free(data->line);
 	}
 }
 
 void	exit_prog(t_data *data, int code)
 {
-	free_env(data->cpy_env);
-	free_tok(data->token);
-	if (code == 130)
-		write(2, "exit\n", 5);
+	free_env(data, data->cpy_env, 1);
+	free_env(data, data->cpy_env2, 2);
+	free_tok(data);
 	rl_clear_history();
 	exit(code);
 }
@@ -63,19 +64,8 @@ int	main(int ac, char **av, char **env)
 	ft_bzero(&data, sizeof(t_data));
 	signal_handlers();
 	get_env(env, &data);
-	while (1)
-	{
-		data.line = readline(MAGENTA "minishell$ " RESET);
-		if (!data.line)
-			exit_prog(&data, 130);
-		if (*data.line)
-			add_history(data.line);
-		tokenize(data.line, &data);
-		parse(&data);
-		free_tok(data.token);
-		data.token = NULL;
-		free(data.line);
-	}
+	data.pipe = NULL;
+	loop(&data);
 	rl_clear_history();
 	return (0);
 }

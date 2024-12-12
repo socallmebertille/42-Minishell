@@ -5,19 +5,35 @@ C_FLAGS		=	-Wall -Wextra -Werror -g3
 
 SRCS_DIR	=	srcs
 OBJ_DIR		=	objs
-SRCS_NAMES	=	main.c signal.c \
+SRCS_NAMES	=	main.c signal.c free_data.c exit_status.c\
 				builtins/get_env.c \
 				builtins/env.c \
+				builtins/unset.c \
+				builtins/get_export_env.c \
+				builtins/syntaxe_export.c \
+				builtins/export.c \
 				builtins/cd.c \
+				builtins/cd_utils.c \
 				builtins/pwd.c \
 				builtins/exit.c \
 				builtins/echo.c \
 				token/add_token.c \
 				token/check_token_type.c \
+				token/get_path.c \
 				token/token_copy.c \
 				token/token_copy_word.c \
 				token/tokenize.c \
+				token/token_utils.c \
+				parse/syntaxe.c \
 				parse/parse.c \
+				parse/check_new_line.c \
+				exec/exec_infile.c \
+				exec/exec_utils.c \
+				exec/exec_pipes.c \
+				exec/exec.c \
+				expand/expand.c \
+				expand/expand_utils.c \
+				expand/expand_utils2.c \
 				
 OBJS_NAMES	=	$(SRCS_NAMES:.c=.o)
 SRCS		=	$(addprefix $(SRCS_DIR)/,$(SRCS_NAMES))

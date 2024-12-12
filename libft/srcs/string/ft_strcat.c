@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 17:35:01 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/10 18:34:48 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/12 18:12:57 by kepouliq          #+#    #+#             */
+/*   Updated: 2024/12/12 18:14:35 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	handle_pwd(int fd_out)
+void	ft_strcat(char *dst, const char *src)
 {
-	char	*pwd;
+	size_t i;
+	size_t j;
+	size_t len;
 
-	pwd = getcwd(NULL, 0);
-	if (pwd != NULL)
-	{
-		ft_putstr_fd(pwd, fd_out);
-		ft_putstr_fd("\n", fd_out);
-		free(pwd);
-	}
-	else
-		perror("getcwd malloc failed");
+	if (!dst || !src)
+		return ;
+	len = ft_strlen(dst);
+	i = len;
+	j = 0;
+	while (src[j])
+		dst[i++] = src[j++];
+	dst[i] = '\0';
+	return ;
 }

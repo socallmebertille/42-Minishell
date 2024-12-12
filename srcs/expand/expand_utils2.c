@@ -1,28 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   expand_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 17:35:01 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/10 18:34:48 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/12 18:00:33 by kepouliq          #+#    #+#             */
+/*   Updated: 2024/12/12 18:29:18 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_pwd(int fd_out)
+void	replace_in_tok(t_token *tok, char *expanded_str)
 {
-	char	*pwd;
-
-	pwd = getcwd(NULL, 0);
-	if (pwd != NULL)
-	{
-		ft_putstr_fd(pwd, fd_out);
-		ft_putstr_fd("\n", fd_out);
-		free(pwd);
-	}
-	else
-		perror("getcwd malloc failed");
+	free(tok->value);
+	tok->value = ft_strdup(expanded_str);
 }

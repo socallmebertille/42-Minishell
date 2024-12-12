@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_tab.c                                      :+:      :+:    :+:   */
+/*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/27 13:46:13 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/04 15:47:23 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/02 14:12:28 by saberton          #+#    #+#             */
+/*   Updated: 2024/12/11 14:42:48 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_free_tab(char **tab)
+long	ft_atol(const char *str)
 {
-	int	i;
+	long	nb;
+	int		sign;
+	int		i;
 
+	nb = 0;
+	sign = 1;
 	i = 0;
-	if (tab == NULL)
-		return ;
-	while (tab[i])
+	while (str[i] && (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'
+			|| str[i] == '\r' || str[i] == '\v' || str[i] == '\f'))
+		i++;
+	if (str[i] == '-')
+		sign *= -1;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (tab[i])
-			free(tab[i]);
-		tab[i] = NULL;
+		nb = (nb * 10) + (str[i] - '0');
 		i++;
 	}
-	free(tab);
-	tab = NULL;
+	return (nb * sign);
 }

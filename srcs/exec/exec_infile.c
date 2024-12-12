@@ -1,28 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   exec_infile.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/15 17:35:01 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/10 18:34:48 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
+/*   Updated: 2024/12/11 15:09:56 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_pwd(int fd_out)
+void	exec_in(void)
 {
-	char	*pwd;
-
-	pwd = getcwd(NULL, 0);
-	if (pwd != NULL)
-	{
-		ft_putstr_fd(pwd, fd_out);
-		ft_putstr_fd("\n", fd_out);
-		free(pwd);
-	}
-	else
-		perror("getcwd malloc failed");
 }

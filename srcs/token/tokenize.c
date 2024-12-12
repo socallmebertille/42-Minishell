@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:55:18 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/26 17:20:32 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/03 18:28:18 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_enum_to_char(int num)
 {
 	if (num == 1)
-		return ("WORD");
+		return ("FLAG");
 	if (num == 124)
 		return ("PIPE");
 	if (num == HEREDOC)
@@ -26,6 +26,10 @@ char	*ft_enum_to_char(int num)
 		return ("IN");
 	if (num == APPEND)
 		return ("APPEND");
+	if (num == CMD)
+		return ("CMD");
+	if (num == BUILD)
+		return ("BUILTINS");
 	return ("");
 }
 
@@ -55,17 +59,5 @@ void	tokenize(char *line, t_data *data)
 			i++;
 		if (line[i])
 			dispatcheur(line, &i, data, &tok);
-	}
-	while (tok)
-	{
-		tmp = tok->next;
-		printf("TOK TYPE = %s / TOK VALUE = %s", ft_enum_to_char(tok->type),
-			tok->value);
-		if (tok->prev)
-			printf(" / PREV = %s", tok->prev->value);
-		if (tok->next)
-			printf(" / NEXT = %s", tok->next->value);
-		printf("\n");
-		tok = tmp;
 	}
 }

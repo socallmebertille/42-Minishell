@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:03:07 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/25 17:22:47 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/11 15:31:38 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,13 @@ int	ft_isspace(char c)
 int	is_word(char c)
 {
 	if (!ft_isspace(c) && !is_operateur(c) && !is_pipe(c))
+		return (1);
+	return (0);
+}
+
+int	is_word_and_space(char c)
+{
+	if (!is_operateur(c) && !is_pipe(c))
 		return (1);
 	return (0);
 }

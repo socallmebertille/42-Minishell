@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 18:29:02 by saberton          #+#    #+#             */
-/*   Updated: 2024/11/27 13:48:08 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/12 18:14:20 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <limits.h>
 # include <stdarg.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 
@@ -48,6 +49,7 @@ int					ft_tolower(int c);
 
 // ---------------- convert -----------------
 int					ft_atoi(const char *nptr);
+long				ft_atol(const char *str);
 char				*ft_itoa(int n);
 
 // ---------------- gnl -----------------
@@ -97,7 +99,9 @@ void				ft_putendl_fd(char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 
 // ---------------- string -----------------
+void				ft_strcat(char *dst, const char *src);
 void				ft_striteri(char *s, void (*f)(unsigned int, char *));
+void				ft_strcpy(char *dst, const char *src);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t				ft_strlen(const char *s);
 size_t				ft_strlcpy(char *dst, const char *src, size_t siz);
@@ -114,5 +118,6 @@ char				**ft_split(char const *s, char c);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int					ft_strcmp(const char *s1, const char *s2);
 void				ft_free_tab(char **tab);
+char				*ft_strncat(char *dst, const char *src, size_t siz);
 
 #endif
