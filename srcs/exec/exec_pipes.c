@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 20:46:25 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:25:52 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 static void	first_pipe(t_data *data)
 {
-	if (data->err)
-		return ;
 	if (data->infile)
 	{
 		if (dup2(data->pipe->fds[0][1], STDIN_FILENO) == -1)
@@ -30,8 +28,6 @@ static void	first_pipe(t_data *data)
 
 static void	mid_pipe(t_data *data, int pipe_num)
 {
-	if (data->err)
-		return ;
 	if (dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO) == -1)
 		failed_mess(data, "dup2 failed", 1);
 	if (dup2(data->pipe->fds[pipe_num][1], STDOUT_FILENO) == -1)
@@ -40,8 +36,6 @@ static void	mid_pipe(t_data *data, int pipe_num)
 
 static void	last_pipe(t_data *data, int pipe_num)
 {
-	if (data->err)
-		return ;
 	if (dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO) == -1)
 		failed_mess(data, "dup2 failed", 1);
 	if (data->outfile)
@@ -91,16 +85,18 @@ void	ft_pipes(t_data *data)
 	if (data->pipe->orig_fds[0] == -1 || data->pipe->orig_fds[1] == -1)
 		return (quit_pipe(data, i), failed_mess(data, "dup failed", 1));
 	if (!init_fds(data->pipe))
-		return ;
+		return (quit_pipe(data, i));
 	while (tmp)
 	{
 		if (tmp->type == CMD)
 		{
 			data->pipe->pid[i] = fork();
+			data->pipe->pid[i] = -1;
 			if (data->pipe->pid[i] < 0)
-				return (quit_pipe(data, i), failed_mess(data, "fork failed", 1));
+				return (free_close_fds(data, 0), get_end_exec(data, i, -1), quit_pipe(data, i), failed_mess(data, "fork failed", 1));
 			else if (data->pipe->pid[i] == 0)
 			{
+				// child_signal_handler();
 				if (i == 0)
 					first_pipe(data);
 				else if (!recup_tok_after_pipe(tmp))
@@ -110,16 +106,8 @@ void	ft_pipes(t_data *data)
 				free_close_fds(data, 0);
 				exec_choice(data, tmp);
 			}
-			// else if (data->err)
-			// {
-			// 	if (dup2(data->pipe->orig_fds[0], STDIN_FILENO) == -1
-			// 	|| dup2(data->pipe->orig_fds[1], STDOUT_FILENO) == -1)
-			// 		return (quit_pipe(data, i), failed_mess(data, "dup2 failed", 1));
-			// 	return (quit_pipe(data, i), failed_mess(data, "", data->exit_status));
-
-			// }
 		}
-		else
+		else if (tmp->type == BUILD)
 		{
 			data->pipe->pid[i] = -1;
 			if (i == 0)
@@ -132,9 +120,9 @@ void	ft_pipes(t_data *data)
 			if (dup2(data->pipe->orig_fds[0], STDIN_FILENO) == -1
 				|| dup2(data->pipe->orig_fds[1], STDOUT_FILENO) == -1)
 				return (quit_pipe(data, i), failed_mess(data, "dup2 failed", 1));
-			// if (data->err)
-			// 	return (quit_pipe(data, i), failed_mess(data, "", data->exit_status));
 		}
+		else
+			data->err = 1;
 		i++;
 		tmp = recup_tok_after_pipe(tmp);
 	}
