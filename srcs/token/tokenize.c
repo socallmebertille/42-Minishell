@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:55:18 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 16:20:29 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:54:28 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,23 @@ void	tokenize(char *line, t_data *data)
 	int		i;
 	t_token	*tok;
 	t_token	*tmp;
-
-	tmp = NULL;
+	
 	tok = NULL;
 	i = 0;
-	while (line[i])
+	(void)line;
+	expand(data);
+	printf("%s\n", data->line);
+	while (data->line[i])
 	{
-		if (ft_isspace(line[i]))
+		if (ft_isspace(data->line[i]))
 			i++;
-		if (line[i])
-			dispatcheur(line, &i, data, &tok);
+		if (data->line[i])
+			dispatcheur(data->line, &i, data, &tok);
+	}
+	tmp = data->token;
+	while (tmp)
+	{
+		remove_quote(tmp->value, tmp);
+		tmp = tmp->next;
 	}
 }

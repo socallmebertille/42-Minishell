@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:58:52 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/12 18:29:22 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:56:15 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,11 @@ char	*ft_strjoin_char(char *str, char c)
 	size_t	len;
 	char	*new_str;
 
-	len = strlen(str);
+	len = ft_strlen(str);
 	new_str = malloc(sizeof(char) * (len + 2));
 	if (!new_str)
 		return (NULL);
-	strcpy(new_str, str);
+	ft_strcpy(new_str, str);
 	new_str[len] = c;
 	new_str[len + 1] = '\0';
 	return (new_str);

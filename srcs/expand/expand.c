@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:20:10 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 16:20:38 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:53:03 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static char	*ft_concate(char *before, char *in_var)
 	return (result);
 }
 
-static void	expan_var(char *str, t_data *data, t_token *tok)
+static char	*expan_var(char *str, t_data *data)
 {
 	int		i;
 	char	*before;
@@ -76,7 +76,7 @@ static void	expan_var(char *str, t_data *data, t_token *tok)
 	i = 0;
 	expanded_str = ft_strdup("");
 	if (!expanded_str)
-		return ;
+		return NULL;
 	while (str[i])
 	{
 		if (str[i] == '$' && !is_in_single_quotes(str, i))
@@ -102,21 +102,22 @@ static void	expan_var(char *str, t_data *data, t_token *tok)
 			i++;
 		}
 	}
-	replace_in_tok(tok, expanded_str);
-	free(expanded_str);
+	return (expanded_str);
 }
 
 void	expand(t_data *data)
 {
-	t_token	*tok;
-	char	*var_in_str;
+	char	*new_line;
 
-	var_in_str = NULL;
-	tok = data->token;
-	while (tok)
+	new_line = NULL;
+	if (dollar_in_str(data->line))
 	{
-		if (dollar_in_str(tok->value))
-			expan_var(tok->value, data, tok);
-		tok = tok->next;
+		new_line = expan_var(data->line, data);
+		if (data->line)
+			free(data->line);
+		data->line = ft_strdup(new_line);
 	}
+	// new_line = remove_quote(data->line);
+	// free(data->line);
+	// data->line = new_line;
 }
