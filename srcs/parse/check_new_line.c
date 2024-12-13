@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_new_line.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:30:41 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 17:14:02 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:07:40 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,5 @@ void	clean_line(char *line, t_data *data)
 			*newline_pos = '&';
 		newline_pos = ft_strchr(line, '\n');
 	}
-	// printf("comment je comprends ma line [%s]\n", line);
 	check_new_line(line, data);
 }

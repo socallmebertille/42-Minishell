@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:55:18 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 17:54:28 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:08:36 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	tokenize(char *line, t_data *data)
 	int		i;
 	t_token	*tok;
 	t_token	*tmp;
-	
+
 	tok = NULL;
 	i = 0;
 	(void)line;

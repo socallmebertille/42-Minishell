@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:30:06 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 12:45:45 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 19:12:55 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,27 @@ void	free_close_fds(t_data *data, int sous_process)
 	data->pipe->nb_pipe = 0;
 }
 
+// static int	is_not_found(t_data *data)
+// {
+// 	t_token	*tok;
+
+// 	tok = data->token;
+// 	while (tok)
+// 	{
+// 		if (tok->type == NOT_FOUND)
+// 			return (printf("ici\n"), 1);
+// 		tok = tok->next;
+// 	}
+// 	return (0);
+// }
+
 static void	loop_end_exec(t_data *data, pid_t pid, int status)
 {
+	// printf("not found %d\n", is_not_found(data));
+	// if (is_not_found(data))
+	// 	 ;
+	// else
+	// 	data->exit_code = 0;
 	if (pid != -1)
 		waitpid(pid, &status, 0);
 	if (WIFEXITED(status) && !data->err)

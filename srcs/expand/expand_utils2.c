@@ -1,30 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   expand_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/25 18:19:28 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 18:42:08 by kepouliq         ###   ########.fr       */
+/*   Created: 2024/12/13 18:18:11 by kepouliq          #+#    #+#             */
+/*   Updated: 2024/12/13 18:26:34 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	if (!s1 || !s2)
-	{
-		if (s1 == s2)
-			return 0;
-		else
-			return -1;
-	}
-	while (s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
+// char    *handle_exit_code(t_data *data, char *expanded_str, int *i)
+// {
+    
+// }

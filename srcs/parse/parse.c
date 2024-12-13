@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 17:54:21 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:07:23 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ static void	print_token(t_data *data)
 
 void	parse(t_data *data)
 {
-	// expand(data);
 	ft_change_word_to_cmd(data);
 	print_token(data);
 	if (!good_syntaxe(data))

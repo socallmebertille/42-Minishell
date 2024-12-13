@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_copy_word.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:32:08 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 17:01:21 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:08:19 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int	word_size(char *line, int *i)
 			len++;
 		}
 	}
-	// printf("len du mot == %d\n", len);
 	return (len);
 }
 
