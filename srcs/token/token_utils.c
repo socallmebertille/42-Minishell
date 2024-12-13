@@ -6,15 +6,16 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:54:11 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 14:41:42 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:57:35 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*check_err_messages(t_data *data, t_token *tok, char *exist, int err)
+static char	*check_err_messages(t_data *data, t_token *tok, char *exist,
+		int err)
 {
-	if (err == 2)	
+	if (err == 2)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(tok->value, 2);

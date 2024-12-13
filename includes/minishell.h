@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 18:36:08 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:06:17 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,9 @@ int					handle_builtins(t_data *data, t_token *tok, int fd_out);
 
 //================== exec =====================================//
 
+//----------------- env_to_send.c ----------------------
+char				**env_to_tab(t_env *env);
+
 //----------------- exec_infile.c ----------------------
 void				exec_in(void);
 
@@ -200,13 +203,15 @@ void				add_token_operateur(char *line, t_token **tok, t_data *data,
 						int *i);
 t_token				*last_token(t_token *tok);
 
+//----------------- check_token_type2.c ----------------------
+int					is_word(char c);
+int					is_word_and_space(char c);
+
 //----------------- check_token_type.c ----------------------
 int					is_quote(char c);
 int					is_pipe(char c);
 int					is_operateur(char c);
 int					ft_isspace(char c);
-int					is_word(char c);
-int					is_word_and_space(char c);
 
 //----------------- get_path.c ----------------------
 char				**recup_path(t_env *env);
@@ -235,15 +240,15 @@ char				*ft_enum_to_char(int num);
 //================== main =====================================//
 
 //----------------- exit_status.c ----------------------
+void				free_close_fds(t_data *data, int sous_process);
 void				get_end_exec(t_data *data, int i, pid_t pid);
-void				quit_pipe(t_data *data, int i);
 void				failed_mess(t_data *data, char *mess, int code);
 
 //----------------- free_data.c ----------------------
 void				free_tok(t_data *data);
 void				free_env(t_data *data, t_env *env, int cpy);
 void				free_pipe(t_data *data);
-void				free_close_fds(t_data *data, int sous_process);
+void				quit_pipe(t_data *data, int i);
 
 //----------------- signal.c ---------------------expor-
 void				signal_handlers(void);

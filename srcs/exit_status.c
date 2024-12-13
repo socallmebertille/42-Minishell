@@ -6,11 +6,45 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:30:06 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 17:22:27 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:45:45 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	close_one_fd(int fd)
+{
+	if (fd >= 3)
+		close(fd);
+}
+
+void	free_close_fds(t_data *data, int sous_process)
+{
+	int	i;
+
+	i = 0;
+	if (!data->pipe->nb_pipe)
+		return ;
+	while (i < data->pipe->nb_pipe)
+	{
+		close_one_fd(data->pipe->fds[i][0]);
+		close_one_fd(data->pipe->fds[i][1]);
+		if (data->pipe->fds[i] && !sous_process)
+		{
+			free(data->pipe->fds[i]);
+			data->pipe->fds[i] = NULL;
+		}
+		i++;
+	}
+	close_one_fd(data->pipe->orig_fds[0]);
+	close_one_fd(data->pipe->orig_fds[1]);
+	if (sous_process)
+		return ;
+	if (data->pipe->fds)
+		free(data->pipe->fds);
+	data->pipe->fds = NULL;
+	data->pipe->nb_pipe = 0;
+}
 
 static void	loop_end_exec(t_data *data, pid_t pid, int status)
 {

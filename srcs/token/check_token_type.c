@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_token_type.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:03:07 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/11 15:31:38 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:06:52 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,6 @@ int	is_operateur(char c)
 int	ft_isspace(char c)
 {
 	if (c == ' ' || c == '\t')
-		return (1);
-	return (0);
-}
-
-int	is_word(char c)
-{
-	if (!ft_isspace(c) && !is_operateur(c) && !is_pipe(c))
-		return (1);
-	return (0);
-}
-
-int	is_word_and_space(char c)
-{
-	if (!is_operateur(c) && !is_pipe(c))
 		return (1);
 	return (0);
 }

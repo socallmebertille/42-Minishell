@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_copy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:06:50 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/11/25 17:24:09 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:01:35 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,25 @@ char	*ft_copy_pipe(int *i)
 	return (dup);
 }
 
+static char	*ft_copy_operateur2(int *i, int j, char *dup)
+{
+	if (j == 60)
+	{
+		dup[0] = '<';
+		dup[1] = '\0';
+		dup[2] = '\0';
+		(*i)++;
+	}
+	else if (j == 62)
+	{
+		dup[0] = '>';
+		dup[1] = '\0';
+		dup[2] = '\0';
+		(*i)++;
+	}
+	return (dup);
+}
+
 char	*ft_copy_operateur(int *i, int j)
 {
 	char	*dup;
@@ -59,19 +78,7 @@ char	*ft_copy_operateur(int *i, int j)
 		dup[2] = '\0';
 		(*i) += 2;
 	}
-	else if (j == 60)
-	{
-		dup[0] = '<';
-		dup[1] = '\0';
-		dup[2] = '\0';
-		(*i)++;
-	}
-	else if (j == 62)
-	{
-		dup[0] = '>';
-		dup[1] = '\0';
-		dup[2] = '\0';
-		(*i)++;
-	}
+	else if (j == 60 || j == 62)
+		dup = ft_copy_operateur2(i, j, dup);
 	return (dup);
 }
