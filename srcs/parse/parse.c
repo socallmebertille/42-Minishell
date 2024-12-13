@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/12 18:44:21 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:03:13 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	is_builtins(t_token *token)
 			return (token->type = BUILD, 1);
 		else if (ft_strcmp(token->value, "cd") == 0)
 			return (token->type = BUILD, 1);
-		
 	}
 	return (0);
 }
@@ -102,7 +101,6 @@ void	parse(t_data *data)
 	expand(data);
 	ft_change_word_to_cmd(data);
 	// print_token(data);
-	// ft_change_word_to_expand(data);
 	if (!good_syntaxe(data))
 		return ;
 	ft_check_access_cmd(data);

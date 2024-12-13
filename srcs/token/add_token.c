@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 18:59:55 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/11 17:59:08 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:10:36 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,10 @@ t_token	*last_token(t_token *tok)
 	return (tok);
 }
 
-void	add_token_word(char *line, t_token **tok, t_data *data, int *i)
+static void	add_to_token(t_data *data, t_token **tok, t_token *new_last_node)
 {
 	t_token	*node;
-	t_token	*new_last_node;
 
-	new_last_node = (t_token *)malloc(sizeof(t_token));
-	if (!new_last_node)
-		return (failed_mess(data, "malloc failed", 1));
-	new_last_node->next = NULL;
-	new_last_node->type = WORD;
-	new_last_node->value = NULL;
-	new_last_node->value = ft_copy_word(line, i, data);
 	if (!*tok)
 	{
 		new_last_node->prev = NULL;
@@ -48,6 +40,22 @@ void	add_token_word(char *line, t_token **tok, t_data *data, int *i)
 		node->next = new_last_node;
 		new_last_node->prev = node;
 	}
+}
+
+void	add_token_word(char *line, t_token **tok, t_data *data, int *i)
+{
+	t_token	*new_last_node;
+
+	new_last_node = (t_token *)malloc(sizeof(t_token));
+	if (!new_last_node)
+		return (failed_mess(data, "malloc failed", 1));
+	new_last_node->next = NULL;
+	new_last_node->type = WORD;
+	new_last_node->value = NULL;
+	new_last_node->value = ft_copy_word(line, i, data);
+	add_to_token(data, tok, new_last_node);
+	if (data->err)
+		return ;
 	if (new_last_node->value == NULL && data->err_quote)
 		open_quote_exit(data);
 	else if (new_last_node->value == NULL)

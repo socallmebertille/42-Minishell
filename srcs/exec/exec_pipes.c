@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 19:09:13 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:36:03 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,8 @@ void	ft_pipes(t_data *data)
 		{
 			data->pipe->pid[i] = fork();
 			if (data->pipe->pid[i] < 0)
-				return (free_close_fds(data, 0), get_end_exec(data, i, -1), quit_pipe(data, i), failed_mess(data, "fork failed", 1));
+				return (free_close_fds(data, 0), get_end_exec(data, i, -1),
+					quit_pipe(data, i), failed_mess(data, "fork failed", 1));
 			else if (data->pipe->pid[i] == 0)
 			{
 				// child_signal_handler();
@@ -115,11 +116,14 @@ void	ft_pipes(t_data *data)
 				last_pipe(data, i);
 			else
 				mid_pipe(data, i);
-			if (!ft_strcmp(tmp->value, "export") && tmp->next->type != WORD)
+			if (!ft_strcmp(tmp->value, "export") && tmp->next->type == WORD)
+				;
+			else
 				exec_choice(data, tmp);
 			if (dup2(data->pipe->orig_fds[0], STDIN_FILENO) == -1
 				|| dup2(data->pipe->orig_fds[1], STDOUT_FILENO) == -1)
-				return (quit_pipe(data, i), failed_mess(data, "dup2 failed", 1));
+				return (quit_pipe(data, i), failed_mess(data, "dup2 failed",
+						1));
 		}
 		else
 			data->err = 1;

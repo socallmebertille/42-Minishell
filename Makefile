@@ -18,6 +18,7 @@ SRCS_NAMES	=	main.c signal.c free_data.c exit_status.c\
 				builtins/exit.c \
 				builtins/echo.c \
 				token/add_token.c \
+				token/check_token_type2.c \
 				token/check_token_type.c \
 				token/get_path.c \
 				token/token_copy.c \
@@ -27,6 +28,7 @@ SRCS_NAMES	=	main.c signal.c free_data.c exit_status.c\
 				parse/syntaxe.c \
 				parse/parse.c \
 				parse/check_new_line.c \
+				exec/env_to_send.c \
 				exec/exec_infile.c \
 				exec/exec_utils.c \
 				exec/exec_pipes.c \

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:32:08 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/12 18:47:01 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:58:02 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	word_size(char *line, int *i)
 		if (!line[j])
 			break ;
 		if (!is_word(line[j]))
-			break;
+			break ;
 		else
 		{
 			j++;

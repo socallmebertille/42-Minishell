@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   check_token_type2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/12 18:10:41 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 12:37:00 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/13 13:03:55 by saberton          #+#    #+#             */
+/*   Updated: 2024/12/13 13:04:20 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_strcpy(char *dst, const char *src)
+int	is_word(char c)
 {
-	unsigned int	i;
+	if (!ft_isspace(c) && !is_operateur(c) && !is_pipe(c))
+		return (1);
+	return (0);
+}
 
-	i = 0;
-	if (!src)
-		return ;
-	while (src[i])
-	{
-		dst[i] = src[i];
-		i++;
-	}
-	dst[i] = '\0';
-	return ;
+int	is_word_and_space(char c)
+{
+	if (!is_operateur(c) && !is_pipe(c))
+		return (1);
+	return (0);
 }

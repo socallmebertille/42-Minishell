@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:57:40 by bertille          #+#    #+#             */
-/*   Updated: 2024/12/11 10:56:16 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:53:51 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,35 +50,23 @@ void	add_cpy_env(char *type, char *value, t_env **env, t_data *data)
 void	get_shlvl_env(t_data *data)
 {
 	t_env	*env;
-	static int		lvl = -1;
+	int		lvl;
+	int		i;
 
-	printf("%d\n", lvl);
+	i = 0;
 	env = data->cpy_env;
-	if (data->env && lvl == -1)
+	while (data->env[i])
 	{
-		int i = 0;
-		while (data->env[i])
-		{
-			if (!ft_strncmp(data->env[i], "SHLVL=", 6))
-			{
-				if (!lvl)
-					lvl = ft_atol(data->env[i] + 6) + 1;
-				break ;
-			}
-			i++;
-		}
+		if (!ft_strncmp(data->env[i], "SHLVL=", 6))
+			lvl = ft_atol(data->env[i] + 6);
+		i++;
 	}
 	while (env)
 	{
 		if (!ft_strcmp(env->type, "SHLVL"))
 		{
-			if (lvl != 1)
-				lvl = ft_atol(env->value) + 1;
-			else
-				lvl = 1;
 			free(env->value);
-			env->value = ft_itoa(lvl);
-			break ;
+			env->value = ft_itoa(lvl + 1);
 		}
 		env = env->next;
 	}
@@ -99,7 +87,6 @@ void	get_env(char **env, t_data *data)
 		add_cpy_env(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env, data);
 		add_cpy_env(ft_strdup("_"), ft_strdup("chemin de last commande"),
 			&cpy_env, data);
-		get_shlvl_env(data);
 		return ;
 	}
 	i = 0;
@@ -113,5 +100,4 @@ void	get_env(char **env, t_data *data)
 		i++;
 	}
 	get_shlvl_env(data);
-	return ;
 }

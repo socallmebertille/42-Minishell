@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 17:17:22 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:21:45 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 {
 	char	*cmd_path;
 	int		exec;
+	char	**new_env;
 
+	(void)env;
 	if (!cmd || !*cmd)
 		return ;
 	cmd_path = valid_cmd(data, tok->value);
@@ -59,10 +61,10 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 			return (failed_mess(data, "malloc failed", 1));
 	}
 	update_last_cmd(data, cmd_path);
-	// if (!ft_strcmp("./minishell", cmd[0]))
-	// 	data->keep_env = 1;
-	// ft_check_access_cmd(data);
-	exec = execve(cmd_path, cmd, env);
+	new_env = env_to_tab(data->cpy_env);
+	if (!new_env)
+		return (data->err = 1, failed_mess(data, "malloc failed", 1));
+	exec = execve(cmd_path, cmd, new_env);
 	if (exec == -1)
 		data->err = 1;
 	free(cmd_path);
@@ -94,11 +96,31 @@ void	exec_choice(t_data *data, t_token *tok)
 	// 	exec_heredoc();
 }
 
+static void	simple_exec(t_data *data, t_token *tmp)
+{
+	pid_t	pid;
+
+	if (tmp->type == BUILD)
+		handle_builtins(data, tmp, STDOUT_FILENO);
+	else if (tmp->type == CMD)
+	{
+		pid = fork();
+		if (pid == -1)
+			return (failed_mess(data, "malloc failed", 1));
+		if (pid == 0)
+		{
+			// child_signal_handler();
+			exec_choice(data, tmp);
+		}
+		else
+			get_end_exec(data, 0, pid);
+	}
+}
+
 void	wich_exec(t_data *data)
 {
 	t_token	*tmp;
 	t_pipe	data_pipe;
-	pid_t	pid;
 
 	tmp = data->token;
 	ft_bzero(&data_pipe, sizeof(t_pipe));
@@ -111,23 +133,7 @@ void	wich_exec(t_data *data)
 	if (data->nb_pipe > 0)
 		ft_pipes(data);
 	else
-	{
-		if (tmp->type == BUILD)
-			handle_builtins(data, tmp, STDOUT_FILENO);
-		else if (tmp->type == CMD)
-		{
-			pid = fork();
-			if (pid == -1)
-				return (failed_mess(data, "malloc failed", 1));
-			if (pid == 0)
-			{
-				// child_signal_handler();
-				exec_choice(data, tmp);
-			}
-			else
-				get_end_exec(data, 0, pid);
-		}
-	}
+		simple_exec(data, tmp);
 }
 
 // echo "cc

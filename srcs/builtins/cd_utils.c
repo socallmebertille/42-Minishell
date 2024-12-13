@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 17:25:39 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/10 17:26:24 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:39:47 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*get_actual_env_path(t_data *data)
 
 char	*get_home_env(t_data *data)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = data->cpy_env;
 	while (tmp)
