@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 15:12:51 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:46:37 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,11 +190,9 @@ int					is_exist_in_env(char *var, t_data *data);
 int					is_in_single_quotes(char *str, int index);
 char				*ft_strjoin_char(char *str, char c);
 
-//----------------- expand_utils.c ----------------------
-void				replace_in_tok(t_token *tok, char *expanded_str);
-
 //----------------- remove_quote.c ----------------------
 void				remove_quote(char *str, t_token *tok);
+
 //----------------- expand.c ----------------------
 void				expand(t_data *data);
 

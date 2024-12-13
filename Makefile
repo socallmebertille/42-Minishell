@@ -35,7 +35,6 @@ SRCS_NAMES	=	main.c signal.c free_data.c exit_status.c\
 				exec/exec.c \
 				expand/expand.c \
 				expand/expand_utils.c \
-				expand/expand_utils2.c \
 				expand/remove_quote.c \
 				
 OBJS_NAMES	=	$(SRCS_NAMES:.c=.o)

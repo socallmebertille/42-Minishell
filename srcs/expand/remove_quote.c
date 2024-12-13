@@ -6,11 +6,17 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 14:36:32 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 15:51:09 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:48:00 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	replace_in_tok(t_token *tok, char *expanded_str)
+{
+	free(tok->value);
+	tok->value = ft_strdup(expanded_str);
+}
 
 int	is_in_double_quotes(char *str, int index)
 {
