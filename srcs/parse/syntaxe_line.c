@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:30:41 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 20:14:22 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 21:31:27 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static int	check_syntaxe_in_quote(char *line, int open_quote, int i,
 		if ((line[i] == '\n' || line[i] == ';' || line[i] == '\\')
 			&& !open_quote)
 			return (print_err_syntaxe(line[i], 1), 1);
-		if (((line[i] == '&' && line[i + 1] == '&') || (line[i] == '|' && line[i
-					+ 1] == '|')) && !open_quote)
+		if (((line[i] == '&' && line[i + 1] == '&')
+				|| (line[i] == '|' && line[i + 1] == '|')) && !open_quote)
 			return (print_err_syntaxe(line[i], 2), 2);
 		i++;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:20:10 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 18:55:35 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 21:31:44 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,38 +82,37 @@ static char	*expan_var(char *str, t_data *data)
 		if (str[i] == '$' && str[i + 1] == '$' && !is_in_single_quotes(str, i))
 		{
 			printf("apres mgl\n");
-			i+=2;
+			i += 2;
 		}
-		else if (str[i] == '$' && str[i + 1] == '?' && !is_in_single_quotes(str, i))
+		else if (str[i] == '$' && str[i + 1] == '?' && !is_in_single_quotes(str,
+				i))
 		{
-			before = ft_substr(expanded_str, 0, ft_strlen(expanded_str));
-			in_var = ft_strdup(ft_itoa(data->exit_status));
-			i++;
-			i += ft_strlen(in_var);
-			tmp = expanded_str;
+			before = ft_strdup(expanded_str);
+			in_var = ft_itoa(data->exit_status);
+			i += 2;
+			free(expanded_str);
 			expanded_str = ft_concate(before, in_var);
-			free(tmp);
 			free(before);
 			free(in_var);
 		}
 		else if (str[i] == '$' && !is_in_single_quotes(str, i))
 		{
-			before = ft_substr(expanded_str, 0, ft_strlen(expanded_str));
+			before = ft_strdup(expanded_str);
 			var = extract_var(str + i, &i);
 			if (is_exist_in_env(var, data))
 				in_var = give_me_inside_var(var, data);
 			else
 				in_var = ft_strdup("");
-			tmp = expanded_str;
+			free(expanded_str);
 			expanded_str = ft_concate(before, in_var);
-			free(tmp);
 			free(before);
 			free(var);
 			free(in_var);
 		}
 		else
 		{
-			tmp = expanded_str;
+			tmp = ft_strdup(expanded_str);
+			free(expanded_str);
 			expanded_str = ft_strjoin_char(tmp, str[i]);
 			free(tmp);
 			i++;
@@ -129,10 +128,10 @@ void	expand(t_data *data)
 	new_line = NULL;
 	if (dollar_in_str(data->line))
 	{
-		new_line = expan_var(data->line, data);
+		if (data->line)
+			new_line = expan_var(data->line, data);
 		if (data->line)
 			free(data->line);
-		data->line = ft_strdup(new_line);
-		free(new_line);
+		data->line = new_line;
 	}
 }

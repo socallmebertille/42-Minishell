@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 18:59:03 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 20:36:31 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	update_last_cmd(t_data *data, char *cmd_path)
 void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 {
 	char	*cmd_path;
-	int		exec;
+	// int		exec;
 	char	**new_env;
 
 	(void)env;
@@ -64,8 +64,8 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 	new_env = env_to_tab(data->cpy_env);
 	if (!new_env)
 		return (data->err = 1, failed_mess(data, "malloc failed", 1));
-	exec = execve(cmd_path, cmd, new_env);
-	if (exec == -1)
+	data->exit_status += execve(cmd_path, cmd, new_env);
+	if (data->exit_status == -1)
 		data->err = 1;
 	free(cmd_path);
 }
@@ -117,6 +117,20 @@ static void	simple_exec(t_data *data, t_token *tmp)
 	}
 }
 
+static int	is_not_found(t_data *data)
+{
+	t_token	*tok;
+
+	tok = data->token;
+	while (tok)
+	{
+		if (tok->type == NOT_FOUND)
+			return (1);
+		tok = tok->next;
+	}
+	return (0);
+}
+
 void	wich_exec(t_data *data)
 {
 	t_token	*tmp;
@@ -130,6 +144,8 @@ void	wich_exec(t_data *data)
 	data->pipe = &data_pipe;
 	data_pipe.nb_pipe = pipe_in_line(data);
 	data->nb_pipe = pipe_in_line(data);
+	if (!is_not_found(data))
+		data->exit_status = 0;
 	if (data->nb_pipe > 0)
 		ft_pipes(data);
 	else

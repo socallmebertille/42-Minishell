@@ -3,16 +3,11 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 18:18:11 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 18:26:34 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 21:31:59 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// char    *handle_exit_code(t_data *data, char *expanded_str, int *i)
-// {
-    
-// }

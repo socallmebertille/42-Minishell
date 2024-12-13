@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 20:17:51 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 20:43:01 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ static void	loop(t_data *data)
 			tokenize(data->line, data);
 		if (!data->err_quote && !data->err)
 			parse(data);
-		printf("my final exit status %d\n", data->exit_status);
 		data->err_quote = 0;
-		// data->exit_status = 0;
 		data->err = 0;
 		free_tok(data);
 		data->token = NULL;
