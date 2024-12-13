@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 17:46:37 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 19:50:31 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int					good_syntaxe(t_data *data);
 
 //----------------- parse.c ----------------------
 void				parse(t_data *data);
-void				clean_line(char *line, t_data *data);
+void				syntaxe_line(char *line, t_data *data);
 int					is_builtins(t_token *token);
 int					handle_builtins(t_data *data, t_token *tok, int fd_out);
 

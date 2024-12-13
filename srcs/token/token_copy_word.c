@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:32:08 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 17:01:21 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:15:52 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	len_in_quote(char *line, int *j, char quote)
 	(*j)++;
 	if (!line[*j])
 		return (len);
-	while (line[*j] && line[*j] != '\n' && line[*j] != quote)
+	while (line[*j] && line[*j] != quote)
 	{
 		len++;
 		(*j)++;
@@ -46,7 +46,7 @@ int	word_size(char *line, int *i)
 	j = *i;
 	if (!line || !*line)
 		return (0);
-	while (line[j] && line[j] != '\n')
+	while (line[j])
 	{
 		if (is_quote(line[j]))
 		{
@@ -74,7 +74,7 @@ int	handle_quote(char *line, char *dup, int *i, int *j)
 	dup[*j] = line[*i];
 	(*i)++;
 	(*j)++;
-	while (line[*i] && line[*i] != '\n' && line[*i] != quote)
+	while (line[*i] && line[*i] != quote)
 	{
 		dup[*j] = line[*i];
 		(*j)++;
@@ -88,6 +88,36 @@ int	handle_quote(char *line, char *dup, int *i, int *j)
 	return (1);
 }
 
+// static int	handle_quote(char *line, char *dup, int *i, int *j)
+// {
+// 	int		open_quote;
+// 	char	quote;
+
+// 	open_quote = 0;
+// 	quote = '\0';
+// 	while (line[*i])
+// 	{
+// 		printf("char [%c]\n", line[*i]);
+// 		if (!open_quote && (line[*i] == '\'' || line[*i] == '\"'))
+// 		{
+// 			quote = line[*i];
+// 			open_quote = 1;
+// 		}
+// 		else
+// 		{
+// 			if (line[*i] == '\"' && line[*i] == quote)
+// 			{
+// 				open_quote = 0;
+// 				quote = '\0';
+// 			}
+// 		}
+// 		if (line[*i] == '\n' && !open_quote)
+// 			return (0);
+// 		i++;
+// 	}
+// 	return (1);
+// }
+
 char	*ft_copy_word(char *line, int *i, t_data *data)
 {
 	int		j;
@@ -98,7 +128,7 @@ char	*ft_copy_word(char *line, int *i, t_data *data)
 	if (!dup)
 		return (NULL);
 	j = 0;
-	while (line[*i] && line[*i] != '\n' && is_word(line[*i]))
+	while (line[*i] && is_word(line[*i]))
 	{
 		if (is_quote(line[*i]))
 		{

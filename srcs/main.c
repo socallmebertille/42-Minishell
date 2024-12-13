@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 17:53:10 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 19:51:19 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ static void	loop(t_data *data)
 			free(data->line);
 			continue ;
 		}
-		clean_line(data->line, data);
+		syntaxe_line(data->line, data);
 		if (*data->line)
 			add_history(data->line);
-		tokenize(data->line, data);
+		if (!data->err_quote && !data->err)
+			tokenize(data->line, data);
 		if (!data->err_quote && !data->err)
 			parse(data);
 		printf("my final exit status %d\n", data->exit_status);

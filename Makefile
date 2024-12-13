@@ -27,7 +27,7 @@ SRCS_NAMES	=	main.c signal.c free_data.c exit_status.c\
 				token/token_utils.c \
 				parse/syntaxe.c \
 				parse/parse.c \
-				parse/check_new_line.c \
+				parse/syntaxe_line.c \
 				exec/env_to_send.c \
 				exec/exec_infile.c \
 				exec/exec_utils.c \
