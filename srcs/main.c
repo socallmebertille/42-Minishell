@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 12:37:44 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:56:55 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static void	loop(t_data *data)
 		data->line = readline("minishell$ ");
 		if (!data->line)
 			return (write(2, "exit\n", 5), exit_prog(data, 0));
+		if (!data->line[0])
+			continue ;
 		if (g_signal_received)
 		{
 			data->exit_status = 130;

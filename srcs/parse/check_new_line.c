@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:30:41 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 12:35:05 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:14:02 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,17 @@ static int	check_nl_in_quote(char *line, int open_quote, int i, char quote)
 		return (1);
 	while (line[i])
 	{
+		printf("char [%c]\n", line[i]);
 		if (!open_quote && (line[i] == '\'' || line[i] == '\"'))
 		{
 			quote = line[i];
-			open_quote++;
+			open_quote = 1;
 		}
 		else
 		{
 			if (line[i] == '\"' && line[i] == quote)
 			{
-				open_quote--;
+				open_quote = 0;
 				quote = '\0';
 			}
 		}
@@ -89,6 +90,11 @@ void	clean_line(char *line, t_data *data)
 	if (!line)
 		return ;
 	nl_in_quote = check_nl_in_quote(line, 0, 0, '\0');
+	if (nl_in_quote)
+	{
+		printf("no pb\n");
+		return ;
+	}
 	newline_pos = ft_strchr(line, '\n');
 	while (newline_pos)
 	{

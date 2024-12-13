@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 19:57:40 by bertille          #+#    #+#             */
-/*   Updated: 2024/12/13 12:53:51 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:00:11 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	get_env(char **env, t_data *data)
 
 	cpy_env = NULL;
 	data->env = env;
-	if (!*env)
+	if (!env[0] || !env)
 	{
 		add_cpy_env(ft_strdup("PWD"), getcwd(NULL, 0), &cpy_env, data);
 		add_cpy_env(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env, data);

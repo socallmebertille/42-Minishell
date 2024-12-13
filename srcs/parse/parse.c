@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 13:54:44 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:00:00 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,11 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 // 			printf("\t\t");
 // 		printf(RED "%s " RESET, tok->value);
 // 		printf(YELLOW "= %s" RESET, ft_enum_to_char(tok->type));
+// 		printf("\tNEXT = ");
 // 		if (tok->next)
-// 		{
-// 			printf("\tNEXT = ");
 // 			printf(GREEN "%s\n" RESET, tok->next->value);
-// 		}
 // 		else
-// 			printf("\n");
+// 			printf(GREEN "NULL\n" RESET);
 // 		printf("\n");
 // 		tok = tmp;
 // 		i++;

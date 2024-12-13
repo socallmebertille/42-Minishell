@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:40:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 13:51:42 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:36:49 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int	len_new_env(t_env *env)
 
 	tmp = env;
 	i = 0;
+	if (!env)
+		return (0);
 	while (env)
 	{
 		tmp = env->next;
@@ -60,7 +62,13 @@ char	**env_to_tab(t_env *env)
 
 	tmp = env;
 	if (!len_new_env(env))
-		return (NULL);
+	{
+		env_to_tab = (char **)malloc(sizeof(char *) * 1);
+		if (!env_to_tab)
+			return (NULL);
+		env_to_tab[0] = "\0";
+		return (env_to_tab);
+	}
 	env_to_tab = (char **)malloc(sizeof(char *) * (len_new_env(env) + 1));
 	if (!env_to_tab)
 		return (NULL);

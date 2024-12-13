@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:15:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 18:48:56 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:59:33 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	error_env(char *str)
-{
-	ft_putstr_fd("env: ‘", 2);
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd("’: No such file or directory\n", 2);
-}
 
 static void	print_env(t_data *data, int fd)
 {
@@ -42,12 +35,12 @@ static void	check_only_env(t_data *data, t_token *tok, int fd)
 
 	err = 0;
 	tmp = tok;
-	if (tmp->next->type == WORD)
+	if (tmp->next)
 		err = 1;
 	if (err == 0)
 		print_env(data, fd);
 	else
-		error_env(tmp->value);
+		ft_putstr_fd("minishell: env: too many arguments\n", 2);
 }
 
 void	handle_env(t_data *data, t_token *tok, int fd_out)

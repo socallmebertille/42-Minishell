@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 13:21:45 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:05:33 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,3 @@ void	wich_exec(t_data *data)
 	else
 		simple_exec(data, tmp);
 }
-
-// echo "cc
-// les
-// petis
-// potes"

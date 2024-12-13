@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:54:11 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 12:57:35 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 15:23:02 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*check_err_messages(t_data *data, t_token *tok, char *exist,
 		tok->type = NOT_FOUND;
 		data->exit_status = 127;
 	}
-	else if (err == 12)
+	else if (err == 1)
 	{
 		if (!exist)
 			return (failed_mess(data, "malloc failed", 1), NULL);
@@ -69,7 +69,7 @@ void	ft_check_access_cmd(t_data *data)
 		if (tmp->type == CMD && !is_builtins(tmp))
 		{
 			exist = valid_cmd(data, tmp->value);
-			exist = check_err_messages(data, tmp, exist, 12);
+			exist = check_err_messages(data, tmp, exist, 1);
 			if (!exist)
 				return ;
 			cmd = recup_cmd(data, tmp);

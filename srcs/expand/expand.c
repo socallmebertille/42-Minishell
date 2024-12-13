@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:20:10 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/12 18:30:02 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:20:38 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*ft_concate(char *before, char *in_var)
 	char	*result;
 	size_t	total_len;
 
-	total_len = strlen(before) + strlen(in_var);
+	total_len = ft_strlen(before) + ft_strlen(in_var);
 	result = malloc(sizeof(char) * (total_len + 1));
 	if (!result)
 		return (NULL);
