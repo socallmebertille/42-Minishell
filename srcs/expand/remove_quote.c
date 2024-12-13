@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 14:36:32 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 17:48:00 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 18:09:32 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int	is_in_double_quotes(char *str, int index)
 
 void	remove_quote(char *str, t_token *tok)
 {
-	int i;
-	char *no_quote_str;
-	char *tmp;
+	int		i;
+	char	*no_quote_str;
+	char	*tmp;
 
 	i = 0;
 	tmp = NULL;

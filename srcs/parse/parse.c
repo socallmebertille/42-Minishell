@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 18:19:49 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 20:17:38 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,6 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 
 void	parse(t_data *data)
 {
-	// expand(data);
 	ft_change_word_to_cmd(data);
 	// print_token(data);
 	if (!good_syntaxe(data))

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 19:50:31 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 20:18:18 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ int					handle_builtins(t_data *data, t_token *tok, int fd_out);
 
 //================== exec =====================================//
 
-//----------------- env_to_send.c ----------------------
+//----------------- env_to_send.c -err---------------------
 char				**env_to_tab(t_env *env);
 
 //----------------- exec_infile.c ----------------------
@@ -175,9 +175,6 @@ t_token				*recup_tok_after_pipe(t_token *tmp);
 void				update_last_cmd(t_data *data, char *cmd_path);
 void				exec_cmd(t_data *data, char **env, char **cmd,
 						t_token *tok);
-void				update_last_cmd(t_data *data, char *cmd_path);
-void				exec_cmd(t_data *data, char **env, char **cmd,
-						t_token *tok);
 void				exec_choice(t_data *data, t_token *tok);
 void				wich_exec(t_data *data);
 
@@ -190,6 +187,8 @@ int					is_exist_in_env(char *var, t_data *data);
 int					is_in_single_quotes(char *str, int index);
 char				*ft_strjoin_char(char *str, char c);
 
+//----------------- expand_utils2.c ----------------------
+char				*handle_exit_code(t_data *data, char *expanded_str, int *i);
 //----------------- remove_quote.c ----------------------
 void				remove_quote(char *str, t_token *tok);
 
