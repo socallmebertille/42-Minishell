@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:20:10 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/12 18:30:02 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/13 15:13:05 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ void	expand(t_data *data)
 	{
 		if (dollar_in_str(tok->value))
 			expan_var(tok->value, data, tok);
+		remove_quote(tok->value, tok);
 		tok = tok->next;
 	}
+	
 }
