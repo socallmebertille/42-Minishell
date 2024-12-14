@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 20:27:15 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/14 20:43:49 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 static void	first_pipe(t_data *data)
 {
-	if (data->infile)
+	if (data->redir->infile)
 	{
 		if (dup2(data->pipe->fds[0][1], STDIN_FILENO) == -1)
 		{
-			data->infile = 0;
+			data->redir->infile = 0;
 			failed_mess(data, "dup2 failed", 1);
 		}
 	}
@@ -38,11 +38,11 @@ static void	last_pipe(t_data *data, int pipe_num)
 {
 	if (dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO) == -1)
 		failed_mess(data, "dup2 failed", 1);
-	if (data->outfile)
+	if (data->redir->outfile)
 	{
 		if (dup2(data->pipe->fds[pipe_num][1], STDOUT_FILENO) == -1)
 		{
-			data->outfile = 0;
+			data->redir->outfile = 0;
 			failed_mess(data, "dup2 failed", 1);
 		}
 	}
@@ -88,6 +88,9 @@ void	ft_pipes(t_data *data)
 		return (quit_pipe(data, i));
 	while (tmp)
 	{
+		open_file(data, tmp);
+		if (data->err)
+			return ;
 		if (tmp->type == CMD)
 		{
 			data->pipe->pid[i] = fork();

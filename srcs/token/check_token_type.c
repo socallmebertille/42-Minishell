@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:03:07 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 18:14:13 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/14 16:50:48 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	is_pipe(char c)
 
 int	is_operateur(char c)
 {
-	if (c == INFILE || c == OUTFILE)
+	if (c == REDIR_INFILE || c == REDIR_OUTFILE)
 		return (1);
 	return (0);
 }

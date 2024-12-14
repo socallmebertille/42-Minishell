@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:27:25 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 12:28:28 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/14 16:26:24 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,7 @@
 	`<<'\n"
 # define INVALID_SIMPLE_HEREDOC "minishell: syntax error near unexpected token \
 	`<'\n"
+# define INVALID_ARG_ENV "minishell: env: too many arguments\n"
+# define INVALID_ARG_CD "minishell: cd: too many arguments\n"
 
 #endif

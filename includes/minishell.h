@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 20:18:18 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/14 21:04:37 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,14 @@ typedef enum e_enum
 {
 	CMD,
 	WORD,
-	FLGS,
 	APPEND,
 	HEREDOC,
 	DELIM,
-	OPERATEUR,
-	INFILE = '<',
-	OUTFILE = '>',
+	REDIR_INFILE = '<',
+	REDIR_OUTFILE = '>',
 	PIPE = '|',
-	FICHIER,
+	INFILE,
+	OUTFILE,
 	BUILD,
 	NOT_FOUND,
 }					t_enum;
@@ -70,6 +69,15 @@ typedef struct s_pipe
 	struct s_data	*data;
 }					t_pipe;
 
+typedef struct s_redir
+{
+	int				infile;
+	int				outfile;
+	int				heredoc;
+	int				fds_doc[2];
+	struct s_data	*data;
+}					t_redir;
+
 typedef struct s_data
 {
 	int				exit_code;
@@ -77,12 +85,11 @@ typedef struct s_data
 	int				err_quote;
 	int				err_export;
 	int				err;
-	int				infile;
-	int				outfile;
 	int				exit_status;
 	char			wich_quote_err;
 	char			*line;
 	char			**env;
+	t_redir			*redir;
 	t_token			*token;
 	t_env			*cpy_env;
 	t_env			*cpy_env2;
@@ -92,8 +99,6 @@ typedef struct s_data
 //================== builtins =====================================//
 
 //----------------- cd.c ------------------------
-void				cd_go_home(t_data *data);
-void				change_directory(t_data *data);
 void				handle_cd(t_data *data, int fd_out);
 
 //----------------- cd_utils.c ------------------------
@@ -156,11 +161,8 @@ int					handle_builtins(t_data *data, t_token *tok, int fd_out);
 
 //================== exec =====================================//
 
-//----------------- env_to_send.c -err---------------------
+//----------------- env_to_send.c ---------------------
 char				**env_to_tab(t_env *env);
-
-//----------------- exec_infile.c ----------------------
-void				exec_in(void);
 
 //----------------- exec_pipes.c ----------------------
 void				ft_pipes(t_data *data);
@@ -168,7 +170,6 @@ void				ft_pipes(t_data *data);
 //----------------- exec_utils.c ----------------------
 int					pipe_in_line(t_data *data);
 char				**recup_cmd(t_data *data, t_token *tok);
-t_enum				wich_type_exec(t_data *data);
 t_token				*recup_tok_after_pipe(t_token *tmp);
 
 //----------------- exec.c ----------------------
@@ -177,6 +178,9 @@ void				exec_cmd(t_data *data, char **env, char **cmd,
 						t_token *tok);
 void				exec_choice(t_data *data, t_token *tok);
 void				wich_exec(t_data *data);
+
+//----------------- open_file.c ----------------------
+void				open_file(t_data *data, t_token *tok);
 
 //================== expand =====================================//
 
@@ -188,7 +192,8 @@ int					is_in_single_quotes(char *str, int index);
 char				*ft_strjoin_char(char *str, char c);
 
 //----------------- expand_utils2.c ----------------------
-char				*handle_exit_code(t_data *data, char *expanded_str, int *i);
+// char				*handle_exit_code(t_data *data, char *expanded_str, int *i);
+
 //----------------- remove_quote.c ----------------------
 void				remove_quote(char *str, t_token *tok);
 
@@ -232,8 +237,8 @@ char				*ft_copy_pipe(int *i);
 char				*ft_copy_operateur(int *i, int j);
 
 //----------------- token_utils.c ----------------------
-void				ft_change_word_to_cmd(t_data *data);
-void				ft_check_access_cmd(t_data *data);
+void				ft_change_word_to_type(t_data *data);
+void				ft_check_access_cmd(t_data *data, int step);
 
 //----------------- tokenize.c ----------------------
 void				tokenize(char *line, t_data *data);

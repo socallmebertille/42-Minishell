@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:15:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 16:59:33 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/14 16:35:37 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,13 @@ static void	print_env(t_data *data, int fd)
 		ft_putstr_fd("\n", fd);
 		tmp = tmp->next;
 	}
-	ft_putstr_fd("PWD : je suis DANS LE BUILTINS\n", fd);
-}
-
-static void	check_only_env(t_data *data, t_token *tok, int fd)
-{
-	t_token	*tmp;
-	int		err;
-
-	err = 0;
-	tmp = tok;
-	if (tmp->next)
-		err = 1;
-	if (err == 0)
-		print_env(data, fd);
-	else
-		ft_putstr_fd("minishell: env: too many arguments\n", 2);
+	ft_putstr_fd("Je suis dans ENV\n", fd);
 }
 
 void	handle_env(t_data *data, t_token *tok, int fd_out)
 {
-	if (!tok->next)
-		print_env(data, fd_out);
+	if (tok->next && tok->next->type == WORD)
+		return (data->exit_status += 1, ft_putstr_fd(INVALID_ARG_ENV, 2));
 	else
-		check_only_env(data, tok, fd_out);
+		return (print_env(data, fd_out));
 }

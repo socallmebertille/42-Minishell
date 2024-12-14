@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 19:06:50 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 13:01:35 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/14 19:16:03 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	find_operateur(char *line, int *i)
 {
 	if (line[*i] == '>' && line[*i + 1] == '>')
-		return (3);
+		return (2);
 	if (line[*i] == '<' && line[*i + 1] == '<')
-		return (4);
+		return (3);
 	if (line[*i] == '<' && line[*i + 1] != '<')
 		return (60);
 	if (line[*i] == '>' && line[*i + 1] != '>')
@@ -64,14 +64,14 @@ char	*ft_copy_operateur(int *i, int j)
 	dup = malloc(sizeof(char) * 3);
 	if (!dup)
 		return (NULL);
-	if (j == 3)
+	if (j == 2)
 	{
 		dup[0] = '>';
 		dup[1] = '>';
 		dup[2] = '\0';
 		(*i) += 2;
 	}
-	else if (j == 4)
+	else if (j == 3)
 	{
 		dup[0] = '<';
 		dup[1] = '<';

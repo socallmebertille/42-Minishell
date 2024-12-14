@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:54:11 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 15:23:02 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/14 21:04:28 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*check_err_messages(t_data *data, t_token *tok, char *exist,
 	return (exist);
 }
 
-void	ft_change_word_to_cmd(t_data *data)
+void	ft_change_word_to_type(t_data *data)
 {
 	t_token	*tmp;
 
@@ -49,15 +49,17 @@ void	ft_change_word_to_cmd(t_data *data)
 	{
 		if (!is_builtins(tmp) && tmp->type == PIPE)
 			tmp->next->type = CMD;
-		if (!is_builtins(tmp) && (tmp->next->type == APPEND
-				|| tmp->next->type == INFILE || tmp->next->type == HEREDOC
-				|| tmp->next->type == OUTFILE))
-			tmp->type = CMD;
+		if (tmp->type == REDIR_INFILE && tmp->next->type == WORD)
+			tmp->next->type = INFILE;
+		if (tmp->type == HEREDOC && tmp->next->type == WORD)
+			tmp->next->type = DELIM;
+		if ((tmp->type == REDIR_OUTFILE || tmp->type == APPEND) && tmp->next->type == WORD)
+			tmp->next->type = OUTFILE;
 		tmp = tmp->next;
 	}
 }
 
-void	ft_check_access_cmd(t_data *data)
+void	ft_check_access_cmd(t_data *data, int step)
 {
 	t_token	*tmp;
 	char	*exist;
@@ -66,7 +68,8 @@ void	ft_check_access_cmd(t_data *data)
 	tmp = data->token;
 	while (tmp)
 	{
-		if (tmp->type == CMD && !is_builtins(tmp))
+		if (((tmp->type == CMD && !is_builtins(tmp)) && step == 1)
+			|| ((tmp->type == INFILE || tmp->type == OUTFILE) && step == 2))
 		{
 			exist = valid_cmd(data, tmp->value);
 			exist = check_err_messages(data, tmp, exist, 1);

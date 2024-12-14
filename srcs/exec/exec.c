@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 20:36:31 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/14 20:54:53 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ void	update_last_cmd(t_data *data, char *cmd_path)
 void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 {
 	char	*cmd_path;
-	// int		exec;
 	char	**new_env;
 
+	// int		exec;
 	(void)env;
 	if (!cmd || !*cmd)
 		return ;
@@ -72,34 +72,26 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 
 void	exec_choice(t_data *data, t_token *tok)
 {
-	t_enum	choice;
 	char	**cmd;
 
-	choice = wich_type_exec(data);
-	cmd = NULL;
-	if (choice == CMD)
-	{
-		cmd = recup_cmd(data, tok);
-		if (tok->type == BUILD)
-			handle_builtins(data, tok, STDOUT_FILENO);
-		else if (tok->type == CMD)
-			exec_cmd(data, data->env, cmd, tok);
-		ft_free_tab(cmd);
-	}
-	else if (choice == INFILE)
-		exec_in();
-	// else if (choice == OUTFILE)
-	// 	exec_out();
-	// else if (choice == APPEND)
-	// 	exec_append();
-	// else if (choice == HEREDOC)
-	// 	exec_heredoc();
+	cmd = recup_cmd(data, tok);
+	if (tok->type == BUILD)
+		handle_builtins(data, tok, STDOUT_FILENO);
+	else if (tok->type == CMD)
+		exec_cmd(data, data->env, cmd, tok);
+	ft_free_tab(cmd);
 }
 
 static void	simple_exec(t_data *data, t_token *tmp)
 {
 	pid_t	pid;
 
+	open_file(data, data->token);
+	if (data->err)
+	{
+		// printf("t nulle\n");
+		return ;
+	}
 	if (tmp->type == BUILD)
 		handle_builtins(data, tmp, STDOUT_FILENO);
 	else if (tmp->type == CMD)

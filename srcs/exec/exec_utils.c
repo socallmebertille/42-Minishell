@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:54:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 16:47:34 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/14 18:09:26 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,6 @@ int	pipe_in_line(t_data *data)
 		tmp = tmp->next;
 	}
 	return (nb_pipe);
-}
-
-t_enum	wich_type_exec(t_data *data)
-{
-	int		choice;
-	t_token	*tmp;
-
-	choice = 0;
-	tmp = data->token;
-	while (tmp)
-	{
-		if (tmp->type == INFILE)
-			return (INFILE);
-		else if (tmp->type == OUTFILE)
-			return (OUTFILE);
-		else if (tmp->type == APPEND)
-			return (APPEND);
-		else if (tmp->type == HEREDOC)
-			return (HEREDOC);
-		tmp = tmp->next;
-	}
-	return (CMD);
 }
 
 t_token	*recup_tok_after_pipe(t_token *tmp)

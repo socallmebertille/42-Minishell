@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:20:10 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 21:31:44 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/14 20:44:49 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,8 @@ void	expand(t_data *data)
 			new_line = expan_var(data->line, data);
 		if (data->line)
 			free(data->line);
-		data->line = new_line;
+		data->line = ft_strdup(new_line);
+		free(new_line);
+		new_line = NULL;
 	}
 }
