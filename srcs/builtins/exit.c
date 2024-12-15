@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:09:38 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/13 13:14:03 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 19:52:19 by bertille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,10 @@
 static int	only_numeric(char *code)
 {
 	int	i;
-	int	n;
 
 	i = 0;
-	n = 0;
 	if (code[i] == '-' || code[i] == '+')
 		i++;
-	if (code[0] == '-')
-		n = 1;
 	while (code[i])
 	{
 		if (!ft_isdigit(code[i]))

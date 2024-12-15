@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/04 11:45:43 by saberton          #+#    #+#             */
-/*   Updated: 2024/06/06 11:55:42 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 19:49:55 by bertille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_len_nb(size_t nb, size_t len)
+int	ft_len_nb(int nb, int len)
 {
 	int	i;
 

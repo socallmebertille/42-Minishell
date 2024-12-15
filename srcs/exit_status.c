@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:30:06 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 12:38:29 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 21:23:36 by bertille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,26 @@ static void	close_one_fd(int fd)
 
 static void	close_if_open(t_data *data)
 {
-	if (data->redir->infile)
+	if (data->redir->infile != -1)
+	{
 		close(data->redir->infile);
-	if (data->redir->outfile)
+		data->redir->infile = -1;
+	}
+	if (data->redir->outfile != -1)
+	{
 		close(data->redir->outfile);
-	if (data->redir->fds_doc[0])
+		data->redir->outfile = -1;
+	}
+	if (data->redir->fds_doc[0] != -1)
+	{
 		close(data->redir->fds_doc[0]);
-	if (data->redir->fds_doc[1])
+		data->redir->fds_doc[0] = -1;
+	}
+	if (data->redir->fds_doc[1] != -1)
+	{
 		close(data->redir->fds_doc[1]);
-	
+		data->redir->fds_doc[1] = -1;
+	}
 }
 
 void	free_close_fds(t_data *data, int sous_process)

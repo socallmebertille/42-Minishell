@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:39 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 12:45:36 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 19:50:47 by bertille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,6 @@ void	free_env(t_data *data, t_env *env, int cpy)
 
 void	free_pipe(t_data *data)
 {
-	int	i;
-
-	i = 0;
 	if (!data || !data->pipe)
 		return ;
 	if (data->pipe->pid)
