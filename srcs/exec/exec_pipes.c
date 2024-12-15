@@ -6,47 +6,11 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 05:15:08 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 08:56:17 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static void	first_pipe(t_data *data)
-{
-	if (data->redir->infile)
-	{
-		if (dup2(data->pipe->fds[0][1], STDIN_FILENO) == -1)
-		{
-			data->redir->infile = 0;
-			failed_mess(data, "dup2 failed", 1);
-		}
-	}
-	if (dup2(data->pipe->fds[0][1], STDOUT_FILENO) == -1)
-		failed_mess(data, "dup2 failed", 1);
-}
-
-static void	mid_pipe(t_data *data, int pipe_num)
-{
-	if (dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO) == -1)
-		failed_mess(data, "dup2 failed", 1);
-	if (dup2(data->pipe->fds[pipe_num][1], STDOUT_FILENO) == -1)
-		failed_mess(data, "dup2 failed", 1);
-}
-
-static void	last_pipe(t_data *data, int pipe_num)
-{
-	if (dup2(data->pipe->fds[pipe_num - 1][0], STDIN_FILENO) == -1)
-		failed_mess(data, "dup2 failed", 1);
-	if (data->redir->outfile)
-	{
-		if (dup2(data->pipe->fds[pipe_num][1], STDOUT_FILENO) == -1)
-		{
-			data->redir->outfile = 0;
-			failed_mess(data, "dup2 failed", 1);
-		}
-	}
-}
 
 static int	init_fds(t_pipe *data_pipe)
 {
@@ -101,12 +65,7 @@ void	ft_pipes(t_data *data)
 			else if (data->pipe->pid[i] == 0)
 			{
 				// child_signal_handler();
-				if (i == 0)
-					first_pipe(data);
-				else if (!recup_tok_after_pipe(tmp))
-					last_pipe(data, i);
-				else
-					mid_pipe(data, i);
+				exec_dup2(data, tmp, i);
 				free_close_fds(data, 0);
 				exec_choice(data, tmp);
 			}
@@ -114,12 +73,7 @@ void	ft_pipes(t_data *data)
 		else if (tmp->type == BUILD)
 		{
 			data->pipe->pid[i] = -1;
-			if (i == 0)
-				first_pipe(data);
-			else if (!recup_tok_after_pipe(tmp))
-				last_pipe(data, i);
-			else
-				mid_pipe(data, i);
+			exec_dup2(data, tmp, i);
 			if (!ft_strcmp(tmp->value, "export") && tmp->next->type == WORD)
 				;
 			else

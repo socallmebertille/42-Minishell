@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/15 03:00:06 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 08:39:18 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 // 	i = 0;
 // 	while (tok)
 // 	{
-// 		printf(MAGENTA "============== TOKEN %d =================\n\n" RESET, i);
+// 		printf(MAGENTA "============== TOKEN %d =================\n\n" RESET,
+// 			i);
 // 		tmp = tok->next;
 // 		if (tok->prev)
 // 		{
@@ -109,6 +110,10 @@ static void	init_redir(t_data *data)
 	ft_bzero(&data_redir, sizeof(t_redir));
 	data_redir.data = data;
 	data->redir = &data_redir;
+	data_redir.infile = -1;
+	data_redir.outfile = -1;
+	data->redir->fds_doc[0] = -1;
+	data->redir->fds_doc[1] = -1;
 }
 
 void	parse(t_data *data)

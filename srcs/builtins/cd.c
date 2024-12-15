@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 15:39:24 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/14 16:31:46 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 08:43:44 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	change_directory(t_data *data, int fd_out)
 
 void	handle_cd(t_data *data, int fd_out)
 {
-	ft_putstr_fd("Je suis dans CD\n", fd_out);
 	if (!data->token->next || ft_strcmp(data->token->next->value, "~") == 0)
 		cd_go_home(data);
 	else if (data->token->next && data->token->next->next)

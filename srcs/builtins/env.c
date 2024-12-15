@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:15:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/14 16:35:37 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 08:43:50 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static void	print_env(t_data *data, int fd)
 		ft_putstr_fd("\n", fd);
 		tmp = tmp->next;
 	}
-	ft_putstr_fd("Je suis dans ENV\n", fd);
 }
 
 void	handle_env(t_data *data, t_token *tok, int fd_out)

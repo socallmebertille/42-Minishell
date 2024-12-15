@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 02:16:59 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 04:42:12 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 09:28:50 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	is_finish_expand(char *str, t_data *data, int count, int i)
 	char	*var;
 
 	var = extract_var(str + i, &i);
-	if (is_exist_in_env(var, data))
+	if (is_exist_in_env(var, data) || (str + i)[0] != '?')
 		return (free(var), 1);
 	free(var);
 	if (count % 2 == 0)

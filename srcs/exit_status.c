@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:30:06 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 21:30:26 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 08:37:56 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ void	free_close_fds(t_data *data, int sous_process)
 	}
 	close_one_fd(data->pipe->orig_fds[0]);
 	close_one_fd(data->pipe->orig_fds[1]);
+	close_one_fd(data->redir->infile);
+	close_one_fd(data->redir->outfile);
+	close_one_fd(data->redir->fds_doc[0]);
+	close_one_fd(data->redir->fds_doc[1]);
 	if (sous_process)
 		return ;
 	if (data->pipe->fds)

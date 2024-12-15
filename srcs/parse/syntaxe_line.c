@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:30:41 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 01:47:58 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 08:28:49 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	syntaxe_line(char *line, t_data *data)
 	i = check_syntaxe_in_quote(data->line, 0, 0, data);
 	if (i)
 	{
-		data->err_quote = i;
 		data->exit_status = 2;
+		data->err = 1;
 		if (i == 3)
 			open_quote_exit(data);
 		return ;

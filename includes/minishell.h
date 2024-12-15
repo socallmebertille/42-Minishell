@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 05:10:49 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 08:53:43 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,9 @@ int					handle_builtins(t_data *data, t_token *tok, int fd_out);
 
 //----------------- env_to_send.c ---------------------
 char				**env_to_tab(t_env *env);
+
+//----------------- exec_dup2.c ---------------------
+void				exec_dup2(t_data *data, t_token *tmp, int i);
 
 //----------------- exec_pipes.c ----------------------
 void				ft_pipes(t_data *data);

@@ -6,13 +6,13 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 05:14:32 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 09:02:52 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	open_in(t_data *data, t_token *tok)
+static int	open_in(t_data *data, t_token *tok)
 {
 	t_token	*tmp;
 
@@ -29,12 +29,13 @@ static void	open_in(t_data *data, t_token *tok)
 	{
 		ft_check_access_cmd(data, 2);
 		if (data->exit_status == 127)
-			return ;
-		return (failed_mess(data, "open failed", 1));
+			return (data->err = 1, 0);
+		return (failed_mess(data, "open failed", 1), 0);
 	}
+	return (1);
 }
 
-static void	open_out(t_data *data, t_token *tok)
+static int	open_out(t_data *data, t_token *tok)
 {
 	t_token	*tmp;
 
@@ -56,9 +57,10 @@ static void	open_out(t_data *data, t_token *tok)
 	{
 		ft_check_access_cmd(data, 2);
 		if (data->exit_status == 127)
-			return ;
-		return (failed_mess(data, "open failed", 1));
+			return (data->err = 1, 0);
+		return (failed_mess(data, "open failed", 1), 0);
 	}
+	return (1);
 }
 
 static void	open_delim(t_data *data, t_token *tok)
@@ -92,6 +94,7 @@ static void	open_delim(t_data *data, t_token *tok)
 		write(data->redir->fds_doc[1], "\n", 1);
 		free(heredoc);
 	}
+	data->redir->infile = data->redir->fds_doc[0];
 }
 
 static t_enum	wich_type_rw(t_token *tok)
@@ -122,9 +125,9 @@ void	open_file(t_data *data, t_token *tok)
 
 	choice = wich_type_rw(tok);
 	if (choice == REDIR_INFILE)
-		open_in(data, tok);
+		(void)open_in(data, tok);
 	else if (choice == REDIR_OUTFILE || choice == APPEND)
-		open_out(data, tok);
+		(void)open_out(data, tok);
 	else if (choice == HEREDOC)
 		open_delim(data, tok);
 }
