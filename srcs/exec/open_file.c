@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 11:45:21 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 13:03:14 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,28 @@
 
 static int	open_redirection_fd(t_data *data, int fd, t_token *token, int oflag)
 {
-	if (fd >= 3)
-		close(fd);
+	if (fd == 1 && data->redir->infile)
+	{
+		close(data->redir->infile);
+		data->redir->infile = 0;
+	}
+	if (fd == 2 && data->redir->outfile)
+	{
+		close(data->redir->outfile);
+		data->redir->outfile = 0;
+	}
 	if (!token->next)
-		return (failed_mess(data, INVALID_NEXT_REDIR, 2), -1);
-	if (token->next->type != HEREDOC)
+		return (failed_mess(data, INVALID_NEXT_REDIR, 2), 0);
+	if (token->next->type == INFILE || token->next->type == OUTFILE)
 	{
 		fd = open(token->next->value, oflag, 0644);
 		if (fd < 0)
-			return (failed_mess(data, "open failed", 2), -1);
+			return (failed_mess(data, "open failed", 2), 0);
 		return (fd);
 	}
 	// else if (token->next->type == HEREDOC)
 	// 	ft_heredoc(data, token, oflag);
-	return (-1);
+	return (0);
 }
 
 void	open_file(t_data *data, t_token *tok)
@@ -65,15 +73,15 @@ void	open_file(t_data *data, t_token *tok)
 	{
 		if (tmp->type == PIPE || !tmp)
 			return ;
-		if (tmp->type == REDIR_INFILE || tmp->type == HEREDOC)
+		if (tmp->type == REDIR_INFILE && tmp->next->type == INFILE)// || tmp->type == HEREDOC)
 			data->redir->infile = open_redirection_fd(data, 1, tmp, O_RDONLY);
-		else if (tmp->type == REDIR_OUTFILE)
-			data->redir->outfile = open_redirection_fd(data, 1, tmp,
+		else if (tmp->type == REDIR_OUTFILE && tmp->next->type == OUTFILE)
+			data->redir->outfile = open_redirection_fd(data, 2, tmp,
 				O_WRONLY | O_TRUNC | O_CREAT);
-		else if (tmp->type == APPEND)
+		else if (tmp->type == APPEND && tmp->next->type == OUTFILE)
 			data->redir->outfile = open_redirection_fd(data, 2, tmp,
 				O_WRONLY | O_APPEND | O_CREAT);
-		// if (tmp->type == HEREDOC)
+		// if (tmp->type == HEREDOC && tmp->next->type == DELIM)
 		// 	ft_heredoc();
 		tmp = tmp->next;
 	}

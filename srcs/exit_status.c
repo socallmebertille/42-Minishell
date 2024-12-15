@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:30:06 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 08:37:56 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 12:38:29 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,19 @@ static void	close_one_fd(int fd)
 {
 	if (fd >= 3)
 		close(fd);
+}
+
+static void	close_if_open(t_data *data)
+{
+	if (data->redir->infile)
+		close(data->redir->infile);
+	if (data->redir->outfile)
+		close(data->redir->outfile);
+	if (data->redir->fds_doc[0])
+		close(data->redir->fds_doc[0]);
+	if (data->redir->fds_doc[1])
+		close(data->redir->fds_doc[1]);
+	
 }
 
 void	free_close_fds(t_data *data, int sous_process)
@@ -38,10 +51,7 @@ void	free_close_fds(t_data *data, int sous_process)
 	}
 	close_one_fd(data->pipe->orig_fds[0]);
 	close_one_fd(data->pipe->orig_fds[1]);
-	close_one_fd(data->redir->infile);
-	close_one_fd(data->redir->outfile);
-	close_one_fd(data->redir->fds_doc[0]);
-	close_one_fd(data->redir->fds_doc[1]);
+	close_if_open(data);
 	if (sous_process)
 		return ;
 	if (data->pipe->fds)

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 11:40:36 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 13:05:29 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,23 @@ void	ft_pipes(t_data *data)
 			sizeof(pid_t));
 	if (!data->pipe->pid)
 		return (quit_pipe(data, i), failed_mess(data, "malloc failed", 1));
+	data->pipe->orig_fds[0] = dup(STDIN_FILENO);
+	data->pipe->orig_fds[1] = dup(STDOUT_FILENO);
+	if (data->pipe->orig_fds[0] == -1 || data->pipe->orig_fds[1] == -1)
+		return (failed_mess(data, "dup failed", 1));
 	if (!init_fds(data->pipe))
 		return (quit_pipe(data, i));
 	while (tmp)
 	{
-		open_file(data, tmp);
-		if (data->err)
-			return ;
+		// open_file(data, tmp);
+		// if (data->err)
+		// 	return ;
 		if (tmp->type == CMD)
 		{
 			data->pipe->pid[i] = fork();
+			open_file(data, tmp);
+			if (data->err)
+				return ;
 			if (data->pipe->pid[i] < 0)
 				return (free_close_fds(data, 0), get_end_exec(data, i, -1),
 					quit_pipe(data, i), failed_mess(data, "fork failed", 1));
@@ -69,6 +76,9 @@ void	ft_pipes(t_data *data)
 		else if (tmp->type == BUILD)
 		{
 			data->pipe->pid[i] = -1;
+			open_file(data, tmp);
+			if (data->err)
+				return ;
 			exec_dup2_pipe(data, tmp, i);
 			if (!ft_strcmp(tmp->value, "export") && tmp->next->type == WORD)
 				;
