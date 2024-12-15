@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/14 20:54:53 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 01:08:04 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,17 @@ void	update_last_cmd(t_data *data, char *cmd_path)
 	}
 }
 
+/* RAJOUT UGO */
+static int is_directory(const char *path)
+{
+    struct stat path_stat;
+
+    if (stat(path, &path_stat) != 0)
+        return (0);
+    return (S_ISDIR(path_stat.st_mode));
+}
+/* FIN DE RAJOUT */
+
 void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 {
 	char	*cmd_path;
@@ -51,6 +62,16 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 	if (!cmd || !*cmd)
 		return ;
 	cmd_path = valid_cmd(data, tok->value);
+	/* RAJOUT UGO */
+	if (is_directory(cmd_path))
+	{
+		ft_putstr_fd(cmd_path, 2);
+		ft_putstr_fd(": is a directory\n", 2);
+		free(cmd_path);
+		data->exit_status = 126; // Code d'erreur standard pour "is a directory"
+		return ;
+	}
+	/* FIN DE RAJOUT*/
 	if (!cmd_path)
 		return ;
 	if (!*cmd_path)
@@ -64,7 +85,7 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 	new_env = env_to_tab(data->cpy_env);
 	if (!new_env)
 		return (data->err = 1, failed_mess(data, "malloc failed", 1));
-	data->exit_status += execve(cmd_path, cmd, new_env);
+	data->exit_status = execve(cmd_path, cmd, new_env);
 	if (data->exit_status == -1)
 		data->err = 1;
 	free(cmd_path);
@@ -88,10 +109,7 @@ static void	simple_exec(t_data *data, t_token *tmp)
 
 	open_file(data, data->token);
 	if (data->err)
-	{
-		// printf("t nulle\n");
 		return ;
-	}
 	if (tmp->type == BUILD)
 		handle_builtins(data, tmp, STDOUT_FILENO);
 	else if (tmp->type == CMD)

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:30:41 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/14 20:44:10 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 01:47:58 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,20 @@ static void	print_err_syntaxe(char err, int i)
 }
 
 static int	check_syntaxe_in_quote(char *line, int open_quote, int i,
-		char quote)
+		t_data *data)
 {
-	if (!line)
-		return (1);
 	while (line[i])
 	{
 		if (!open_quote && (line[i] == '\'' || line[i] == '\"'))
 		{
-			quote = line[i];
+			data->wich_quote_err = line[i];
 			open_quote = 1;
 		}
-		else if ((line[i] == '\"' || line[i] == '\'') && line[i] == quote)
+		else if ((line[i] == '\"' || line[i] == '\'')
+			&& line[i] == data->wich_quote_err)
 		{
 			open_quote = 0;
-			quote = '\0';
+			data->wich_quote_err = '\0';
 		}
 		if ((line[i] == '\n' || line[i] == ';' || line[i] == '\\')
 			&& !open_quote)
@@ -52,6 +51,8 @@ static int	check_syntaxe_in_quote(char *line, int open_quote, int i,
 			return (print_err_syntaxe(line[i], 2), 2);
 		i++;
 	}
+	if (open_quote)
+		return (3);
 	return (0);
 }
 
@@ -61,11 +62,14 @@ void	syntaxe_line(char *line, t_data *data)
 
 	if (!line)
 		return ;
-	i = check_syntaxe_in_quote(data->line, 0, 0, '\0');
+	data->wich_quote_err = '\0';
+	i = check_syntaxe_in_quote(data->line, 0, 0, data);
 	if (i)
 	{
 		data->err_quote = i;
 		data->exit_status = 2;
+		if (i == 3)
+			open_quote_exit(data);
 		return ;
 	}
 }

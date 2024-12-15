@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/14 21:03:40 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 00:56:20 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void	open_in(t_data *data, t_token *tok)
 	}
 }
 
+
 static void	open_out(t_data *data, t_token *tok)
 {
 	t_token	*tmp;
@@ -48,10 +49,10 @@ static void	open_out(t_data *data, t_token *tok)
 	data->redir->outfile = -1;
 	if (tmp->prev->type == REDIR_OUTFILE)
 		data->redir->outfile = open(tmp->value, O_WRONLY | O_CREAT | O_TRUNC,
-				0777);
+				0644);
 	else if (tmp->prev->type == APPEND)
 		data->redir->outfile = open(tmp->value, O_WRONLY | O_CREAT | O_APPEND,
-				0777);
+				0644);
 	if (data->redir->outfile == -1)
 	{
 		ft_check_access_cmd(data, 2);
