@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 03:34:29 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 05:15:08 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ void	ft_pipes(t_data *data)
 
 	tmp = data->token;
 	i = 0;
-	data->pipe->pid = (pid_t *)ft_calloc(data->pipe->nb_pipe + 1, sizeof(pid_t));
+	data->pipe->pid = (pid_t *)ft_calloc(data->pipe->nb_pipe + 1,
+			sizeof(pid_t));
 	if (!data->pipe->pid)
 		return (quit_pipe(data, i), failed_mess(data, "malloc failed", 1));
 	data->pipe->orig_fds[0] = dup(STDIN_FILENO);

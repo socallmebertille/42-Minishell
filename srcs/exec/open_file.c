@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 05:06:17 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 05:14:32 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ static t_enum	wich_type_rw(t_token *tok)
 
 void	open_file(t_data *data, t_token *tok)
 {
-	t_enum choice;
+	t_enum	choice;
 
 	choice = wich_type_rw(tok);
 	if (choice == REDIR_INFILE)
