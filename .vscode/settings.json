@@ -4,6 +4,7 @@
         "minishell.h": "c",
         "colors.h": "c",
         "history.h": "c",
-        "libft.h": "c"
+        "libft.h": "c",
+        "typeinfo": "c"
     }
 }

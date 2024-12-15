@@ -6,11 +6,34 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:54:11 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/14 22:21:44 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 02:16:23 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	is_directory(const char *path)
+{
+	struct stat	path_stat;
+
+	if (stat(path, &path_stat) != 0)
+		return (0);
+	return (S_ISDIR(path_stat.st_mode));
+}
+
+static void	check_if_directory(t_data *data, char *cmd_path)
+{
+	if (is_directory(cmd_path))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd_path, 2);
+		ft_putstr_fd(": Is a directory\n", 2);
+		free(cmd_path);
+		data->err = 1;
+		data->exit_status = 126;
+		return ;
+	}
+}
 
 static char	*check_err_messages(t_data *data, t_token *tok, char *exist,
 		int err)
@@ -31,6 +54,9 @@ static char	*check_err_messages(t_data *data, t_token *tok, char *exist,
 		{
 			free(exist);
 			exist = ft_strdup(tok->value);
+			check_if_directory(data, exist);
+			if (data->err)
+				return (NULL);
 			if (!exist)
 				return (failed_mess(data, "malloc failed", 1), NULL);
 		}
@@ -53,7 +79,8 @@ void	ft_change_word_to_type(t_data *data)
 			tmp->next->type = INFILE;
 		if (tmp->type == HEREDOC && tmp->next->type == WORD)
 			tmp->next->type = DELIM;
-		if ((tmp->type == REDIR_OUTFILE || tmp->type == APPEND) && tmp->next->type == WORD)
+		if ((tmp->type == REDIR_OUTFILE || tmp->type == APPEND)
+			&& tmp->next->type == WORD)
 			tmp->next->type = OUTFILE;
 		tmp = tmp->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 00:56:20 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 05:06:17 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void	open_in(t_data *data, t_token *tok)
 		return (failed_mess(data, "open failed", 1));
 	}
 }
-
 
 static void	open_out(t_data *data, t_token *tok)
 {

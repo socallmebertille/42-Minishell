@@ -6,134 +6,108 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:20:10 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/14 20:44:49 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 05:03:25 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*give_me_inside_var(char *var, t_data *data)
+static char	*expand_exit_status(t_data *data, int *i)
 {
+	char	*before;
 	char	*in_var;
-	t_env	*tmp;
 
-	in_var = NULL;
-	tmp = data->cpy_env;
-	while (tmp)
-	{
-		if (ft_strcmp(tmp->type, var) == 0)
-		{
-			in_var = ft_strdup(tmp->value);
-			return (in_var);
-		}
-		tmp = tmp->next;
-	}
-	return (NULL);
+	before = ft_strdup(data->expanded_str);
+	if (!before)
+		return (failed_mess(data, "malloc failed", 1), NULL);
+	in_var = ft_itoa(data->exit_status);
+	if (!in_var)
+		return (free(before), failed_mess(data, "malloc failed", 1), NULL);
+	(*i) += 2;
+	free(data->expanded_str);
+	data->expanded_str = ft_concate(before, in_var);
+	free(before);
+	free(in_var);
+	if (!data->expanded_str)
+		return (failed_mess(data, "malloc failed", 1), NULL);
+	return (data->expanded_str);
 }
 
-static char	*extract_var(char *str, int *i)
+static char	*expand_stuff(t_data *data, char *str, char *var, int *i)
 {
-	char	*var;
-	size_t	var_len;
+	char	*before;
+	char	*in_var;
 
-	if (!str)
-		return (NULL);
-	var_len = 0;
-	var = NULL;
-	var_len = get_var_len(str);
-	if (!var_len)
-		return (NULL);
+	before = ft_strdup(data->expanded_str);
+	if (!before)
+		return (failed_mess(data, "malloc failed", 1), NULL);
+	if (is_exist_in_env(var, data))
+		in_var = give_me_inside_var(var, data);
+	else
+		in_var = expand_dollar_sequence(&str, i);
+	free(data->expanded_str);
+	data->expanded_str = ft_concate(before, in_var);
+	free(before);
+	free(in_var);
+	if (!data->expanded_str)
+		return (failed_mess(data, "malloc failed", 1), NULL);
+	return (data->expanded_str);
+}
+
+static char	*expand_else(t_data *data, char *str, int *i)
+{
+	char	*tmp;
+
+	tmp = ft_strdup(data->expanded_str);
+	if (!tmp)
+		return (failed_mess(data, "malloc failed", 1), NULL);
+	free(data->expanded_str);
+	data->expanded_str = ft_strjoin_char(tmp, str[*i]);
+	free(tmp);
+	if (!data->expanded_str)
+		return (failed_mess(data, "malloc failed", 1), NULL);
 	(*i)++;
-	var = ft_substr(str, 1, var_len);
-	(*i) += var_len;
-	return (var);
-}
-
-static char	*ft_concate(char *before, char *in_var)
-{
-	char	*result;
-	size_t	total_len;
-
-	total_len = ft_strlen(before) + ft_strlen(in_var);
-	result = malloc(sizeof(char) * (total_len + 1));
-	if (!result)
-		return (NULL);
-	ft_strcpy(result, before);
-	ft_strcat(result, in_var);
-	return (result);
+	return (data->expanded_str);
 }
 
 static char	*expan_var(char *str, t_data *data)
 {
 	int		i;
-	char	*before;
 	char	*var;
-	char	*in_var;
-	char	*expanded_str;
-	char	*tmp;
 
-	tmp = NULL;
 	i = 0;
-	expanded_str = ft_strdup("");
-	if (!expanded_str)
+	data->expanded_str = ft_strdup("");
+	if (!data->expanded_str)
 		return (NULL);
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] == '$' && !is_in_single_quotes(str, i))
-		{
-			printf("apres mgl\n");
-			i += 2;
-		}
-		else if (str[i] == '$' && str[i + 1] == '?' && !is_in_single_quotes(str,
-				i))
-		{
-			before = ft_strdup(expanded_str);
-			in_var = ft_itoa(data->exit_status);
-			i += 2;
-			free(expanded_str);
-			expanded_str = ft_concate(before, in_var);
-			free(before);
-			free(in_var);
-		}
+		if (str[i] == '$' && str[i + 1] == '?' && !is_in_single_quotes(str, i))
+			data->expanded_str = expand_exit_status(data, &i);
 		else if (str[i] == '$' && !is_in_single_quotes(str, i))
 		{
-			before = ft_strdup(expanded_str);
 			var = extract_var(str + i, &i);
-			if (is_exist_in_env(var, data))
-				in_var = give_me_inside_var(var, data);
-			else
-				in_var = ft_strdup("");
-			free(expanded_str);
-			expanded_str = ft_concate(before, in_var);
-			free(before);
+			data->expanded_str = expand_stuff(data, str, var, &i);
 			free(var);
-			free(in_var);
 		}
 		else
-		{
-			tmp = ft_strdup(expanded_str);
-			free(expanded_str);
-			expanded_str = ft_strjoin_char(tmp, str[i]);
-			free(tmp);
-			i++;
-		}
+			data->expanded_str = expand_else(data, str, &i);
 	}
-	return (expanded_str);
+	return (data->expanded_str);
 }
 
 void	expand(t_data *data)
 {
-	char	*new_line;
-
-	new_line = NULL;
-	if (dollar_in_str(data->line))
+	data->expanded_str = NULL;
+	if (dollar_in_str(data->line, data))
 	{
 		if (data->line)
-			new_line = expan_var(data->line, data);
+			data->expanded_str = expan_var(data->line, data);
+		if (!data->expanded_str)
+			return ;
 		if (data->line)
 			free(data->line);
-		data->line = ft_strdup(new_line);
-		free(new_line);
-		new_line = NULL;
+		data->line = ft_strdup(data->expanded_str);
+		free(data->expanded_str);
+		data->expanded_str = NULL;
 	}
 }

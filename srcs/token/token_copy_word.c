@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:32:08 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/14 19:17:52 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 02:03:13 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int	word_size(char *line, int *i)
 			len++;
 		}
 	}
-	// printf("len du mot == %d\n", len);
 	return (len);
 }
 
@@ -87,36 +86,6 @@ int	handle_quote(char *line, char *dup, int *i, int *j)
 	(*j)++;
 	return (1);
 }
-
-// static int	handle_quote(char *line, char *dup, int *i, int *j)
-// {
-// 	int		open_quote;
-// 	char	quote;
-
-// 	open_quote = 0;
-// 	quote = '\0';
-// 	while (line[*i])
-// 	{
-// 		printf("char [%c]\n", line[*i]);
-// 		if (!open_quote && (line[*i] == '\'' || line[*i] == '\"'))
-// 		{
-// 			quote = line[*i];
-// 			open_quote = 1;
-// 		}
-// 		else
-// 		{
-// 			if (line[*i] == '\"' && line[*i] == quote)
-// 			{
-// 				open_quote = 0;
-// 				quote = '\0';
-// 			}
-// 		}
-// 		if (line[*i] == '\n' && !open_quote)
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-// }
 
 char	*ft_copy_word(char *line, int *i, t_data *data)
 {

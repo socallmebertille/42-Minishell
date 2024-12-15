@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 01:08:04 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 03:33:32 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,6 @@ void	update_last_cmd(t_data *data, char *cmd_path)
 	}
 }
 
-/* RAJOUT UGO */
-static int is_directory(const char *path)
-{
-    struct stat path_stat;
-
-    if (stat(path, &path_stat) != 0)
-        return (0);
-    return (S_ISDIR(path_stat.st_mode));
-}
-/* FIN DE RAJOUT */
-
 void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 {
 	char	*cmd_path;
@@ -62,16 +51,6 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 	if (!cmd || !*cmd)
 		return ;
 	cmd_path = valid_cmd(data, tok->value);
-	/* RAJOUT UGO */
-	if (is_directory(cmd_path))
-	{
-		ft_putstr_fd(cmd_path, 2);
-		ft_putstr_fd(": is a directory\n", 2);
-		free(cmd_path);
-		data->exit_status = 126; // Code d'erreur standard pour "is a directory"
-		return ;
-	}
-	/* FIN DE RAJOUT*/
 	if (!cmd_path)
 		return ;
 	if (!*cmd_path)
@@ -153,10 +132,10 @@ void	wich_exec(t_data *data)
 	data_pipe.pid = NULL;
 	data->pipe = &data_pipe;
 	data_pipe.nb_pipe = pipe_in_line(data);
-	data->nb_pipe = pipe_in_line(data);
+	// data->nb_pipe = pipe_in_line(data);
 	if (!is_not_found(data))
 		data->exit_status = 0;
-	if (data->nb_pipe > 0)
+	if (data->pipe->nb_pipe > 0)
 		ft_pipes(data);
 	else
 		simple_exec(data, tmp);

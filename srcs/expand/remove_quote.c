@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 14:36:32 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/14 19:22:59 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 05:10:13 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,77 +18,63 @@ static void	replace_in_tok(t_token *tok, char *expanded_str)
 	tok->value = ft_strdup(expanded_str);
 }
 
-int	is_in_double_quotes(char *str, int index)
+static void	handle_double_quote(char *str, char **no_quote_str, int *i)
 {
-	int	in_double;
-	int	i;
+	char	*tmp;
 
-	in_double = 0;
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] && i < index)
+	if (is_in_single_quotes(str, *i))
 	{
-		if (!str[i])
-			return (in_double);
-		if (str[i] == '\"' && (i == 0 || str[i - 1] != '\\'))
-			in_double = !in_double;
-		i++;
+		tmp = *no_quote_str;
+		*no_quote_str = ft_strjoin_char(tmp, str[*i]);
+		free(tmp);
+		(*i)++;
 	}
-	return (in_double);
+	else
+		(*i)++;
+}
+
+static void	handle_single_quote(char *str, char **no_quote_str, int *i)
+{
+	char	*tmp;
+
+	if (is_in_double_quotes(str, *i))
+	{
+		tmp = *no_quote_str;
+		*no_quote_str = ft_strjoin_char(tmp, str[*i]);
+		free(tmp);
+		(*i)++;
+	}
+	else
+		(*i)++;
+}
+
+static void	append_char(char **no_quote_str, char c)
+{
+	char	*tmp;
+
+	tmp = *no_quote_str;
+	*no_quote_str = ft_strjoin_char(tmp, c);
+	free(tmp);
 }
 
 void	remove_quote(char *str, t_token *tok)
 {
 	int		i;
 	char	*no_quote_str;
-	char	*tmp;
 
-	i = 0;
-	tmp = NULL;
 	no_quote_str = ft_strdup("");
 	if (!no_quote_str)
 		return ;
+	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' || str[i] == '\"')
-		{
-			if (str[i] == '\"')
-			{
-				if (is_in_single_quotes(str, i))
-				{
-					tmp = no_quote_str;
-					no_quote_str = ft_strjoin_char(tmp, str[i]);
-					free(tmp);
-					i++;
-				}
-				else
-				{
-					i++;
-					continue ;
-				}
-			}
-			else if (str[i] == '\'')
-			{
-				if (is_in_double_quotes(str, i))
-				{
-					tmp = no_quote_str;
-					no_quote_str = ft_strjoin_char(tmp, str[i]);
-					free(tmp);
-					i++;
-				}
-				else
-				{
-					i++;
-					continue ;
-				}
-			}
-		}
+		if (str[i] == '\"')
+			handle_double_quote(str, &no_quote_str, &i);
+		else if (str[i] == '\'')
+			handle_single_quote(str, &no_quote_str, &i);
 		else
 		{
-			tmp = no_quote_str;
-			no_quote_str = ft_strjoin_char(tmp, str[i]);
-			free(tmp);
+			append_char(&no_quote_str, str[i]);
 			i++;
 		}
 	}

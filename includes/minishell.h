@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 01:04:15 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 05:10:49 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <sys/stat.h>
 # include <unistd.h>
 
 typedef enum e_enum
@@ -82,12 +82,12 @@ typedef struct s_redir
 typedef struct s_data
 {
 	int				exit_code;
-	int				nb_pipe;
 	int				err_quote;
 	int				err_export;
 	int				err;
 	int				exit_status;
 	char			wich_quote_err;
+	char			*expanded_str;
 	char			*line;
 	char			**env;
 	t_redir			*redir;
@@ -185,21 +185,28 @@ void				open_file(t_data *data, t_token *tok);
 
 //================== expand =====================================//
 
+//----------------- expand_dollars.c ----------------------
+int					dollar_in_str(char *str, t_data *data);
+char				*expand_dollar_sequence(char **str, int *i);
+
 //----------------- expand_utils.c ----------------------
-int					dollar_in_str(char *str);
 size_t				get_var_len(char *str);
 int					is_exist_in_env(char *var, t_data *data);
 int					is_in_single_quotes(char *str, int index);
 char				*ft_strjoin_char(char *str, char c);
 
 //----------------- expand_utils2.c ----------------------
-// char				*handle_exit_code(t_data *data, char *expanded_str, int *i);
+int					is_in_double_quotes(char *str, int index);
+char				*give_me_inside_var(char *var, t_data *data);
+char				*extract_var(char *str, int *i);
+char				*ft_concate(char *before, char *in_var);
+
+//----------------- expand.c ----------------------
+char				*extract_var(char *str, int *i);
+void				expand(t_data *data);
 
 //----------------- remove_quote.c ----------------------
 void				remove_quote(char *str, t_token *tok);
-
-//----------------- expand.c ----------------------
-void				expand(t_data *data);
 
 //================== token =====================================//
 

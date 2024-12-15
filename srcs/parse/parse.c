@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/14 23:26:45 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 03:00:06 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 // 	i = 0;
 // 	while (tok)
 // 	{
-// 		printf(MAGENTA "============== TOKEN %d ======================\n\n" RESET, i);
+// 		printf(MAGENTA "============== TOKEN %d =================\n\n" RESET, i);
 // 		tmp = tok->next;
 // 		if (tok->prev)
 // 		{
@@ -99,7 +99,7 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 // 		tok = tmp;
 // 		i++;
 // 	}
-// 	printf(MAGENTA "=============================================\n" RESET);
+// 	printf(MAGENTA "========================================\n" RESET);
 // }
 
 static void	init_redir(t_data *data)

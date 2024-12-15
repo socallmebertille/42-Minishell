@@ -6,25 +6,11 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:58:52 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/14 20:45:11 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 05:03:20 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	dollar_in_str(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '$')
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 size_t	get_var_len(char *str)
 {
@@ -61,9 +47,11 @@ int	is_exist_in_env(char *var, t_data *data)
 int	is_in_single_quotes(char *str, int index)
 {
 	int	in_single;
+	int	in_double;
 	int	i;
 
 	in_single = 0;
+	in_double = 0;
 	i = 0;
 	if (!str)
 		return (0);
@@ -71,8 +59,14 @@ int	is_in_single_quotes(char *str, int index)
 	{
 		if (!str[i])
 			return (in_single);
-		if (str[i] == '\'' && (i == 0 || str[i - 1] != '\\'))
-			in_single = !in_single;
+		if (str[i] == '\"' && !in_double)
+			in_double = 1;
+		else if (str[i] == '\"' && in_double)
+			in_double = 0;
+		if (str[i] == '\'' && !in_double && !in_single)
+			in_single = 1;
+		else if (str[i] == '\'' && !in_double && in_single)
+			in_single = 0;
 		i++;
 	}
 	return (in_single);
