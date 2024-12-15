@@ -6,128 +6,75 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 09:02:52 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 11:45:21 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	open_in(t_data *data, t_token *tok)
+// static void	ft_heredoc(t_data *data, t_token *tok, int oflag)
+// {
+// 	char	*heredoc;
+
+// 	if (pipe(data->redir->fds_doc) == -1)
+// 		return (failed_mess(data, "pipe failed", 1));
+// 	while (1)
+// 	{
+// 		heredoc = readline("> ");
+// 		if (g_sigint)
+// 			return (sigint_heredoc(shell, cmd, buffer, fd));
+// 		if (!heredoc)
+// 			break ;
+// 		return ((void)close(fd), 1);
+// 		if (!ft_strncmp(tok->value, heredoc, ft_strlen(tok->value)))
+// 		{
+// 			free(heredoc);
+// 			break ;
+// 		}
+// 		write(data->redir->fds_doc[1], heredoc, ft_strlen(heredoc));
+// 		write(data->redir->fds_doc[1], "\n", 1);
+// 		free(heredoc);
+// 	}
+// 	data->redir->infile = data->redir->fds_doc[0];
+// }
+
+static int	open_redirection_fd(t_data *data, int fd, t_token *token, int oflag)
 {
-	t_token	*tmp;
-
-	tmp = tok;
-	while (tmp)
+	if (fd >= 3)
+		close(fd);
+	if (!token->next)
+		return (failed_mess(data, INVALID_NEXT_REDIR, 2), -1);
+	if (token->next->type != HEREDOC)
 	{
-		if (tmp->type == INFILE)
-			break ;
-		tmp = tmp->next;
+		fd = open(token->next->value, oflag, 0644);
+		if (fd < 0)
+			return (failed_mess(data, "open failed", 2), -1);
+		return (fd);
 	}
-	data->redir->infile = -1;
-	data->redir->infile = open(tmp->value, O_RDONLY);
-	if (data->redir->infile == -1)
-	{
-		ft_check_access_cmd(data, 2);
-		if (data->exit_status == 127)
-			return (data->err = 1, 0);
-		return (failed_mess(data, "open failed", 1), 0);
-	}
-	return (1);
-}
-
-static int	open_out(t_data *data, t_token *tok)
-{
-	t_token	*tmp;
-
-	tmp = tok;
-	while (tmp)
-	{
-		if (tmp->type == OUTFILE)
-			break ;
-		tmp = tmp->next;
-	}
-	data->redir->outfile = -1;
-	if (tmp->prev->type == REDIR_OUTFILE)
-		data->redir->outfile = open(tmp->value, O_WRONLY | O_CREAT | O_TRUNC,
-				0644);
-	else if (tmp->prev->type == APPEND)
-		data->redir->outfile = open(tmp->value, O_WRONLY | O_CREAT | O_APPEND,
-				0644);
-	if (data->redir->outfile == -1)
-	{
-		ft_check_access_cmd(data, 2);
-		if (data->exit_status == 127)
-			return (data->err = 1, 0);
-		return (failed_mess(data, "open failed", 1), 0);
-	}
-	return (1);
-}
-
-static void	open_delim(t_data *data, t_token *tok)
-{
-	t_token	*tmp;
-	char	*heredoc;
-
-	tmp = tok;
-	while (tmp)
-	{
-		if (tmp->type == DELIM)
-			break ;
-		tmp = tmp->next;
-	}
-	if (pipe(data->redir->fds_doc) == -1)
-		return (failed_mess(data, "pipe failed", 1));
-	while (1)
-	{
-		heredoc = readline("> ");
-		// if (g_sigint)
-		// 	return (sigint_heredoc(shell, cmd, buffer, fd));
-		if (!heredoc)
-			break ;
-		// return ((void)close(fd), 1);
-		if (!ft_strncmp(tmp->value, heredoc, ft_strlen(tmp->value)))
-		{
-			free(heredoc);
-			break ;
-		}
-		write(data->redir->fds_doc[1], heredoc, ft_strlen(heredoc));
-		write(data->redir->fds_doc[1], "\n", 1);
-		free(heredoc);
-	}
-	data->redir->infile = data->redir->fds_doc[0];
-}
-
-static t_enum	wich_type_rw(t_token *tok)
-{
-	int		choice;
-	t_token	*tmp;
-
-	choice = 0;
-	tmp = tok;
-	while (tmp)
-	{
-		if (tmp->type == REDIR_INFILE)
-			return (REDIR_INFILE);
-		else if (tmp->type == REDIR_OUTFILE)
-			return (REDIR_OUTFILE);
-		else if (tmp->type == APPEND)
-			return (APPEND);
-		else if (tmp->type == HEREDOC)
-			return (HEREDOC);
-		tmp = tmp->next;
-	}
-	return (CMD);
+	// else if (token->next->type == HEREDOC)
+	// 	ft_heredoc(data, token, oflag);
+	return (-1);
 }
 
 void	open_file(t_data *data, t_token *tok)
 {
-	t_enum	choice;
+	t_token	*tmp;
 
-	choice = wich_type_rw(tok);
-	if (choice == REDIR_INFILE)
-		(void)open_in(data, tok);
-	else if (choice == REDIR_OUTFILE || choice == APPEND)
-		(void)open_out(data, tok);
-	else if (choice == HEREDOC)
-		open_delim(data, tok);
+	tmp = tok;
+	while (tmp)
+	{
+		if (tmp->type == PIPE || !tmp)
+			return ;
+		if (tmp->type == REDIR_INFILE || tmp->type == HEREDOC)
+			data->redir->infile = open_redirection_fd(data, 1, tmp, O_RDONLY);
+		else if (tmp->type == REDIR_OUTFILE)
+			data->redir->outfile = open_redirection_fd(data, 1, tmp,
+				O_WRONLY | O_TRUNC | O_CREAT);
+		else if (tmp->type == APPEND)
+			data->redir->outfile = open_redirection_fd(data, 2, tmp,
+				O_WRONLY | O_APPEND | O_CREAT);
+		// if (tmp->type == HEREDOC)
+		// 	ft_heredoc();
+		tmp = tmp->next;
+	}
 }

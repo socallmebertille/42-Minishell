@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 08:53:43 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 10:42:09 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,9 @@ void				handle_unset(t_data *data, t_token *tok);
 //----------------- syntaxe.c ----------------------
 int					good_syntaxe(t_data *data);
 
+//----------------- remove_quote.c ----------------------
+void				remove_quote(char *str, t_token *tok);
+
 //----------------- parse.c ----------------------
 void				parse(t_data *data);
 void				syntaxe_line(char *line, t_data *data);
@@ -166,7 +169,8 @@ int					handle_builtins(t_data *data, t_token *tok, int fd_out);
 char				**env_to_tab(t_env *env);
 
 //----------------- exec_dup2.c ---------------------
-void				exec_dup2(t_data *data, t_token *tmp, int i);
+void				exec_dup2_pipe(t_data *data, t_token *tmp, int i);
+void				exec_dup2_simple(t_data *data);
 
 //----------------- exec_pipes.c ----------------------
 void				ft_pipes(t_data *data);
@@ -207,9 +211,6 @@ char				*ft_concate(char *before, char *in_var);
 //----------------- expand.c ----------------------
 char				*extract_var(char *str, int *i);
 void				expand(t_data *data);
-
-//----------------- remove_quote.c ----------------------
-void				remove_quote(char *str, t_token *tok);
 
 //================== token =====================================//
 

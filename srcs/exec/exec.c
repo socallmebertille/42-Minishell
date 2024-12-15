@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 08:57:31 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 11:41:29 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,12 @@ void	exec_choice(t_data *data, t_token *tok)
 	char	**cmd;
 
 	cmd = recup_cmd(data, tok);
+	// int i = 0;
+	// while (cmd[i])
+	// {
+	// 	printf("cmd[%d] [%s]\n", i, cmd[i]);
+	// 	i++;
+	// }
 	// exec_dup2(data, tok, 0);
 	if (tok->type == BUILD)
 		handle_builtins(data, tok, STDOUT_FILENO);
@@ -91,8 +97,11 @@ static void	simple_exec(t_data *data, t_token *tmp)
 		return ;
 	if (tmp->type == BUILD)
 	{
-		exec_dup2(data, tmp, 0);
+		exec_dup2_simple(data);
 		handle_builtins(data, tmp, STDOUT_FILENO);
+		if (dup2(data->pipe->orig_fds[0], STDIN_FILENO) == -1
+			|| dup2(data->pipe->orig_fds[1], STDOUT_FILENO) == -1)
+			return (failed_mess(data, "dup2 failed", 1));
 	}
 	else if (tmp->type == CMD)
 	{
@@ -102,7 +111,7 @@ static void	simple_exec(t_data *data, t_token *tmp)
 		if (pid == 0)
 		{
 			// child_signal_handler();
-			exec_dup2(data, tmp, 0);
+			exec_dup2_simple(data);
 			exec_choice(data, tmp);
 		}
 		else
@@ -136,6 +145,10 @@ void	wich_exec(t_data *data)
 	data_pipe.pid = NULL;
 	data->pipe = &data_pipe;
 	data_pipe.nb_pipe = pipe_in_line(data);
+	data->pipe->orig_fds[0] = dup(STDIN_FILENO);
+	data->pipe->orig_fds[1] = dup(STDOUT_FILENO);
+	if (data->pipe->orig_fds[0] == -1 || data->pipe->orig_fds[1] == -1)
+		return (failed_mess(data, "dup failed", 1));
 	if (!is_not_found(data))
 		data->exit_status = 0;
 	if (data->pipe->nb_pipe > 0)
