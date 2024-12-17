@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 10:42:09 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/16 18:16:30 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ char				*get_actual_env_path(t_data *data);
 char				*get_home_env(t_data *data);
 
 //----------------- echo.c ------------------------
-void				handle_echo(t_token *tok, int fd_out);
+void				handle_echo(t_data *data, t_token *tok, int fd_out);
 
 //----------------- env.c ------------------------
 void				handle_env(t_data *data, t_token *tok, int fd_out);
@@ -135,7 +135,7 @@ void				get_shlvl_export(t_data *data);
 void				get_env2(char **env, t_data *data);
 
 //----------------- pwd.c ----------------------
-void				handle_pwd(int fd_out);
+void				handle_pwd(t_data *data, int fd_out);
 
 //----------------- syntaxe_export.c ----------------------
 int					check_syntax_export(char *value, t_data *data);
@@ -269,10 +269,14 @@ void				free_env(t_data *data, t_env *env, int cpy);
 void				free_pipe(t_data *data);
 void				quit_pipe(t_data *data, int i);
 
-//----------------- signal.c ---------------------expor-
+//----------------- signal.c --------------------------
 void				signal_handlers(void);
 void				reset_signal_handler(void);
 void				child_signal_handler(void);
+
+//----------------- write_str.c --------------------------
+void				write_char_fd(t_data *data, t_token *tok, char c, int fd);
+void				write_str_fd(t_data *data, t_token *tok, char *s, int fd);
 
 //----------------- main.c ----------------------
 void				exit_prog(t_data *data, int code);

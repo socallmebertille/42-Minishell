@@ -1,44 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   write_str.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/23 19:44:12 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/10 12:29:29 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/16 17:50:46 by saberton          #+#    #+#             */
+/*   Updated: 2024/12/16 17:59:43 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_putchar_fd(char c, int fd)
+void	write_char_fd(t_data *data, t_token *tok, char c, int fd)
 {
-	if (fd > -1)
+	if (fd > -1 && !data->err)
 	{
 		if (write(fd, &c, 1) == -1)
 		{
-			perror("cmd: write error : no space left on device\n");
+            write_str_fd(data, tok, tok->value, 2);
+            write_str_fd(data, tok, ": write error : no space left on device\n", 2);
+			data->err = 1;
 			return ;
 		}
 	}
 }
 
-/*
-void	ft_putchar_fd(char c, int fd)
+void	write_str_fd(t_data *data, t_token *tok, char *s, int fd)
 {
-	// if (fd > -1)
-	// 	write(fd, &c, 1);
+	if (!s && !data->err)
+		return ;
+	while (*s)
+		write_char_fd(data, tok, *s++, fd);
 }
-
-#include <fcntl.h>
-
-int	main(void)
-{
-	int	fd;
-
-	fd = open("test.txt", O_TRUNC | O_CREAT | O_WRONLY, 0640);
-	ft_putchar_fd('a', fd);
-	close(fd);
-	return (0);
-}*/
