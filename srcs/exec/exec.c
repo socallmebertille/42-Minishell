@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 17:17:22 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:05:45 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ void	update_last_cmd(t_data *data, char *cmd_path)
 void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 {
 	char	*cmd_path;
-	int		exec;
+	char	**new_env;
 
+	(void)env;
 	if (!cmd || !*cmd)
 		return ;
 	cmd_path = valid_cmd(data, tok->value);
@@ -59,46 +60,80 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 			return (failed_mess(data, "malloc failed", 1));
 	}
 	update_last_cmd(data, cmd_path);
-	// if (!ft_strcmp("./minishell", cmd[0]))
-	// 	data->keep_env = 1;
-	// ft_check_access_cmd(data);
-	exec = execve(cmd_path, cmd, env);
-	if (exec == -1)
+	new_env = env_to_tab(data->cpy_env);
+	if (!new_env)
+		return (data->err = 1, failed_mess(data, "malloc failed", 1));
+	data->exit_status = execve(cmd_path, cmd, new_env);
+	if (data->exit_status == -1)
 		data->err = 1;
 	free(cmd_path);
 }
 
 void	exec_choice(t_data *data, t_token *tok)
 {
-	t_enum	choice;
 	char	**cmd;
 
-	choice = wich_type_exec(data);
-	cmd = NULL;
-	if (choice == CMD)
+	cmd = recup_cmd(data, tok);
+	// int i = 0;
+	// while (cmd[i])
+	// {
+	// 	printf("cmd[%d] [%s]\n", i, cmd[i]);
+	// 	i++;
+	// }
+	if (tok->type == BUILD)
+		handle_builtins(data, tok, STDOUT_FILENO);
+	else if (tok->type == CMD)
+		exec_cmd(data, data->env, cmd, tok);
+	ft_free_tab(cmd);
+}
+
+static void	simple_exec(t_data *data, t_token *tmp)
+{
+	pid_t	pid;
+
+	if (data->err)
+		return ;
+	if (tmp->type == BUILD)
 	{
-		cmd = recup_cmd(data, tok);
-		if (tok->type == BUILD)
-			handle_builtins(data, tok, STDOUT_FILENO);
-		else if (tok->type == CMD)
-			exec_cmd(data, data->env, cmd, tok);
-		ft_free_tab(cmd);
+		exec_dup2_simple(data);
+		handle_builtins(data, tmp, STDOUT_FILENO);
+		if (dup2(data->pipe->orig_fds[0], STDIN_FILENO) == -1
+			|| dup2(data->pipe->orig_fds[1], STDOUT_FILENO) == -1)
+			return (failed_mess(data, "dup2 failed", 1));
 	}
-	else if (choice == INFILE)
-		exec_in();
-	// else if (choice == OUTFILE)
-	// 	exec_out();
-	// else if (choice == APPEND)
-	// 	exec_append();
-	// else if (choice == HEREDOC)
-	// 	exec_heredoc();
+	else if (tmp->type == CMD)
+	{
+		pid = fork();
+		if (pid == -1)
+			return (failed_mess(data, "malloc failed", 1));
+		if (pid == 0)
+		{
+			exec_dup2_simple(data);
+			exec_choice(data, tmp);
+		}
+		else
+			get_end_exec(data, 0, pid);
+	}
+}
+
+static int	is_not_found(t_data *data)
+{
+	t_token	*tok;
+
+	tok = data->token;
+	while (tok)
+	{
+		if (tok->type == NOT_FOUND)
+			return (1);
+		tok = tok->next;
+	}
+	return (0);
 }
 
 void	wich_exec(t_data *data)
 {
 	t_token	*tmp;
 	t_pipe	data_pipe;
-	pid_t	pid;
 
 	tmp = data->token;
 	ft_bzero(&data_pipe, sizeof(t_pipe));
@@ -107,30 +142,17 @@ void	wich_exec(t_data *data)
 	data_pipe.pid = NULL;
 	data->pipe = &data_pipe;
 	data_pipe.nb_pipe = pipe_in_line(data);
-	data->nb_pipe = pipe_in_line(data);
-	if (data->nb_pipe > 0)
+	data->pipe->orig_fds[0] = dup(STDIN_FILENO);
+	data->pipe->orig_fds[1] = dup(STDOUT_FILENO);
+	if (data->pipe->orig_fds[0] == -1 || data->pipe->orig_fds[1] == -1)
+		return (failed_mess(data, "dup failed", 1));
+	if (!is_not_found(data))
+		data->exit_status = 0;
+	if (data->pipe->nb_pipe > 0)
 		ft_pipes(data);
 	else
 	{
-		if (tmp->type == BUILD)
-			handle_builtins(data, tmp, STDOUT_FILENO);
-		else if (tmp->type == CMD)
-		{
-			pid = fork();
-			if (pid == -1)
-				return (failed_mess(data, "malloc failed", 1));
-			if (pid == 0)
-			{
-				// child_signal_handler();
-				exec_choice(data, tmp);
-			}
-			else
-				get_end_exec(data, 0, pid);
-		}
+		open_file(data, data->token);
+		simple_exec(data, tmp);
 	}
 }
-
-// echo "cc
-// les
-// petis
-// potes"

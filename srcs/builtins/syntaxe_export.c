@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntaxe_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 11:56:37 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/02 13:16:45 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 19:51:50 by bertille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,7 @@ void	modif_export(t_data *data, char *value)
 	int		exist;
 	int		i;
 	char	*sub;
-	t_env	*tmp;
 
-	tmp = data->cpy_env2;
 	i = check_syntax_export(value, data);
 	if (i == -1)
 		return (ft_putstr_fd("minishell: export: `", 2), ft_putstr_fd(value, 2),

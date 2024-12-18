@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:39 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 15:00:40 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:28:39 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,6 @@ void	free_env(t_data *data, t_env *env, int cpy)
 
 void	free_pipe(t_data *data)
 {
-	int	i;
-
-	i = 0;
 	if (!data || !data->pipe)
 		return ;
 	if (data->pipe->pid)
@@ -77,43 +74,18 @@ void	free_pipe(t_data *data)
 	data->pipe = NULL;
 }
 
-static void	close_one_fd(int fd)
-{
-	if (fd >= 3)
-		close(fd);
-}
-
-void	free_close_fds(t_data *data, int sous_process)
-{
-	int	i;
-
-	i = 0;
-	if (!data->pipe->nb_pipe)
-		return ;
-	while (i < data->pipe->nb_pipe)
-	{
-		close_one_fd(data->pipe->fds[i][0]);
-		close_one_fd(data->pipe->fds[i][1]);
-		if (data->pipe->fds[i] && !sous_process)
-		{
-			free(data->pipe->fds[i]);
-			data->pipe->fds[i] = NULL;
-		}
-		i++;
-	}
-	close_one_fd(data->pipe->orig_fds[0]);
-	close_one_fd(data->pipe->orig_fds[1]);
-	if (sous_process)
-		return ;
-	if (data->pipe->fds)
-		free(data->pipe->fds);
-	data->pipe->fds = NULL;
-	data->pipe->nb_pipe = 0;
-}
-
 void	quit_pipe(t_data *data, int i)
 {
 	free_close_fds(data, 0);
 	get_end_exec(data, i, -1);
 	free_pipe(data);
+}
+
+void	failed_mess(t_data *data, char *mess, int code)
+{
+	ft_putstr_fd(mess, 2);
+	if (*mess)
+		ft_putstr_fd("\n", 2);
+	data->err = 1;
+	data->exit_status += code;
 }

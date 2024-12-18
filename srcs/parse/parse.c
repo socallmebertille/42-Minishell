@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/12 18:52:13 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/16 18:15:53 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	is_builtins(t_token *token)
 			return (token->type = BUILD, 1);
 		else if (ft_strcmp(token->value, "cd") == 0)
 			return (token->type = BUILD, 1);
-		
 	}
 	return (0);
 }
@@ -45,9 +44,9 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 		else if (ft_strcmp(tok->value, "env") == 0)
 			handle_env(data, tok, fd_out);
 		else if (ft_strcmp(tok->value, "echo") == 0)
-			handle_echo(tok, fd_out);
+			handle_echo(data, tok, fd_out);
 		else if (ft_strcmp(tok->value, "pwd") == 0)
-			handle_pwd(fd_out);
+			handle_pwd(data, fd_out);
 		else if (ft_strcmp(tok->value, "unset") == 0)
 			handle_unset(data, tok);
 		else if (ft_strcmp(tok->value, "export") == 0)
@@ -72,7 +71,7 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 // 	i = 0;
 // 	while (tok)
 // 	{
-// 		printf(MAGENTA "============== TOKEN %d ======================\n" RESET,
+// 		printf(MAGENTA "============== TOKEN %d =================\n\n" RESET,
 // 			i);
 // 		tmp = tok->next;
 // 		if (tok->prev)
@@ -81,7 +80,10 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 // 			printf(BLUE "%s\t" RESET, tok->prev->value);
 // 		}
 // 		else
-// 			printf("\t\t");
+// 		{
+// 			printf("PREV = ");
+// 			printf(BLUE "NULL\t" RESET);
+// 		}
 // 		printf(RED "%s " RESET, tok->value);
 // 		printf(YELLOW "= %s" RESET, ft_enum_to_char(tok->type));
 // 		if (tok->next)
@@ -90,24 +92,36 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 // 			printf(GREEN "%s\n" RESET, tok->next->value);
 // 		}
 // 		else
-// 			printf("\n");
+// 		{
+// 			printf("\tNEXT = ");
+// 			printf(GREEN "NULL\n" RESET);
+// 		}
 // 		printf("\n");
 // 		tok = tmp;
 // 		i++;
 // 	}
+// 	printf(MAGENTA "========================================\n" RESET);
 // }
 
 void	parse(t_data *data)
 {
-	expand(data);
-	ft_change_word_to_cmd(data);
+	t_redir data_redir;
+
+	ft_change_word_to_type(data);
 	// print_token(data);
-	// ft_change_word_to_expand(data);
 	if (!good_syntaxe(data))
 		return ;
-	ft_check_access_cmd(data);
+	ft_check_access_cmd(data, 1);
 	if (data->err)
 		return ;
+	ft_bzero(&data_redir, sizeof(t_redir));
+	data_redir.infile = -1;
+	data_redir.outfile = -1;
+	data_redir.heredoc = -1;
+	data_redir.fds_doc[0] = -1;
+	data_redir.fds_doc[1] = -1;
+	data_redir.data = data;
+	data->redir = &data_redir;
 	wich_exec(data);
 	if (data->err)
 		return ;

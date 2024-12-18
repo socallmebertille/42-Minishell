@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:55:18 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/03 18:28:18 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 13:13:50 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,30 @@
 
 char	*ft_enum_to_char(int num)
 {
-	if (num == 1)
-		return ("FLAG");
-	if (num == 124)
+	if (num == WORD)
+		return ("WORD");
+	if (num == PIPE)
 		return ("PIPE");
 	if (num == HEREDOC)
 		return ("HEREDOC");
+	if (num == REDIR_OUTFILE)
+		return ("REDIR_OUTFILE");
+	if (num == REDIR_INFILE)
+		return ("REDIR_INFILE");
 	if (num == OUTFILE)
-		return ("OUT");
+		return ("OUTFILE");
 	if (num == INFILE)
-		return ("IN");
+		return ("INFILE");
 	if (num == APPEND)
 		return ("APPEND");
 	if (num == CMD)
 		return ("CMD");
 	if (num == BUILD)
 		return ("BUILTINS");
+	if (num == DELIM)
+		return ("DELIM");
+	if (num == NOT_FOUND)
+		return ("CMD NOT FOUND");
 	return ("");
 }
 
@@ -50,14 +58,22 @@ void	tokenize(char *line, t_data *data)
 	t_token	*tok;
 	t_token	*tmp;
 
-	tmp = NULL;
 	tok = NULL;
 	i = 0;
-	while (line[i])
+	(void)line;
+	expand(data);
+	while (data->line[i])
 	{
-		if (ft_isspace(line[i]))
+		if (ft_isspace(data->line[i]))
 			i++;
-		if (line[i])
-			dispatcheur(line, &i, data, &tok);
+		if (data->line[i])
+			dispatcheur(data->line, &i, data, &tok);
+	}
+	tmp = data->token;
+	while (tmp)
+	{
+		if (tmp)
+			remove_quote(tmp->value, tmp);
+		tmp = tmp->next;
 	}
 }

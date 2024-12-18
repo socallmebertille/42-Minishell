@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 18:32:08 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/12 18:47:01 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/15 02:03:13 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	len_in_quote(char *line, int *j, char quote)
 	(*j)++;
 	if (!line[*j])
 		return (len);
-	while (line[*j] && line[*j] != '\n' && line[*j] != quote)
+	while (line[*j] && line[*j] != quote)
 	{
 		len++;
 		(*j)++;
@@ -46,7 +46,7 @@ int	word_size(char *line, int *i)
 	j = *i;
 	if (!line || !*line)
 		return (0);
-	while (line[j] && line[j] != '\n')
+	while (line[j])
 	{
 		if (is_quote(line[j]))
 		{
@@ -55,14 +55,13 @@ int	word_size(char *line, int *i)
 		if (!line[j])
 			break ;
 		if (!is_word(line[j]))
-			break;
+			break ;
 		else
 		{
 			j++;
 			len++;
 		}
 	}
-	printf("len du mot == %d\n", len);
 	return (len);
 }
 
@@ -74,7 +73,7 @@ int	handle_quote(char *line, char *dup, int *i, int *j)
 	dup[*j] = line[*i];
 	(*i)++;
 	(*j)++;
-	while (line[*i] && line[*i] != '\n' && line[*i] != quote)
+	while (line[*i] && line[*i] != quote)
 	{
 		dup[*j] = line[*i];
 		(*j)++;
@@ -98,7 +97,7 @@ char	*ft_copy_word(char *line, int *i, t_data *data)
 	if (!dup)
 		return (NULL);
 	j = 0;
-	while (line[*i] && line[*i] != '\n' && is_word(line[*i]))
+	while (line[*i] && is_word(line[*i]))
 	{
 		if (is_quote(line[*i]))
 		{

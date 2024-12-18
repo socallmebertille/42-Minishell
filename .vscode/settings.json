@@ -1,8 +1,6 @@
 {
     "files.associations": {
-        "type_traits": "c",
         "minishell.h": "c",
-        "colors.h": "c",
-        "history.h": "c"
+        "type_traits": "c"
     }
 }

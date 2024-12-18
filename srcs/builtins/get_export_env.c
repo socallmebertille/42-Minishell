@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 16:00:00 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/11 09:26:27 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:56:57 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,39 +42,37 @@ void	get_shlvl_export(t_data *data)
 {
 	t_env	*export;
 	int		lvl;
+	int		i;
 
+	i = 0;
 	export = data->cpy_env2;
-	lvl = 0;
-	if (data->env)
+	while (data->env[i])
 	{
-		int i = 0;
-		while (data->env[i])
-		{
-			if (!ft_strcmp(data->env[i], "SHLVL"))
-			{
-				if (!lvl)
-					lvl = ft_atol(data->env[i] + 7) + 1;
-				// data->env[i] + 7 = ft_itoa(lvl);
-				break ;
-			}
-			i++;
-		}
+		if (!ft_strncmp(data->env[i], "SHLVL=", 6))
+			lvl = ft_atol(data->env[i] + 6);
+		i++;
 	}
 	while (export)
 	{
-		// if (!ft_strcmp(export->type, "_") && !ft_strcmp(export->value, "./minishell"))
-		// 	lvl = ft_atol(export->value) + 1;
 		if (!ft_strcmp(export->type, "SHLVL"))
 		{
-			if (!lvl)
-				lvl = ft_atol(export->value) + 1;
 			free(export->value);
-			export->value = ft_itoa(lvl);
-			break ;
+			export->value = ft_itoa(lvl + 1);
 		}
 		export = export->next;
 	}
 	return ;
+}
+
+static void	export_without_env(t_data *data, t_env *cpy_env2)
+{
+	if (!*data->env)
+	{
+		add_cpy_env2(ft_strdup("OLDPWD"), ft_strdup(""), &cpy_env2, data);
+		add_cpy_env2(ft_strdup("PWD"), getcwd(NULL, 0), &cpy_env2, data);
+		add_cpy_env2(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env2, data);
+		return ;
+	}
 }
 
 void	get_env2(char **env, t_data *data)
@@ -85,14 +83,7 @@ void	get_env2(char **env, t_data *data)
 
 	cpy_env2 = NULL;
 	data->env = env;
-	if (!*env)
-	{
-		add_cpy_env2(ft_strdup("OLDPWD"), ft_strdup(""), &cpy_env2, data);
-		add_cpy_env2(ft_strdup("PWD"), getcwd(NULL, 0), &cpy_env2, data);
-		add_cpy_env2(ft_strdup("SHLVL"), ft_strdup("1"), &cpy_env2, data);
-		get_shlvl_export(data);
-		return ;
-	}
+	export_without_env(data, cpy_env2);
 	i = 0;
 	while (env[i])
 	{
@@ -107,5 +98,4 @@ void	get_env2(char **env, t_data *data)
 		i++;
 	}
 	get_shlvl_export(data);
-	return ;
 }
