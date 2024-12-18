@@ -3,19 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 17:35:01 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/18 09:01:31 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 15:46:09 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_pwd(t_data *data, int fd_out)
+static int check_flag(t_token *tok)
 {
-	char	*pwd;
+	if (tok->next->type == WORD && tok->next->value[0] == '-' && !tok->next->value[1])
+		return (0);
+	else if (tok->next->type == WORD && tok->next->value[0] == '-' &&
+			 (tok->next->value[1] != '-' || tok->next->value[1] != '\0')
+			 && tok->next->value[2] != '\0')
+		return (1);
+	else
+		return (0);
+}
 
+void handle_pwd(t_data *data, int fd_out)
+{
+	char *pwd;
+
+	if (data->token->next && check_flag(data->token))
+	{
+		ft_putstr_fd("minishell: pwd: ", fd_out);
+		ft_putstr_fd(data->token->next->value, fd_out);
+		ft_putstr_fd(" : invalid option \n", fd_out);
+		return;
+	}
 	pwd = getcwd(NULL, 0);
 	if (pwd != NULL)
 	{
