@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 14:28:58 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:12:33 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,9 @@ void				exec_cmd(t_data *data, char **env, char **cmd,
 						t_token *tok);
 void				exec_choice(t_data *data, t_token *tok);
 void				wich_exec(t_data *data);
+
+//----------------- heredoc.c ----------------------
+void				ft_heredoc(t_data *data, t_token *tok);
 
 //----------------- open_file.c ----------------------
 void				open_file(t_data *data, t_token *tok);

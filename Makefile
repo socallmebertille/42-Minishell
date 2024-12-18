@@ -34,6 +34,7 @@ SRCS_NAMES	=	main.c signal.c free_data.c exit_status.c write_str.c\
 				exec/open_file.c \
 				exec/exec_utils.c \
 				exec/exec_pipes.c \
+				exec/heredoc.c \
 				exec/exec.c \
 				expand/expand.c \
 				expand/expand_utils.c \
