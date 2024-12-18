@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:51:15 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/18 09:07:07 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:39:13 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,58 @@ static void	display_export_order(t_data *data, int fd_out)
 	}
 }
 
+static char	*export_key(char *arg)
+{
+	char	*equal;
+	char	*key;
+
+	if (arg[0] == '=')
+		return (ft_strdup(arg));
+	equal = ft_strchr(arg, '=');
+	if (!equal)
+		key = ft_strdup(arg);
+	else
+		key = ft_substr(arg, 0, equal - arg);
+	return (key);
+}
+
+static int	is_valid_name(char *name)
+{
+	int	i;
+
+	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(name, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		free(name);
+		return (0);
+	}
+	i = 1;
+	while (name[i])
+	{
+		if (!ft_isalnum(name[i]) && name[i] != '_')
+		{
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(name, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			free(name);
+			return (0);
+		}
+		i++;
+	}
+	free(name);
+	return (1);
+}
+
 void	handle_export(t_data *data, t_token *tok, int fd_out)
 {
 	t_token	*tmp_tok;
+	t_token *tmp_tiktok;
 	int		exist;
 
 	exist = 0;
+	tmp_tiktok = data->token->next;
 	tmp_tok = tok->next;
 	if (!data->cpy_env2)
 	{
@@ -100,6 +146,13 @@ void	handle_export(t_data *data, t_token *tok, int fd_out)
 		return (ft_putstr_fd(INVALID_VAL_EXPORT, 2));
 	while (tmp_tok && tmp_tok->type == WORD)
 	{
+		if (!is_valid_name(export_key(tmp_tiktok->value)))
+		{
+			tmp_tiktok = tmp_tok->next;
+			tmp_tok = tmp_tok->next;
+			continue; ;
+		}
+		tmp_tiktok = tmp_tok->next;
 		if (tmp_tok->value)
 			exist = find_if_env_exist(data->cpy_env, tmp_tok->value);
 		if (exist != -1)
