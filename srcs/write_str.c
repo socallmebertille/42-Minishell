@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 17:50:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 09:03:29 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:27:21 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ void	write_char_fd(t_data *data, char *str_err, char c, int fd)
 	{
 		if (write(fd, &c, 1) == -1)
 		{
-            write_str_fd(data, str_err, str_err, 2);
-            write_str_fd(data, str_err, ": write error : no space left on device\n", 2);
+			write_str_fd(data, str_err, str_err, 2);
+			write_str_fd(data, str_err,
+				": write error : no space left on device\n", 2);
 			data->err = 1;
 			return ;
 		}

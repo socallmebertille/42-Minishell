@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 21:25:20 by bertille         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:47:19 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	ft_heredoc(t_data *data, t_token *tok)
 
 	if (pipe(data->redir->fds_doc) == -1)
 		return (failed_mess(data, "pipe failed", 1));
+	child_signal_handler();
 	while (1)
 	{
 		heredoc = readline("> ");
@@ -35,6 +36,7 @@ static void	ft_heredoc(t_data *data, t_token *tok)
 		write(data->redir->fds_doc[1], "\n", 1);
 		free(heredoc);
 	}
+	signal_handlers();
 	data->redir->infile = data->redir->fds_doc[0];
 }
 
@@ -76,14 +78,14 @@ void	open_file(t_data *data, t_token *tok)
 	{
 		if (tmp->type == PIPE || !tmp)
 			return ;
-		if (tmp->type == REDIR_INFILE && tmp->next->type == INFILE)// || tmp->type == HEREDOC)
+		if (tmp->type == REDIR_INFILE && tmp->next->type == INFILE)
 			data->redir->infile = open_redirection_fd(data, 1, tmp, O_RDONLY);
 		else if (tmp->type == REDIR_OUTFILE && tmp->next->type == OUTFILE)
 			data->redir->outfile = open_redirection_fd(data, 2, tmp,
-				O_WRONLY | O_TRUNC | O_CREAT);
+					O_WRONLY | O_TRUNC | O_CREAT);
 		else if (tmp->type == APPEND && tmp->next->type == OUTFILE)
 			data->redir->outfile = open_redirection_fd(data, 2, tmp,
-				O_WRONLY | O_APPEND | O_CREAT);
+					O_WRONLY | O_APPEND | O_CREAT);
 		else if (tmp->type == HEREDOC && tmp->next->type == DELIM)
 			ft_heredoc(data, tmp);
 		tmp = tmp->next;
