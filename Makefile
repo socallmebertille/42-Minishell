@@ -1,7 +1,7 @@
 NAME		=	minishell
 
 CC			=	cc
-C_FLAGS		=	-Wall -Wextra -Werror -g3
+C_FLAGS		=	-Wall -Wextra -Werror -g3 -MMD -MP
 
 SRCS_DIR	=	srcs
 OBJ_DIR		=	objs
@@ -90,3 +90,5 @@ re: fclean all
 	@echo "$(PURPLE) ============ $(REDO) Redo completed ! ====================================== $(RESET)"
 
 .PHONY: all clean fclean re
+
+-include $(DEPS)
