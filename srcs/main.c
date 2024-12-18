@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 17:55:30 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:00:36 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static volatile sig_atomic_t	g_signal_received = 0;
 
 static int	is_line_empty_or_need_continue(t_data *data)
 {
@@ -41,19 +39,11 @@ static void	loop(t_data *data)
 {
 	while (1)
 	{
-		// g_signal_received = 0;
-		// reset_signal_handler();
 		data->line = readline("minishell$ ");
 		if (!data->line)
 			return (write(2, "exit\n", 5), exit_prog(data, 0));
 		if (is_line_empty_or_need_continue(data))
 			continue ;
-		if (g_signal_received)
-		{
-			data->exit_status = 130;
-			free(data->line);
-			continue ;
-		}
 		syntaxe_line(data->line, data);
 		if (*data->line)
 			add_history(data->line);

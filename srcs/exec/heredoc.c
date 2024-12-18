@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 19:10:37 by uzanchi           #+#    #+#             */
-/*   Updated: 2024/12/18 19:56:52 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/12/18 21:03:17 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_heredoc(t_data *data, t_token *tok)
 	while (1)
 	{
 		signals_interactive();
-		heredoc = readline("heredoc> ");
+		heredoc = readline("> ");
 		signals_non_interactive();
 		if (!heredoc)
 			break ;
@@ -65,6 +65,5 @@ void	ft_heredoc(t_data *data, t_token *tok)
 	}
 	data->redir->infile = data->redir->fds_doc[0];
 	close(data->redir->fds_doc[1]);
-    // close(data->redir->fds_doc[0]);
-    // data->redir->fds_doc[0] = -1;
+	data->redir->fds_doc[1] = -1;
 }
