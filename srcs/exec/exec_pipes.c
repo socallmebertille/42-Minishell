@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 14:41:02 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:14:19 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	cmd_in_pipe(t_data *data, t_token *tmp, int i)
 		data->pipe->pid[i] = -1;
 		exec_dup2_pipe(data, tmp, i);
 		if ((!ft_strcmp(tmp->value, "export") && tmp->next->type == WORD)
-			|| !ft_strcmp(tmp->value, "exit"))
+			|| !ft_strcmp(tmp->value, "exit") || !ft_strcmp(tmp->value, "cd"))
 			;
 		else
 			exec_choice(data, tmp);
@@ -69,6 +69,8 @@ static void	cmd_in_pipe(t_data *data, t_token *tmp, int i)
 
 static void	exec_in_pipe(t_data *data, t_token *tmp, int i)
 {
+	if (!tmp)
+		return ;
 	if (tmp->type == CMD || tmp->type == BUILD)
 		cmd_in_pipe(data, tmp, i);
 	else
@@ -90,12 +92,13 @@ void	ft_pipes(t_data *data)
 		return (quit_pipe(data, i));
 	while (tmp)
 	{
+		if (data->err)
+			break ;
 		open_file(data, tmp);
 		if (data->err)
 			break ;
+		tmp = check_if_cmd_after_redir(data, tmp);
 		exec_in_pipe(data, tmp, i);
-		if (data->err)
-			break ;
 		i++;
 		tmp = recup_tok_after_pipe(tmp);
 	}

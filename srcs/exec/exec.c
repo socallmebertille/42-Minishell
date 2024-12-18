@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 16:05:45 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:24:38 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,6 @@ void	exec_choice(t_data *data, t_token *tok)
 	char	**cmd;
 
 	cmd = recup_cmd(data, tok);
-	// int i = 0;
-	// while (cmd[i])
-	// {
-	// 	printf("cmd[%d] [%s]\n", i, cmd[i]);
-	// 	i++;
-	// }
 	if (tok->type == BUILD)
 		handle_builtins(data, tok, STDOUT_FILENO);
 	else if (tok->type == CMD)
@@ -93,6 +87,7 @@ static void	simple_exec(t_data *data, t_token *tmp)
 
 	if (data->err)
 		return ;
+	tmp = check_if_cmd_after_redir(data, tmp);
 	if (tmp->type == BUILD)
 	{
 		exec_dup2_simple(data);
@@ -109,6 +104,7 @@ static void	simple_exec(t_data *data, t_token *tmp)
 		if (pid == 0)
 		{
 			exec_dup2_simple(data);
+			free_close_fds(data, 0);
 			exec_choice(data, tmp);
 		}
 		else
@@ -154,5 +150,6 @@ void	wich_exec(t_data *data)
 	{
 		open_file(data, data->token);
 		simple_exec(data, tmp);
+		free_close_fds(data, 0);
 	}
 }
