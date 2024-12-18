@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 14:47:19 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:35:38 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	open_file(t_data *data, t_token *tok)
 	tmp = tok;
 	while (tmp)
 	{
-		if (tmp->type == PIPE || !tmp)
+		if (tmp->type == PIPE || !tmp || data->err)
 			return ;
 		if (tmp->type == REDIR_INFILE && tmp->next->type == INFILE)
 			data->redir->infile = open_redirection_fd(data, 1, tmp, O_RDONLY);
