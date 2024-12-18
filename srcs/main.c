@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 17:33:32 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:55:30 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static volatile sig_atomic_t	g_signal_received = 0;
 
-static int is_line_empty_or_need_continue(t_data *data)
+static int	is_line_empty_or_need_continue(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!data->line[0])
-			return (1) ;
+		return (1);
 	while (ft_isspace(data->line[i]))
 	{
 		i++;
@@ -47,7 +47,7 @@ static void	loop(t_data *data)
 		if (!data->line)
 			return (write(2, "exit\n", 5), exit_prog(data, 0));
 		if (is_line_empty_or_need_continue(data))
-			continue;
+			continue ;
 		if (g_signal_received)
 		{
 			data->exit_status = 130;
