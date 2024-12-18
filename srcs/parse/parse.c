@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/15 21:24:59 by bertille         ###   ########.fr       */
+/*   Updated: 2024/12/16 18:15:53 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 		else if (ft_strcmp(tok->value, "env") == 0)
 			handle_env(data, tok, fd_out);
 		else if (ft_strcmp(tok->value, "echo") == 0)
-			handle_echo(tok, fd_out);
+			handle_echo(data, tok, fd_out);
 		else if (ft_strcmp(tok->value, "pwd") == 0)
-			handle_pwd(fd_out);
+			handle_pwd(data, fd_out);
 		else if (ft_strcmp(tok->value, "unset") == 0)
 			handle_unset(data, tok);
 		else if (ft_strcmp(tok->value, "export") == 0)

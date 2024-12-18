@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 12:53:43 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/15 08:43:47 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:01:58 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	flag_detector(t_token *tok)
 	return (i);
 }
 
-void	handle_echo(t_token *tok, int fd_out)
+void	handle_echo(t_data *data, t_token *tok, int fd_out)
 {
 	int		flag;
 	int		flag_start;
@@ -59,11 +59,11 @@ void	handle_echo(t_token *tok, int fd_out)
 	{
 		if (tmp->type != WORD || !tmp->value)
 			break ;
-		ft_putstr_fd(tmp->value, fd_out);
-		if (tmp->next)
-			ft_putstr_fd(" ", fd_out);
+		write_str_fd(data, "echo", tmp->value, fd_out);
+		if (tmp->next && !data->err)
+			write_str_fd(data, "echo", " ", fd_out);
 		tmp = tmp->next;
 	}
-	if (flag_start == 1)
-		ft_putstr_fd("\n", fd_out);
+	if (flag_start == 1 && !data->err)
+		write_str_fd(data, "echo", "\n", fd_out);
 }

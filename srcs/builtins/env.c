@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 18:15:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 08:43:50 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:05:22 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static void	print_env(t_data *data, int fd)
 	tmp = data->cpy_env;
 	while (tmp)
 	{
-		ft_putstr_fd(tmp->type, fd);
-		ft_putstr_fd("=", fd);
-		ft_putstr_fd(tmp->value, fd);
-		ft_putstr_fd("\n", fd);
+		write_str_fd(data, "env", tmp->type, fd);
+		write_str_fd(data, "env", "=", fd);
+		write_str_fd(data, "env", tmp->value, fd);
+		write_str_fd(data, "env", "\n", fd);
 		tmp = tmp->next;
 	}
 }
