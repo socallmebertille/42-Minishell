@@ -6,7 +6,7 @@
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/18 19:28:09 by memotyle         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:31:22 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ void	handle_export(t_data *data, t_token *tok, int fd_out)
 		{
 			tmp_tiktok = tmp_tok->next;
 			tmp_tok = tmp_tok->next;
-			continue; ;
+			continue ;
 		}
 		tmp_tiktok = tmp_tok->next;
 		if (tmp_tok->value)
