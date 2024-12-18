@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:09:38 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/18 11:33:18 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/12/18 12:49:37 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,10 @@ void	handle_exit(t_data *data, t_token *tok, int fd_out)
 	if (tok->next && tok->next->next
 		&& !is_valid_longlong(tok->next->value)
 		&& !is_valid_longlong(tok->next->next->value))
+	{
 		handle_too_many_args(data);
+		return ;
+	}
 	if (tok->next && tok->next->next)
 		exit_numeric_error(tok, data);
 	ft_putstr_fd("exit\n", fd_out);
