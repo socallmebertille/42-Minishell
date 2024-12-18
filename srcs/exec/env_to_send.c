@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:40:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 16:36:49 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:46:29 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,28 @@ static char	*recup_line_env(t_env *env, char **env_to_tab, int i)
 	return (env_to_tab[i]);
 }
 
+static char	**recup_env(t_env *env, t_env *tmp, char **env_to_tab)
+{
+	int	i;
+
+	i = 0;
+	while (env)
+	{
+		tmp = env->next;
+		env_to_tab[i] = recup_line_env(env, env_to_tab, i);
+		if (!env_to_tab[i])
+			return (NULL);
+		i++;
+		env = tmp;
+	}
+	env_to_tab[i] = NULL;
+	return (env_to_tab);
+}
+
 char	**env_to_tab(t_env *env)
 {
 	t_env	*tmp;
 	char	**env_to_tab;
-	int		i;
 
 	tmp = env;
 	if (!len_new_env(env))
@@ -73,16 +90,6 @@ char	**env_to_tab(t_env *env)
 	if (!env_to_tab)
 		return (NULL);
 	tmp = env;
-	i = 0;
-	while (env)
-	{
-		tmp = env->next;
-		env_to_tab[i] = recup_line_env(env, env_to_tab, i);
-		if (!env_to_tab[i])
-			return (NULL);
-		i++;
-		env = tmp;
-	}
-	env_to_tab[i] = NULL;
+	recup_env(env, tmp, env_to_tab);
 	return (env_to_tab);
 }

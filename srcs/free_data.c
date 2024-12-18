@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:39 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 19:50:47 by bertille         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:28:39 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,13 @@ void	quit_pipe(t_data *data, int i)
 	free_close_fds(data, 0);
 	get_end_exec(data, i, -1);
 	free_pipe(data);
+}
+
+void	failed_mess(t_data *data, char *mess, int code)
+{
+	ft_putstr_fd(mess, 2);
+	if (*mess)
+		ft_putstr_fd("\n", 2);
+	data->err = 1;
+	data->exit_status += code;
 }

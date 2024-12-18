@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 08:58:28 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:28:58 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,17 +261,17 @@ char				*ft_enum_to_char(int num);
 //----------------- exit_status.c ----------------------
 void				free_close_fds(t_data *data, int sous_process);
 void				get_end_exec(t_data *data, int i, pid_t pid);
-void				failed_mess(t_data *data, char *mess, int code);
 
 //----------------- free_data.c ----------------------
 void				free_tok(t_data *data);
 void				free_env(t_data *data, t_env *env, int cpy);
 void				free_pipe(t_data *data);
 void				quit_pipe(t_data *data, int i);
+void				failed_mess(t_data *data, char *mess, int code);
 
 //----------------- signal.c --------------------------
 void				signal_handlers(void);
-void				reset_signal_handler(void);
+// void				reset_signal_handler(void);
 void				child_signal_handler(void);
 
 //----------------- write_str.c --------------------------
