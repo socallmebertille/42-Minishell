@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 19:07:35 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:24:38 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,6 @@ void	exec_choice(t_data *data, t_token *tok)
 	char	**cmd;
 
 	cmd = recup_cmd(data, tok);
-	// int i = 0;
-	// while (cmd[i])
-	// {
-	// 	printf("cmd[%d] [%s]\n", i, cmd[i]);
-	// 	i++;
-	// }
 	if (tok->type == BUILD)
 		handle_builtins(data, tok, STDOUT_FILENO);
 	else if (tok->type == CMD)
