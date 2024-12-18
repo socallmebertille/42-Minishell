@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 21:30:04 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/12/18 23:04:54 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ void	exec_choice(t_data *data, t_token *tok)
 	ft_free_tab(cmd);
 }
 
-static void	simple_exec(t_data *data, t_token *tmp)
+static void	simple_exec(t_data *data, t_token *tmp, pid_t pid)
 {
-	pid_t	pid;
-
-	if (tmp->type == BUILD)
+	if (!tmp)
+		return ;
+	else if (tmp->type == BUILD)
 	{
 		exec_dup2_simple(data);
 		handle_builtins(data, tmp, STDOUT_FILENO);
@@ -107,6 +107,7 @@ static void	simple_exec(t_data *data, t_token *tmp)
 		else
 			get_end_exec(data, 0, pid);
 	}
+	free_close_fds(data, 0);
 }
 
 void	wich_exec(t_data *data, t_token *tmp)
@@ -119,6 +120,8 @@ void	wich_exec(t_data *data, t_token *tmp)
 	data_pipe.pid = NULL;
 	data->pipe = &data_pipe;
 	data_pipe.nb_pipe = pipe_in_line(data);
+	if (!ft_strcmp("exit", tmp->value) && !data_pipe.nb_pipe)
+		return (handle_exit(data, tmp, STDOUT_FILENO));
 	data->pipe->orig_fds[0] = dup(STDIN_FILENO);
 	data->pipe->orig_fds[1] = dup(STDOUT_FILENO);
 	if (data->pipe->orig_fds[0] == -1 || data->pipe->orig_fds[1] == -1)
@@ -132,8 +135,6 @@ void	wich_exec(t_data *data, t_token *tmp)
 		open_file(data, data->token);
 		if (data->err)
 			return ;
-		tmp = check_if_cmd_after_redir(data, tmp);
-		simple_exec(data, tmp);
-		free_close_fds(data, 0);
+		simple_exec(data, check_if_cmd_after_redir(data, tmp), 0);
 	}
 }

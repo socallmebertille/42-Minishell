@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:51:15 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/18 21:49:24 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/12/18 23:00:19 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static int	point_dexclamation(t_data *data)
 
 static int	simple_export(t_data *data, t_token *tmp_tok, int fd_out)
 {
-	printf("ici\n");
 	if (!tmp_tok)
 		return (display_export_order(data, fd_out), 1);
 	if (tmp_tok->value[0] == '\0')

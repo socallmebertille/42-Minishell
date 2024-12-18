@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 21:00:36 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/12/18 22:57:37 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ static void	loop(t_data *data)
 
 void	exit_prog(t_data *data, int code)
 {
+	// free_close_fds(data, -1);
 	free_env(data, data->cpy_env, 1);
 	free_env(data, data->cpy_env2, 2);
 	free_tok(data);

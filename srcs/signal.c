@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:54:47 by bertille          #+#    #+#             */
-/*   Updated: 2024/12/18 20:19:34 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/12/18 22:32:09 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	handle_sigint(int signum)
 	rl_redisplay();
 }
 
-void	signal_handlers(void)
+void	signal_handlers()
 {
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
