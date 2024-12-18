@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 20:58:25 by bertille         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:05:45 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ static void	simple_exec(t_data *data, t_token *tmp)
 {
 	pid_t	pid;
 
-	open_file(data, data->token);
 	if (data->err)
 		return ;
 	if (tmp->type == BUILD)
@@ -109,7 +108,6 @@ static void	simple_exec(t_data *data, t_token *tmp)
 			return (failed_mess(data, "malloc failed", 1));
 		if (pid == 0)
 		{
-			// child_signal_handler();
 			exec_dup2_simple(data);
 			exec_choice(data, tmp);
 		}
@@ -144,14 +142,17 @@ void	wich_exec(t_data *data)
 	data_pipe.pid = NULL;
 	data->pipe = &data_pipe;
 	data_pipe.nb_pipe = pipe_in_line(data);
-	// data->pipe->orig_fds[0] = dup(STDIN_FILENO);
-	// data->pipe->orig_fds[1] = dup(STDOUT_FILENO);
-	// if (data->pipe->orig_fds[0] == -1 || data->pipe->orig_fds[1] == -1)
-	// 	return (failed_mess(data, "dup failed", 1));
+	data->pipe->orig_fds[0] = dup(STDIN_FILENO);
+	data->pipe->orig_fds[1] = dup(STDOUT_FILENO);
+	if (data->pipe->orig_fds[0] == -1 || data->pipe->orig_fds[1] == -1)
+		return (failed_mess(data, "dup failed", 1));
 	if (!is_not_found(data))
 		data->exit_status = 0;
 	if (data->pipe->nb_pipe > 0)
 		ft_pipes(data);
 	else
+	{
+		open_file(data, data->token);
 		simple_exec(data, tmp);
+	}
 }

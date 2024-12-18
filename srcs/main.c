@@ -6,31 +6,31 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/13 20:43:01 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 12:53:20 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static volatile sig_atomic_t	g_signal_received = 0;
+// static volatile sig_atomic_t	g_signal_received = 0;
 
 static void	loop(t_data *data)
 {
 	while (1)
 	{
-		g_signal_received = 0;
-		reset_signal_handler();
+		// g_signal_received = 0;
+		// reset_signal_handler();
 		data->line = readline("minishell$ ");
 		if (!data->line)
 			return (write(2, "exit\n", 5), exit_prog(data, 0));
 		if (!data->line[0])
 			continue ;
-		if (g_signal_received)
-		{
-			data->exit_status = 130;
-			free(data->line);
-			continue ;
-		}
+		// if (g_signal_received)
+		// {
+		// 	data->exit_status = 130;
+		// 	free(data->line);
+		// 	continue ;
+		// }
 		syntaxe_line(data->line, data);
 		if (*data->line)
 			add_history(data->line);
