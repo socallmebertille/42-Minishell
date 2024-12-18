@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 20:06:29 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/12/18 21:30:42 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,14 @@ void				handle_env(t_data *data, t_token *tok, int fd_out);
 void				handle_exit(t_data *data, t_token *tok, int fd_out);
 
 //----------------- export.c ------------------------
-int					find_if_env_exist(t_env *env, char *value);
 void				handle_export(t_data *data, t_token *tok, int fd_out);
+
+//----------------- export_utils.c ------------------------
+void				modif_env_node(t_data *data, char *value, int j);
+void				add_env_node(t_data *data, char *value);
+void				display_export_order(t_data *data, int fd_out);
+int					find_if_env_exist(t_env *env, char *value);
+int					is_valid_name(char *name);
 
 //----------------- get_env.c ------------------------
 void				get_shlvl_env(t_data *data);
@@ -185,13 +191,14 @@ void				update_last_cmd(t_data *data, char *cmd_path);
 void				exec_cmd(t_data *data, char **env, char **cmd,
 						t_token *tok);
 void				exec_choice(t_data *data, t_token *tok);
-void				wich_exec(t_data *data);
+void				wich_exec(t_data *data, t_token *tmp);
 
 //----------------- heredoc.c ----------------------
 void				ft_heredoc(t_data *data, t_token *tok);
 
 //----------------- open_file.c ----------------------
 void				open_file(t_data *data, t_token *tok);
+int					is_not_found(t_data *data);
 t_token				*check_if_cmd_after_redir(t_data *data, t_token *tok);
 
 //================== expand =====================================//

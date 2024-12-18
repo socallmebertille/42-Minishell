@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 19:14:19 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:50:37 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	cmd_in_pipe(t_data *data, t_token *tmp, int i)
 	{
 		data->pipe->pid[i] = -1;
 		exec_dup2_pipe(data, tmp, i);
-		if ((!ft_strcmp(tmp->value, "export") && tmp->next->type == WORD)
+		if ((!ft_strcmp(tmp->value, "export") && tmp->next->value[0] != '\0')
 			|| !ft_strcmp(tmp->value, "exit") || !ft_strcmp(tmp->value, "cd"))
 			;
 		else

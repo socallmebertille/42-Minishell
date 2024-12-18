@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 21:00:55 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/12/18 21:30:27 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,18 @@ t_token	*check_if_cmd_after_redir(t_data *data, t_token *tok)
 	if (data->err)
 		return (NULL);
 	return (tok);
+}
+
+int	is_not_found(t_data *data)
+{
+	t_token	*tok;
+
+	tok = data->token;
+	while (tok)
+	{
+		if (tok->type == NOT_FOUND)
+			return (1);
+		tok = tok->next;
+	}
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 19:24:38 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 21:30:04 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,6 @@ static void	simple_exec(t_data *data, t_token *tmp)
 {
 	pid_t	pid;
 
-	if (data->err)
-		return ;
-	tmp = check_if_cmd_after_redir(data, tmp);
 	if (tmp->type == BUILD)
 	{
 		exec_dup2_simple(data);
@@ -112,26 +109,10 @@ static void	simple_exec(t_data *data, t_token *tmp)
 	}
 }
 
-static int	is_not_found(t_data *data)
+void	wich_exec(t_data *data, t_token *tmp)
 {
-	t_token	*tok;
-
-	tok = data->token;
-	while (tok)
-	{
-		if (tok->type == NOT_FOUND)
-			return (1);
-		tok = tok->next;
-	}
-	return (0);
-}
-
-void	wich_exec(t_data *data)
-{
-	t_token	*tmp;
 	t_pipe	data_pipe;
 
-	tmp = data->token;
 	ft_bzero(&data_pipe, sizeof(t_pipe));
 	data_pipe.data = data;
 	data_pipe.fds = NULL;
@@ -149,6 +130,9 @@ void	wich_exec(t_data *data)
 	else
 	{
 		open_file(data, data->token);
+		if (data->err)
+			return ;
+		tmp = check_if_cmd_after_redir(data, tmp);
 		simple_exec(data, tmp);
 		free_close_fds(data, 0);
 	}

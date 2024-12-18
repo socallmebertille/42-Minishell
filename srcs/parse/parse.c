@@ -6,7 +6,7 @@
 /*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/18 21:01:17 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/12/18 21:51:02 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 
 void	parse(t_data *data)
 {
-	t_redir data_redir;
+	t_redir	data_redir;
 
 	ft_change_word_to_type(data);
 	if (!good_syntaxe(data))
@@ -76,7 +76,7 @@ void	parse(t_data *data)
 	data_redir.fds_doc[1] = -1;
 	data_redir.data = data;
 	data->redir = &data_redir;
-	wich_exec(data);
+	wich_exec(data, data->token);
 	if (data->err)
 		return ;
 }
