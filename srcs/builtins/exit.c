@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:09:38 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/15 19:52:19 by bertille         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:06:13 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	handle_exit(t_data *data, t_token *tok, int fd_out)
 		exit_with_exit_code(data, tok);
 	if (!tok->next)
 	{
-		ft_putstr_fd("exit\n", fd_out);
+		write_str_fd(data, "exit", "exit\n", fd_out);
 		exit_prog(data, 0);
 	}
 }

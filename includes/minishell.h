@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/16 18:16:30 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 08:58:28 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,8 +275,8 @@ void				reset_signal_handler(void);
 void				child_signal_handler(void);
 
 //----------------- write_str.c --------------------------
-void				write_char_fd(t_data *data, t_token *tok, char c, int fd);
-void				write_str_fd(t_data *data, t_token *tok, char *s, int fd);
+void				write_char_fd(t_data *data, char *str_err, char c, int fd);
+void				write_str_fd(t_data *data, char *str_err, char *s, int fd);
 
 //----------------- main.c ----------------------
 void				exit_prog(t_data *data, int code);

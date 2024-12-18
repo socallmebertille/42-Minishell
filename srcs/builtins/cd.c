@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 15:39:24 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/16 18:17:28 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:04:04 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ static void	handle_cd_dash(t_data *data, int fd_out)
 	change_old_env_pwd(data, get_actual_env_path(data));
 	chdir(new_path);
 	change_env_pwd(data);
-	write_char_fd(data, "cd", new_path, fd_out);
-	write_char_fd(data, "cd", "\n", fd_out);
+	write_str_fd(data, "cd", new_path, fd_out);
+	write_str_fd(data, "cd", "\n", fd_out);
 	free(new_path);
 }
 

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:51:15 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/09 18:25:26 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 09:07:07 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,15 +69,15 @@ static void	display_export_order(t_data *data, int fd_out)
 	sort_tmp = data->cpy_env2;
 	while (sort_tmp)
 	{
-		ft_putstr_fd("declare -x ", fd_out);
-		ft_putstr_fd(sort_tmp->type, fd_out);
+		write_str_fd(data, "export", "declare -x ", fd_out);
+		write_str_fd(data, "export", sort_tmp->type, fd_out);
 		if (sort_tmp->equal)
-			ft_putstr_fd("=\"", fd_out);
+			write_str_fd(data, "export", "=\"", fd_out);
 		if (sort_tmp->value)
-			ft_putstr_fd(sort_tmp->value, fd_out);
+			write_str_fd(data, "export", sort_tmp->value, fd_out);
 		if (sort_tmp->equal)
-			ft_putstr_fd("\"", fd_out);
-		ft_putstr_fd("\n", fd_out);
+			write_str_fd(data, "export", "\"", fd_out);
+		write_str_fd(data, "export", "\n", fd_out);
 		sort_tmp = sort_tmp->next;
 	}
 }
