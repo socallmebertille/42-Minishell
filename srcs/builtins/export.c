@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: memotyle <memotyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/18 19:31:22 by memotyle         ###   ########.fr       */
+/*   Created: 2024/11/28 13:51:15 by kepouliq          #+#    #+#             */
+/*   Updated: 2024/12/18 19:36:38 by memotyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,59 +128,42 @@ static int	is_valid_name(char *name)
 	return (1);
 }
 
-static char	*export_key(char *arg)
+static int	point_dexclamation(t_data *data)
 {
-	char	*equal;
-	char	*key;
+	t_token	*tmp;
+	int		i;
+	char *error_mess;
 
-	if (arg[0] == '=')
-		return (ft_strdup(arg));
-	equal = ft_strchr(arg, '=');
-	if (!equal)
-		key = ft_strdup(arg);
-	else
-		key = ft_substr(arg, 0, equal - arg);
-	return (key);
-}
-
-static int	is_valid_name(char *name)
-{
-	int	i;
-
-	if (!name || (!ft_isalpha(name[0]) && name[0] != '_'))
+	error_mess = NULL;
+	tmp = data->token->next;
+	while (tmp)
 	{
-		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(name, 2);
-		ft_putstr_fd("': not a valid identifier\n", 2);
-		free(name);
-		return (0);
-	}
-	i = 1;
-	while (name[i])
-	{
-		if (!ft_isalnum(name[i]) && name[i] != '_')
+		i = 0;
+		while (tmp->value[i])
 		{
-			ft_putstr_fd("minishell: export: `", 2);
-			ft_putstr_fd(name, 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
-			free(name);
-			return (0);
+			if (tmp->value[i] == '!' && tmp->value[i + 1])
+			{
+				ft_putstr_fd("minishell: " , 2);
+				error_mess = ft_substr(tmp->value, i , ft_strlen(tmp->value));
+				ft_putstr_fd(error_mess, 2);
+				ft_putstr_fd(": event not found\n", 2);
+				free(error_mess);
+				return (1);
+			}
+			i++;
 		}
-		i++;
+		tmp = tmp->next;
 	}
-	free(name);
-	return (1);
+	return (0);
 }
 
 void	handle_export(t_data *data, t_token *tok, int fd_out)
 {
 	t_token	*tmp_tok;
-	t_token *tmp_tiktok;
-	t_token *tmp_tiktok;
+	t_token	*tmp_tiktok;
 	int		exist;
 
 	exist = 0;
-	tmp_tiktok = data->token->next;
 	tmp_tiktok = data->token->next;
 	tmp_tok = tok->next;
 	if (!data->cpy_env2)
@@ -194,13 +177,8 @@ void	handle_export(t_data *data, t_token *tok, int fd_out)
 		return (ft_putstr_fd(INVALID_VAL_EXPORT, 2));
 	while (tmp_tok && tmp_tok->type == WORD)
 	{
-		if (!is_valid_name(export_key(tmp_tiktok->value)))
-		{
-			tmp_tiktok = tmp_tok->next;
-			tmp_tok = tmp_tok->next;
-			continue; ;
-		}
-		tmp_tiktok = tmp_tok->next;
+		if (point_dexclamation(data))
+			return ;
 		if (!is_valid_name(export_key(tmp_tiktok->value)))
 		{
 			tmp_tiktok = tmp_tok->next;
