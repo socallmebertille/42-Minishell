@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 14:28:58 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:07:29 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ typedef struct s_data
 //================== builtins =====================================//
 
 //----------------- cd.c ------------------------
-void				handle_cd(t_data *data, int fd_out);
+void				handle_cd(t_data *data, t_token *tok, int fd_out);
 
 //----------------- cd_utils.c ------------------------
 void				change_old_env_pwd(t_data *data, char *path);
@@ -135,7 +135,7 @@ void				get_shlvl_export(t_data *data);
 void				get_env2(char **env, t_data *data);
 
 //----------------- pwd.c ----------------------
-void				handle_pwd(t_data *data, int fd_out);
+void				handle_pwd(t_data *data, t_token *tok, int fd_out);
 
 //----------------- syntaxe_export.c ----------------------
 int					check_syntax_export(char *value, t_data *data);
@@ -189,6 +189,7 @@ void				wich_exec(t_data *data);
 
 //----------------- open_file.c ----------------------
 void				open_file(t_data *data, t_token *tok);
+t_token				*check_if_cmd_after_redir(t_data *data, t_token *tok);
 
 //================== expand =====================================//
 

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 16:35:38 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:08:05 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,27 @@ void	open_file(t_data *data, t_token *tok)
 			ft_heredoc(data, tmp);
 		tmp = tmp->next;
 	}
+}
+
+t_token	*check_if_cmd_after_redir(t_data *data, t_token *tok)
+{
+	if (tok->type == CMD || tok->type == BUILD || !tok)
+		return (tok);
+	while (tok)
+	{
+		if (!tok)
+			break ;
+		if (tok->type == CMD || tok->type == BUILD)
+			break ;
+		if (is_builtins(tok))
+			tok->type = BUILD;
+		else if (tok->type == WORD)
+			tok->type = CMD;
+		else
+			tok = tok->next;
+	}
+	ft_check_access_cmd(data, 1);
+	if (data->err)
+		return (NULL);
+	return (tok);
 }

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 16:23:41 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:07:35 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ static void	simple_exec(t_data *data, t_token *tmp)
 
 	if (data->err)
 		return ;
+	tmp = check_if_cmd_after_redir(data, tmp);
 	if (tmp->type == BUILD)
 	{
 		exec_dup2_simple(data);
