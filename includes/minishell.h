@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 19:07:29 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:08:56 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,14 @@ void				handle_env(t_data *data, t_token *tok, int fd_out);
 void				handle_exit(t_data *data, t_token *tok, int fd_out);
 
 //----------------- export.c ------------------------
-int					find_if_env_exist(t_env *env, char *value);
 void				handle_export(t_data *data, t_token *tok, int fd_out);
+
+//----------------- export_utils.c ------------------------
+void				modif_env_node(t_data *data, char *value, int j);
+void				add_env_node(t_data *data, char *value);
+void				display_export_order(t_data *data, int fd_out);
+int					find_if_env_exist(t_env *env, char *value);
+int					is_valid_name(char *name);
 
 //----------------- get_env.c ------------------------
 void				get_shlvl_env(t_data *data);
@@ -190,6 +196,9 @@ void				wich_exec(t_data *data);
 //----------------- open_file.c ----------------------
 void				open_file(t_data *data, t_token *tok);
 t_token				*check_if_cmd_after_redir(t_data *data, t_token *tok);
+
+//----------------- simple_exec.c ----------------------
+void				simple_exec(t_data *data, t_token *tmp);
 
 //================== expand =====================================//
 
@@ -272,7 +281,7 @@ void				failed_mess(t_data *data, char *mess, int code);
 
 //----------------- signal.c --------------------------
 void				signal_handlers(void);
-// void				reset_signal_handler(void);
+void				reset_signal_handler(t_data *data);
 void				child_signal_handler(void);
 
 //----------------- write_str.c --------------------------

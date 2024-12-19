@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 19:24:38 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:59:53 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,54 +69,13 @@ void	exec_cmd(t_data *data, char **env, char **cmd, t_token *tok)
 	free(cmd_path);
 }
 
-void	exec_choice(t_data *data, t_token *tok)
-{
-	char	**cmd;
-
-	cmd = recup_cmd(data, tok);
-	if (tok->type == BUILD)
-		handle_builtins(data, tok, STDOUT_FILENO);
-	else if (tok->type == CMD)
-		exec_cmd(data, data->env, cmd, tok);
-	ft_free_tab(cmd);
-}
-
-static void	simple_exec(t_data *data, t_token *tmp)
-{
-	pid_t	pid;
-
-	if (data->err)
-		return ;
-	tmp = check_if_cmd_after_redir(data, tmp);
-	if (tmp->type == BUILD)
-	{
-		exec_dup2_simple(data);
-		handle_builtins(data, tmp, STDOUT_FILENO);
-		if (dup2(data->pipe->orig_fds[0], STDIN_FILENO) == -1
-			|| dup2(data->pipe->orig_fds[1], STDOUT_FILENO) == -1)
-			return (failed_mess(data, "dup2 failed", 1));
-	}
-	else if (tmp->type == CMD)
-	{
-		pid = fork();
-		if (pid == -1)
-			return (failed_mess(data, "malloc failed", 1));
-		if (pid == 0)
-		{
-			exec_dup2_simple(data);
-			free_close_fds(data, 0);
-			exec_choice(data, tmp);
-		}
-		else
-			get_end_exec(data, 0, pid);
-	}
-}
-
 static int	is_not_found(t_data *data)
 {
 	t_token	*tok;
 
 	tok = data->token;
+	if (!tok)
+		return (0);
 	while (tok)
 	{
 		if (tok->type == NOT_FOUND)
@@ -124,6 +83,20 @@ static int	is_not_found(t_data *data)
 		tok = tok->next;
 	}
 	return (0);
+}
+
+void	exec_choice(t_data *data, t_token *tok)
+{
+	char	**cmd;
+
+	if (tok->type == NOT_FOUND)
+		return ;
+	cmd = recup_cmd(data, tok);
+	if (tok->type == BUILD)
+		handle_builtins(data, tok, STDOUT_FILENO);
+	else if (tok->type == CMD)
+		exec_cmd(data, data->env, cmd, tok);
+	ft_free_tab(cmd);
 }
 
 void	wich_exec(t_data *data)

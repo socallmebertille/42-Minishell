@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/18 18:12:34 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:58:30 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,57 +58,11 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 	return (0);
 }
 
-// static void	print_token(t_data *data)
-// {
-// 	int		i;
-// 	t_token	*tok;
-// 	t_token	*tmp;
-
-// 	tmp = NULL;
-// 	tok = data->token;
-// 	if (data->err_quote)
-// 		return ;
-// 	i = 0;
-// 	while (tok)
-// 	{
-// 		printf(MAGENTA "============== TOKEN %d =================\n\n" RESET,
-// 			i);
-// 		tmp = tok->next;
-// 		if (tok->prev)
-// 		{
-// 			printf("PREV = ");
-// 			printf(BLUE "%s\t" RESET, tok->prev->value);
-// 		}
-// 		else
-// 		{
-// 			printf("PREV = ");
-// 			printf(BLUE "NULL\t" RESET);
-// 		}
-// 		printf(RED "%s " RESET, tok->value);
-// 		printf(YELLOW "= %s" RESET, ft_enum_to_char(tok->type));
-// 		if (tok->next)
-// 		{
-// 			printf("\tNEXT = ");
-// 			printf(GREEN "%s\n" RESET, tok->next->value);
-// 		}
-// 		else
-// 		{
-// 			printf("\tNEXT = ");
-// 			printf(GREEN "NULL\n" RESET);
-// 		}
-// 		printf("\n");
-// 		tok = tmp;
-// 		i++;
-// 	}
-// 	printf(MAGENTA "========================================\n" RESET);
-// }
-
 void	parse(t_data *data)
 {
-	t_redir data_redir;
+	t_redir	data_redir;
 
 	ft_change_word_to_type(data);
-	// print_token(data);
 	if (!good_syntaxe(data))
 		return ;
 	ft_check_access_cmd(data, 1);

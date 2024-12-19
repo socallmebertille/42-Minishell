@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 19:08:05 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:09:52 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,8 @@ static void	ft_heredoc(t_data *data, t_token *tok)
 	while (1)
 	{
 		heredoc = readline("> ");
-		// if (g_sigint)
-		// 	return (sigint_heredoc(shell, cmd, buffer, fd));
 		if (!heredoc)
 			break ;
-		// return ((void)close(fd), 1);
 		if (!ft_strncmp(tok->next->value, heredoc, ft_strlen(tok->value)))
 		{
 			free(heredoc);
