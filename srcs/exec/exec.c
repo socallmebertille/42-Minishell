@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 14:15:09 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:17:27 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,7 @@ void	wich_exec(t_data *data)
 	else
 	{
 		open_file(data, data->token);
-		if (data->err)
-			return ;
-		simple_exec(data, check_if_cmd_after_redir(data, tmp), 0);
+		simple_exec(data, tmp);
+		free_close_fds(data, 0);
 	}
 }
