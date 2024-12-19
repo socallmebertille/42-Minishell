@@ -6,36 +6,35 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 14:23:19 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:33:21 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static void	ft_heredoc(t_data *data, t_token *tok)
-// {
-// 	char	*heredoc;
-
-// 	if (pipe(data->redir->fds_doc) == -1)
-// 		return (failed_mess(data, "pipe failed", 1));
-// 	child_signal_handler();
-// 	while (1)
-// 	{
-// 		heredoc = readline("> ");
-// 		if (!heredoc)
-// 			break ;
-// 		if (!ft_strncmp(tok->next->value, heredoc, ft_strlen(tok->value)))
-// 		{
-// 			free(heredoc);
-// 			break ;
-// 		}
-// 		write(data->redir->fds_doc[1], heredoc, ft_strlen(heredoc));
-// 		write(data->redir->fds_doc[1], "\n", 1);
-// 		free(heredoc);
-// 	}
-// 	signal_handlers();
-// 	data->redir->infile = data->redir->fds_doc[0];
-// }
+static int	is_file_exist(t_data *data, char *file, t_enum type)
+{
+	if (access(file, F_OK) && type == INFILE)
+	{
+		ft_putstr_fd("minishell : ", 2);
+		ft_putstr_fd(file, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		data->err = 1;
+		data->exit_status = 1;
+		return (0);
+	}
+	if (!access(file, R_OK) && type == INFILE)
+		return (1);
+	if (((!access(file, W_OK) && !access(file, F_OK)) || (access(file, W_OK)
+				&& access(file, F_OK))) && type == OUTFILE)
+		return (1);
+	ft_putstr_fd("minishell : ", 2);
+	ft_putstr_fd(file, 2);
+	ft_putstr_fd(": Permission denied\n", 2);
+	data->err = 1;
+	data->exit_status = 1;
+	return (0);
+}
 
 static int	open_redirection_fd(t_data *data, int fd, t_token *token, int oflag)
 {
@@ -50,15 +49,17 @@ static int	open_redirection_fd(t_data *data, int fd, t_token *token, int oflag)
 		data->redir->outfile = -1;
 	}
 	if (!token->next)
-		return (failed_mess(data, INVALID_NEXT_REDIR, 2), 0);
+		return (failed_mess(data, INVALID_NEXT_REDIR, 2), -1);
 	if (token->next->type == INFILE || token->next->type == OUTFILE)
 	{
+		if (!is_file_exist(data, token->next->value, token->next->type))
+			return (-1);
 		fd = open(token->next->value, oflag, 0644);
 		if (fd < 0)
-			return (failed_mess(data, "open failed", 2), 0);
+			return (failed_mess(data, "open failed", 2), -1);
 		return (fd);
 	}
-	return (0);
+	return (-1);
 }
 
 void	open_file(t_data *data, t_token *tok)
@@ -67,13 +68,11 @@ void	open_file(t_data *data, t_token *tok)
 
 	data->redir->infile = -1;
 	data->redir->outfile = -1;
-	data->redir->heredoc = -1;
-	data->redir->fds_doc[0] = -1;
-	data->redir->fds_doc[1] = -1;
 	tmp = tok;
 	while (tmp)
 	{
-		if (tmp->type == PIPE || !tmp || data->err)
+		if (tmp->type == PIPE || !tmp || g_signal_received == 3
+			|| (data->err && data->exit_status != 1))
 			return ;
 		if (tmp->type == REDIR_INFILE && tmp->next->type == INFILE)
 			data->redir->infile = open_redirection_fd(data, 1, tmp, O_RDONLY);
@@ -107,7 +106,7 @@ t_token	*check_if_cmd_after_redir(t_data *data, t_token *tok)
 			tok = tok->next;
 	}
 	ft_check_access_cmd(data, 1);
-	if (data->err)
+	if (data->err && data->exit_status != 1)
 		return (NULL);
 	return (tok);
 }

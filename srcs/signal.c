@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:54:47 by bertille          #+#    #+#             */
-/*   Updated: 2024/12/19 14:22:59 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:09:43 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	signal_handlers(void)
 
 void	reset_signal_handler(t_data *data)
 {
-	if (g_signal_received == 1 && data->exit_code == 130)
+	if ((g_signal_received == 1 || g_signal_received == 3)
+		&& data->exit_code == 130)
 	{
 		g_signal_received = 0;
 		data->exit_status = 0;
@@ -42,7 +43,7 @@ static void	handle_child_sigint(int signum)
 {
 	(void)signum;
 	write(2, "\n", 1);
-	rl_on_new_line();
+	g_signal_received = 3;
 }
 
 void	child_signal_handler(void)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 21:50:37 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/12/19 21:32:35 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,17 @@ static void	cmd_in_pipe(t_data *data, t_token *tmp, int i)
 
 static void	exec_in_pipe(t_data *data, t_token *tmp, int i)
 {
-	if (!tmp)
+	if (!tmp || data->exit_status == 1 || g_signal_received == 3)
 		return ;
 	if (tmp->type == CMD || tmp->type == BUILD)
 		cmd_in_pipe(data, tmp, i);
 	else
 		data->err = 1;
+	if (data->redir->here_tmp)
+	{
+		data->redir->heredoc = NULL;
+		data->redir->here_tmp = 0;
+	}
 }
 
 void	ft_pipes(t_data *data)
@@ -92,10 +97,10 @@ void	ft_pipes(t_data *data)
 		return (quit_pipe(data, i));
 	while (tmp)
 	{
-		if (data->err)
+		if ((data->err && data->exit_status != 1) || g_signal_received == 3)
 			break ;
 		open_file(data, tmp);
-		if (data->err)
+		if ((data->err && data->exit_status != 1) || g_signal_received == 3)
 			break ;
 		tmp = check_if_cmd_after_redir(data, tmp);
 		exec_in_pipe(data, tmp, i);

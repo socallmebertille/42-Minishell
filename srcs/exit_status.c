@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:30:06 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 16:06:18 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:33:38 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,6 @@ static void	close_if_open(t_data *data)
 	{
 		close(data->redir->outfile);
 		data->redir->outfile = -1;
-	}
-	if (data->redir->fds_doc[0] != -1)
-	{
-		close(data->redir->fds_doc[0]);
-		data->redir->fds_doc[0] = -1;
-	}
-	if (data->redir->fds_doc[1] != -1)
-	{
-		close(data->redir->fds_doc[1]);
-		data->redir->fds_doc[1] = -1;
 	}
 }
 

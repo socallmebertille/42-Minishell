@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 14:23:59 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:14:36 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ typedef struct s_redir
 {
 	int				infile;
 	int				outfile;
-	int				heredoc;
-	int				fds_doc[2];
+	int				here_tmp;
+	char			*heredoc;
 	struct s_data	*data;
 }					t_redir;
 
