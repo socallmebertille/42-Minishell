@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 15:39:24 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/18 18:14:19 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 22:25:37 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,22 @@ void	change_directory(t_data *data, t_token *tok, int fd_out)
 
 void	handle_cd(t_data *data, t_token *tok, int fd_out)
 {
-	if (tok->next->type == WORD && tok->next->next->type == WORD)
-		return (data->exit_status = 1, ft_putstr_fd(INVALID_ARG_CD, 2));
-	else if (tok->next->type != WORD || ft_strcmp(tok->next->value, "~") == 0)
-		cd_go_home(data);
-	else if (!ft_strcmp(tok->next->value, "--"))
-		return ;
-	else
-		return (change_directory(data, tok, fd_out));
+	if (!tok->next)
+		return (cd_go_home(data));
+	else if (tok->next)
+	{
+		if (tok->next->type != WORD || ft_strcmp(tok->next->value, "~") == 0)
+			return (cd_go_home(data));
+		else if (!ft_strcmp(tok->next->value, "--"))
+			return ;
+		if (tok->next->next)
+		{
+			if (tok->next->type == WORD && tok->next->next->type == WORD)
+				return (data->exit_status = 1, ft_putstr_fd(INVALID_ARG_CD, 2));
+		}
+		else
+			return (change_directory(data, tok, fd_out));
+	}
 }
 
 // cd

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 13:59:53 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:15:09 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,14 @@ void	wich_exec(t_data *data)
 	t_token	*tmp;
 	t_pipe	data_pipe;
 
-	tmp = data->token;
 	ft_bzero(&data_pipe, sizeof(t_pipe));
 	data_pipe.data = data;
 	data_pipe.fds = NULL;
 	data_pipe.pid = NULL;
 	data->pipe = &data_pipe;
 	data_pipe.nb_pipe = pipe_in_line(data);
+	if (!ft_strcmp("exit", tmp->value) && !data_pipe.nb_pipe)
+		return (handle_exit(data, tmp, STDOUT_FILENO));
 	data->pipe->orig_fds[0] = dup(STDIN_FILENO);
 	data->pipe->orig_fds[1] = dup(STDOUT_FILENO);
 	if (data->pipe->orig_fds[0] == -1 || data->pipe->orig_fds[1] == -1)
@@ -122,7 +123,8 @@ void	wich_exec(t_data *data)
 	else
 	{
 		open_file(data, data->token);
-		simple_exec(data, tmp);
-		free_close_fds(data, 0);
+		if (data->err)
+			return ;
+		simple_exec(data, check_if_cmd_after_redir(data, tmp), 0);
 	}
 }

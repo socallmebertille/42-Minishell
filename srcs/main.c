@@ -6,21 +6,21 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 13:41:50 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:13:52 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_signal_received = 0;
+static volatile sig_atomic_t	g_signal_received = 0;
 
 static int is_line_empty_or_need_continue(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!data->line[0])
-			return (1) ;
+		return (1);
 	while (ft_isspace(data->line[i]))
 		i++;
 	if (data->line[i] == '\0')
@@ -39,7 +39,8 @@ static void	loop(t_data *data)
 {
 	while (1)
 	{
-		g_signal_received = 0;
+		// g_signal_received = 0;
+		// reset_signal_handler();
 		data->line = readline("minishell$ ");
 		if (g_signal_received == 1)
 			data->exit_status = 130;
@@ -65,6 +66,7 @@ static void	loop(t_data *data)
 
 void	exit_prog(t_data *data, int code)
 {
+	// free_close_fds(data, -1);
 	free_env(data, data->cpy_env, 1);
 	free_env(data, data->cpy_env2, 2);
 	free_tok(data);
