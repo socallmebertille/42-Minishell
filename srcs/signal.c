@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:54:47 by bertille          #+#    #+#             */
-/*   Updated: 2024/12/19 14:18:23 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:22:59 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	handle_sigint(int signum)
 	g_signal_received = 1;
 }
 
-void	signal_handlers()
+void	signal_handlers(void)
 {
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);

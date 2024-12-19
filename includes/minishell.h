@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 14:18:04 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:23:59 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,6 @@ void				ft_heredoc(t_data *data, t_token *tok);
 
 //----------------- open_file.c ----------------------
 void				open_file(t_data *data, t_token *tok);
-int					is_not_found(t_data *data);
 t_token				*check_if_cmd_after_redir(t_data *data, t_token *tok);
 
 //----------------- simple_exec.c ----------------------

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/19 14:18:57 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:22:41 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	handle_builtins(t_data *data, t_token *tok, int fd_out)
 
 void	parse(t_data *data)
 {
-	t_redir	data_redir;
 	t_redir	data_redir;
 
 	ft_change_word_to_type(data);

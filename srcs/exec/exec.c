@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 14:17:27 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:25:15 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,8 @@ void	exec_choice(t_data *data, t_token *tok)
 	ft_free_tab(cmd);
 }
 
-void	wich_exec(t_data *data)
+void	wich_exec(t_data *data, t_token	*tmp)
 {
-	t_token	*tmp;
 	t_pipe	data_pipe;
 
 	ft_bzero(&data_pipe, sizeof(t_pipe));

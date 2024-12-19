@@ -6,36 +6,36 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 14:13:40 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:23:19 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_heredoc(t_data *data, t_token *tok)
-{
-	char	*heredoc;
+// static void	ft_heredoc(t_data *data, t_token *tok)
+// {
+// 	char	*heredoc;
 
-	if (pipe(data->redir->fds_doc) == -1)
-		return (failed_mess(data, "pipe failed", 1));
-	child_signal_handler();
-	while (1)
-	{
-		heredoc = readline("> ");
-		if (!heredoc)
-			break ;
-		if (!ft_strncmp(tok->next->value, heredoc, ft_strlen(tok->value)))
-		{
-			free(heredoc);
-			break ;
-		}
-		write(data->redir->fds_doc[1], heredoc, ft_strlen(heredoc));
-		write(data->redir->fds_doc[1], "\n", 1);
-		free(heredoc);
-	}
-	signal_handlers();
-	data->redir->infile = data->redir->fds_doc[0];
-}
+// 	if (pipe(data->redir->fds_doc) == -1)
+// 		return (failed_mess(data, "pipe failed", 1));
+// 	child_signal_handler();
+// 	while (1)
+// 	{
+// 		heredoc = readline("> ");
+// 		if (!heredoc)
+// 			break ;
+// 		if (!ft_strncmp(tok->next->value, heredoc, ft_strlen(tok->value)))
+// 		{
+// 			free(heredoc);
+// 			break ;
+// 		}
+// 		write(data->redir->fds_doc[1], heredoc, ft_strlen(heredoc));
+// 		write(data->redir->fds_doc[1], "\n", 1);
+// 		free(heredoc);
+// 	}
+// 	signal_handlers();
+// 	data->redir->infile = data->redir->fds_doc[0];
+// }
 
 static int	open_redirection_fd(t_data *data, int fd, t_token *token, int oflag)
 {
