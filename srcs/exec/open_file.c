@@ -6,39 +6,36 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 14:47:19 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:23:19 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_heredoc(t_data *data, t_token *tok)
-{
-	char	*heredoc;
+// static void	ft_heredoc(t_data *data, t_token *tok)
+// {
+// 	char	*heredoc;
 
-	if (pipe(data->redir->fds_doc) == -1)
-		return (failed_mess(data, "pipe failed", 1));
-	child_signal_handler();
-	while (1)
-	{
-		heredoc = readline("> ");
-		// if (g_sigint)
-		// 	return (sigint_heredoc(shell, cmd, buffer, fd));
-		if (!heredoc)
-			break ;
-		// return ((void)close(fd), 1);
-		if (!ft_strncmp(tok->next->value, heredoc, ft_strlen(tok->value)))
-		{
-			free(heredoc);
-			break ;
-		}
-		write(data->redir->fds_doc[1], heredoc, ft_strlen(heredoc));
-		write(data->redir->fds_doc[1], "\n", 1);
-		free(heredoc);
-	}
-	signal_handlers();
-	data->redir->infile = data->redir->fds_doc[0];
-}
+// 	if (pipe(data->redir->fds_doc) == -1)
+// 		return (failed_mess(data, "pipe failed", 1));
+// 	child_signal_handler();
+// 	while (1)
+// 	{
+// 		heredoc = readline("> ");
+// 		if (!heredoc)
+// 			break ;
+// 		if (!ft_strncmp(tok->next->value, heredoc, ft_strlen(tok->value)))
+// 		{
+// 			free(heredoc);
+// 			break ;
+// 		}
+// 		write(data->redir->fds_doc[1], heredoc, ft_strlen(heredoc));
+// 		write(data->redir->fds_doc[1], "\n", 1);
+// 		free(heredoc);
+// 	}
+// 	signal_handlers();
+// 	data->redir->infile = data->redir->fds_doc[0];
+// }
 
 static int	open_redirection_fd(t_data *data, int fd, t_token *token, int oflag)
 {
@@ -76,7 +73,7 @@ void	open_file(t_data *data, t_token *tok)
 	tmp = tok;
 	while (tmp)
 	{
-		if (tmp->type == PIPE || !tmp)
+		if (tmp->type == PIPE || !tmp || data->err)
 			return ;
 		if (tmp->type == REDIR_INFILE && tmp->next->type == INFILE)
 			data->redir->infile = open_redirection_fd(data, 1, tmp, O_RDONLY);
@@ -90,4 +87,27 @@ void	open_file(t_data *data, t_token *tok)
 			ft_heredoc(data, tmp);
 		tmp = tmp->next;
 	}
+}
+
+t_token	*check_if_cmd_after_redir(t_data *data, t_token *tok)
+{
+	if (tok->type == CMD || tok->type == BUILD || !tok)
+		return (tok);
+	while (tok)
+	{
+		if (!tok)
+			break ;
+		if (tok->type == CMD || tok->type == BUILD)
+			break ;
+		if (is_builtins(tok))
+			tok->type = BUILD;
+		else if (tok->type == WORD)
+			tok->type = CMD;
+		else
+			tok = tok->next;
+	}
+	ft_check_access_cmd(data, 1);
+	if (data->err)
+		return (NULL);
+	return (tok);
 }

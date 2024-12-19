@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 14:28:58 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:23:59 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ typedef struct s_data
 //================== builtins =====================================//
 
 //----------------- cd.c ------------------------
-void				handle_cd(t_data *data, int fd_out);
+void				handle_cd(t_data *data, t_token *tok, int fd_out);
 
 //----------------- cd_utils.c ------------------------
 void				change_old_env_pwd(t_data *data, char *path);
@@ -118,8 +118,21 @@ void				handle_env(t_data *data, t_token *tok, int fd_out);
 void				handle_exit(t_data *data, t_token *tok, int fd_out);
 
 //----------------- export.c ------------------------
-int					find_if_env_exist(t_env *env, char *value);
 void				handle_export(t_data *data, t_token *tok, int fd_out);
+
+//----------------- export_utils.c ------------------------
+void				modif_env_node(t_data *data, char *value, int j);
+void				add_env_node(t_data *data, char *value);
+void				display_export_order(t_data *data, int fd_out);
+int					find_if_env_exist(t_env *env, char *value);
+int					is_valid_name(char *name);
+
+//----------------- export_utils.c ------------------------
+void				modif_env_node(t_data *data, char *value, int j);
+void				add_env_node(t_data *data, char *value);
+void				display_export_order(t_data *data, int fd_out);
+int					find_if_env_exist(t_env *env, char *value);
+int					is_valid_name(char *name);
 
 //----------------- get_env.c ------------------------
 void				get_shlvl_env(t_data *data);
@@ -135,7 +148,7 @@ void				get_shlvl_export(t_data *data);
 void				get_env2(char **env, t_data *data);
 
 //----------------- pwd.c ----------------------
-void				handle_pwd(t_data *data, int fd_out);
+void				handle_pwd(t_data *data, t_token *tok, int fd_out);
 
 //----------------- syntaxe_export.c ----------------------
 int					check_syntax_export(char *value, t_data *data);
@@ -185,10 +198,17 @@ void				update_last_cmd(t_data *data, char *cmd_path);
 void				exec_cmd(t_data *data, char **env, char **cmd,
 						t_token *tok);
 void				exec_choice(t_data *data, t_token *tok);
-void				wich_exec(t_data *data);
+void				wich_exec(t_data *data, t_token *tmp);
+
+//----------------- heredoc.c ----------------------
+void				ft_heredoc(t_data *data, t_token *tok);
 
 //----------------- open_file.c ----------------------
 void				open_file(t_data *data, t_token *tok);
+t_token				*check_if_cmd_after_redir(t_data *data, t_token *tok);
+
+//----------------- simple_exec.c ----------------------
+void				simple_exec(t_data *data, t_token *tmp);
 
 //================== expand =====================================//
 
@@ -271,7 +291,7 @@ void				failed_mess(t_data *data, char *mess, int code);
 
 //----------------- signal.c --------------------------
 void				signal_handlers(void);
-// void				reset_signal_handler(void);
+void				reset_signal_handler(t_data *data);
 void				child_signal_handler(void);
 
 //----------------- write_str.c --------------------------

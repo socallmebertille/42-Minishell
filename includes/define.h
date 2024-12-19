@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:27:25 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 14:54:58 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:57:51 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,12 @@
 # define INVALID_ARG_CD "minishell: cd: too many arguments\n"
 # define INVALID_NEXT_REDIR "minishell: syntax error near unexpected token \
 `newline'\n"
+
+# ifndef GLOBALS_H
+#  define GLOBALS_H
+
+extern int	g_signal_received;
+
+# endif
 
 #endif

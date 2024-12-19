@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:54:11 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 18:59:32 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:42:52 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static char	*check_err_messages(t_data *data, t_token *tok, char *exist,
 		ft_putstr_fd(": command not found\n", 2);
 		tok->type = NOT_FOUND;
 		data->exit_status = 127;
+		data->err = 1;
 	}
 	else if (err == 1)
 	{
@@ -54,9 +55,9 @@ static char	*check_err_messages(t_data *data, t_token *tok, char *exist,
 		{
 			free(exist);
 			exist = ft_strdup(tok->value);
-			check_if_directory(data, exist);
 			if (!exist)
 				return (failed_mess(data, "malloc failed", 1), NULL);
+			check_if_directory(data, exist);
 			if (data->err)
 				return (free(exist), NULL);
 		}

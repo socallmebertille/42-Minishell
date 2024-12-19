@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 15:39:24 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/18 09:04:04 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/18 22:25:37 by uzanchi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ static void	handle_cd_dash(t_data *data, int fd_out)
 	free(new_path);
 }
 
-void	change_directory(t_data *data, int fd_out)
+void	change_directory(t_data *data, t_token *tok, int fd_out)
 {
-	if (access(data->token->next->value, F_OK) == -1
-		&& ft_strcmp(data->token->next->value, "-"))
+	if (access(tok->next->value, F_OK) == -1
+		&& ft_strcmp(tok->next->value, "-"))
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(data->token->next->value, 2);
@@ -57,24 +57,34 @@ void	change_directory(t_data *data, int fd_out)
 		data->exit_status += 1;
 		return ;
 	}
-	else if (!ft_strcmp(data->token->next->value, "-"))
+	else if (!ft_strcmp(tok->next->value, "-"))
 		handle_cd_dash(data, fd_out);
 	else
 		change_old_env_pwd(data, get_actual_env_path(data));
 	if (data->err)
 		return ;
-	chdir(data->token->next->value);
+	chdir(tok->next->value);
 	change_env_pwd(data);
 }
 
-void	handle_cd(t_data *data, int fd_out)
+void	handle_cd(t_data *data, t_token *tok, int fd_out)
 {
-	if (!data->token->next || ft_strcmp(data->token->next->value, "~") == 0)
-		cd_go_home(data);
-	else if (data->token->next && data->token->next->next)
-		return (data->exit_status += 1, ft_putstr_fd(INVALID_ARG_CD, 2));
-	else
-		return (change_directory(data, fd_out));
+	if (!tok->next)
+		return (cd_go_home(data));
+	else if (tok->next)
+	{
+		if (tok->next->type != WORD || ft_strcmp(tok->next->value, "~") == 0)
+			return (cd_go_home(data));
+		else if (!ft_strcmp(tok->next->value, "--"))
+			return ;
+		if (tok->next->next)
+		{
+			if (tok->next->type == WORD && tok->next->next->type == WORD)
+				return (data->exit_status = 1, ft_putstr_fd(INVALID_ARG_CD, 2));
+		}
+		else
+			return (change_directory(data, tok, fd_out));
+	}
 }
 
 // cd
