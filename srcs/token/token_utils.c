@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:54:11 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 15:49:59 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:46:15 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,13 @@ static void	check_if_directory(t_data *data, char *cmd_path)
 static char	*check_err_messages(t_data *data, t_token *tok, char *exist,
 		int err)
 {
-	if (err == 2)
+	if (err == 2 && (tok->type == CMD || tok->type == BUILD))
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(tok->value, 2);
 		ft_putstr_fd(": command not found\n", 2);
 		tok->type = NOT_FOUND;
 		data->exit_status = 127;
-		data->err = 1;
 	}
 	else if (err == 1)
 	{
@@ -70,12 +69,18 @@ void	ft_change_word_to_type(t_data *data)
 	t_token	*tmp;
 
 	tmp = data->token;
-	if (!tmp || !tmp->next)
-		return ;
 	while (tmp->next)
 	{
 		if (!is_builtins(tmp) && tmp->type == PIPE)
 			tmp->next->type = CMD;
+		if (!ft_strcmp(tmp->next->value, "<<"))
+			tmp->next->type = HEREDOC;
+		else if (!ft_strcmp(tmp->next->value, ">>"))
+			tmp->next->type = APPEND;
+		else if (!ft_strcmp(tmp->next->value, "<"))
+			tmp->next->type = REDIR_INFILE;
+		else if (!ft_strcmp(tmp->next->value, ">"))
+			tmp->next->type = REDIR_OUTFILE;
 		if (tmp->type == REDIR_INFILE && tmp->next->type == WORD)
 			tmp->next->type = INFILE;
 		if (tmp->type == HEREDOC && tmp->next->type == WORD)

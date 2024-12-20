@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 16:34:02 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 17:06:51 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ typedef struct s_data
 	int				exit_status;
 	char			wich_quote_err;
 	char			*expanded_str;
-	char			*keep_line;
 	char			*line;
 	char			**env;
 	t_redir			*redir;

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 18:18:11 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/15 05:10:19 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:44:10 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 int	is_in_double_quotes(char *str, int index)
 {
+	int	in_single;
 	int	in_double;
 	int	i;
 
+	in_single = 0;
 	in_double = 0;
 	i = 0;
 	if (!str)
@@ -25,8 +27,14 @@ int	is_in_double_quotes(char *str, int index)
 	{
 		if (!str[i])
 			return (in_double);
-		if (str[i] == '\"' && (i == 0 || str[i - 1] != '\\'))
-			in_double = !in_double;
+		if (str[i] == '\"' && !in_double && !in_single)
+			in_double = 1;
+		else if (str[i] == '\"' && in_double && !in_single)
+			in_double = 0;
+		if (str[i] == '\'' && !in_single)
+			in_single = 1;
+		else if (str[i] == '\'' && in_single)
+			in_single = 0;
 		i++;
 	}
 	return (in_double);

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 12:53:43 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/18 09:01:58 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 18:50:16 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	handle_echo(t_data *data, t_token *tok, int fd_out)
 			break ;
 		write_str_fd(data, "echo", tmp->value, fd_out);
 		if (tmp->next && !data->err)
-			write_str_fd(data, "echo", " ", fd_out);
+			write_str_fd(data, "echo", "\0", fd_out);
 		tmp = tmp->next;
 	}
 	if (flag_start == 1 && !data->err)
