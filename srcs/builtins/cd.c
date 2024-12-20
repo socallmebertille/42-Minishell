@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 15:39:24 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/18 22:25:37 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/12/20 17:20:27 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@ static void	cd_go_home(t_data *data)
 	char	*home_path;
 
 	home_path = get_home_env(data);
+	if (!home_path)
+	{
+		data->err = 1;
+		data->exit_status = 1;
+		return;
+	}
 	change_old_env_pwd(data, get_actual_env_path(data));
 	chdir(home_path);
 	change_env_pwd(data);
