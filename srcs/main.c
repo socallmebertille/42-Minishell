@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 13:08:42 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:37:48 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	is_line_empty_or_need_continue(t_data *data)
 
 	i = 0;
 	if (!data->line[0])
-		return (1);
+		return (69);
 	while (ft_isspace(data->line[i]))
 		i++;
 	if (data->line[i] == '\0')

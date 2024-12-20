@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntaxe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 17:56:18 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 15:40:04 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:55:49 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ static int	check_next_ope(t_token *tok)
 		return (0);
 	}
 	if (tok->type == PIPE && (!tok->next || !tok->prev))
-		return (ft_putstr_fd("bash: syntax error near unexpected token `|'\n",
-				2), 0);
-	if (tok->type == PIPE && tok->next->type == PIPE)
+		return (ft_putstr_fd(PIPE_AFTER_PIPE, 2), 0);
+	if (tok->type == PIPE
+		&& (tok->next->type == PIPE || !ft_strcmp("|", tok->next->value)))
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
 		ft_putstr_fd(tok->next->value, 2);
@@ -97,9 +97,9 @@ int	good_syntaxe(t_data *data)
 				|| tmp->type == REDIR_INFILE || tmp->type == REDIR_OUTFILE)
 			&& !tmp->next)
 			return (ft_putstr_fd(INVALID_NEXT_REDIR, 2), data->exit_status = 2,
-				data->err = 1);
+				data->err = 1, 0);
 		if (!check_append(tmp) || !check_heredoc(tmp) || !check_next_ope(tmp))
-			return (data->exit_status = 2, data->err = 1);
+			return (data->exit_status = 2, data->err = 1, 0);
 		tmp = tmp->next;
 	}
 	return (1);

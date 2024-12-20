@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   define.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 12:27:25 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 13:57:51 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:43:28 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define INVALID_ARG_CD "minishell: cd: too many arguments\n"
 # define INVALID_NEXT_REDIR "minishell: syntax error near unexpected token \
 `newline'\n"
+# define PIPE_AFTER_PIPE "minishell: syntax error near unexpected token `|'\n"
 
 # ifndef GLOBALS_H
 #  define GLOBALS_H
