@@ -1,17 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_infile.c                                      :+:      :+:    :+:   */
+/*   check_token_type2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/10 14:56:52 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/11 15:09:56 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/13 13:03:55 by saberton          #+#    #+#             */
+/*   Updated: 2024/12/13 13:04:20 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_in(void)
+int	is_word(char c)
 {
+	if (!ft_isspace(c) && !is_operateur(c) && !is_pipe(c))
+		return (1);
+	return (0);
+}
+
+int	is_word_and_space(char c)
+{
+	if (!is_operateur(c) && !is_pipe(c))
+		return (1);
+	return (0);
 }

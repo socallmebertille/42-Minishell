@@ -1,41 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_token_type.c                                 :+:      :+:    :+:   */
+/*   signal_child.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/20 19:03:07 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/14 16:50:48 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/20 20:39:15 by saberton          #+#    #+#             */
+/*   Updated: 2024/12/20 20:39:34 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_quote(char c)
+static void	handle_child_sigint(int signum)
 {
-	if (c == '\"' || c == '\'')
-		return (1);
-	return (0);
+	(void)signum;
+	write(2, "\n", 1);
+	g_signal_received = 3;
+	rl_done = 1;
+	return ;
 }
 
-int	is_pipe(char c)
+static int	sig_event(void)
 {
-	if (c == PIPE)
-		return (1);
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
-int	is_operateur(char c)
+void	child_signal_handler(void)
 {
-	if (c == REDIR_INFILE || c == REDIR_OUTFILE)
-		return (1);
-	return (0);
-}
+	struct sigaction	sa;
 
-int	ft_isspace(char c)
-{
-	if (c == ' ' || c == '\t')
-		return (1);
-	return (0);
+	sigemptyset(&sa.sa_mask);
+	rl_event_hook = sig_event;
+	sa.sa_handler = handle_child_sigint;
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGTSTP, SIG_IGN);
 }

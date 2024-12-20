@@ -6,15 +6,39 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:54:11 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 14:41:42 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:46:15 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*check_err_messages(t_data *data, t_token *tok, char *exist, int err)
+static int	is_directory(const char *path)
 {
-	if (err == 2)	
+	struct stat	path_stat;
+
+	if (stat(path, &path_stat) != 0)
+		return (0);
+	return (S_ISDIR(path_stat.st_mode));
+}
+
+static void	check_if_directory(t_data *data, char *cmd_path)
+{
+	if (is_directory(cmd_path))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd_path, 2);
+		ft_putstr_fd(": Is a directory\n", 2);
+		free(cmd_path);
+		data->err = 1;
+		data->exit_status = 126;
+		return ;
+	}
+}
+
+static char	*check_err_messages(t_data *data, t_token *tok, char *exist,
+		int err)
+{
+	if (err == 2 && (tok->type == CMD || tok->type == BUILD))
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(tok->value, 2);
@@ -22,7 +46,7 @@ static char	*check_err_messages(t_data *data, t_token *tok, char *exist, int err
 		tok->type = NOT_FOUND;
 		data->exit_status = 127;
 	}
-	else if (err == 12)
+	else if (err == 1)
 	{
 		if (!exist)
 			return (failed_mess(data, "malloc failed", 1), NULL);
@@ -33,30 +57,42 @@ static char	*check_err_messages(t_data *data, t_token *tok, char *exist, int err
 			if (!exist)
 				return (failed_mess(data, "malloc failed", 1), NULL);
 		}
+		check_if_directory(data, exist);
+		if (data->err)
+			return (NULL);
 	}
 	return (exist);
 }
 
-void	ft_change_word_to_cmd(t_data *data)
+void	ft_change_word_to_type(t_data *data)
 {
 	t_token	*tmp;
 
 	tmp = data->token;
-	if (!tmp || !tmp->next)
-		return ;
 	while (tmp->next)
 	{
 		if (!is_builtins(tmp) && tmp->type == PIPE)
 			tmp->next->type = CMD;
-		if (!is_builtins(tmp) && (tmp->next->type == APPEND
-				|| tmp->next->type == INFILE || tmp->next->type == HEREDOC
-				|| tmp->next->type == OUTFILE))
-			tmp->type = CMD;
+		if (!ft_strcmp(tmp->next->value, "<<"))
+			tmp->next->type = HEREDOC;
+		else if (!ft_strcmp(tmp->next->value, ">>"))
+			tmp->next->type = APPEND;
+		else if (!ft_strcmp(tmp->next->value, "<"))
+			tmp->next->type = REDIR_INFILE;
+		else if (!ft_strcmp(tmp->next->value, ">"))
+			tmp->next->type = REDIR_OUTFILE;
+		if (tmp->type == REDIR_INFILE && tmp->next->type == WORD)
+			tmp->next->type = INFILE;
+		if (tmp->type == HEREDOC && tmp->next->type == WORD)
+			tmp->next->type = DELIM;
+		if ((tmp->type == REDIR_OUTFILE || tmp->type == APPEND)
+			&& tmp->next->type == WORD)
+			tmp->next->type = OUTFILE;
 		tmp = tmp->next;
 	}
 }
 
-void	ft_check_access_cmd(t_data *data)
+void	ft_check_access_cmd(t_data *data, int step)
 {
 	t_token	*tmp;
 	char	*exist;
@@ -65,10 +101,11 @@ void	ft_check_access_cmd(t_data *data)
 	tmp = data->token;
 	while (tmp)
 	{
-		if (tmp->type == CMD && !is_builtins(tmp))
+		if (((tmp->type == CMD && !is_builtins(tmp)) && step == 1)
+			|| ((tmp->type == INFILE || tmp->type == OUTFILE) && step == 2))
 		{
 			exist = valid_cmd(data, tmp->value);
-			exist = check_err_messages(data, tmp, exist, 12);
+			exist = check_err_messages(data, tmp, exist, 1);
 			if (!exist)
 				return ;
 			cmd = recup_cmd(data, tmp);

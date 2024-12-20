@@ -1,23 +1,30 @@
 NAME		=	minishell
 
 CC			=	cc
-C_FLAGS		=	-Wall -Wextra -Werror -g3
+C_FLAGS		=	-Wall -Wextra -Werror -g3 -MMD -MP
 
 SRCS_DIR	=	srcs
 OBJ_DIR		=	objs
-SRCS_NAMES	=	main.c signal.c free_data.c exit_status.c\
+SRCS_NAMES	=	main.c write_str.c \
+				clean/free_data.c \
+				clean/exit_status.c \
+				signal/signal.c \
+				signal/signal_heredoc.c \
+				signal/signal_child.c \
 				builtins/get_env.c \
 				builtins/env.c \
 				builtins/unset.c \
 				builtins/get_export_env.c \
 				builtins/syntaxe_export.c \
 				builtins/export.c \
+				builtins/export_utils.c \
 				builtins/cd.c \
 				builtins/cd_utils.c \
 				builtins/pwd.c \
 				builtins/exit.c \
 				builtins/echo.c \
 				token/add_token.c \
+				token/check_token_type2.c \
 				token/check_token_type.c \
 				token/get_path.c \
 				token/token_copy.c \
@@ -26,14 +33,20 @@ SRCS_NAMES	=	main.c signal.c free_data.c exit_status.c\
 				token/token_utils.c \
 				parse/syntaxe.c \
 				parse/parse.c \
-				parse/check_new_line.c \
-				exec/exec_infile.c \
+				parse/syntaxe_line.c \
+				parse/remove_quote.c \
+				exec/env_to_send.c \
+				exec/exec_dup2.c \
+				exec/open_file.c \
 				exec/exec_utils.c \
 				exec/exec_pipes.c \
+				exec/heredoc.c \
+				exec/simple_exec.c \
 				exec/exec.c \
 				expand/expand.c \
 				expand/expand_utils.c \
 				expand/expand_utils2.c \
+				expand/expand_dollars.c \
 				
 OBJS_NAMES	=	$(SRCS_NAMES:.c=.o)
 SRCS		=	$(addprefix $(SRCS_DIR)/,$(SRCS_NAMES))
@@ -85,3 +98,5 @@ re: fclean all
 	@echo "$(PURPLE) ============ $(REDO) Redo completed ! ====================================== $(RESET)"
 
 .PHONY: all clean fclean re
+
+-include $(DEPS)

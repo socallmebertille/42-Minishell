@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 18:36:08 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:40:19 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -31,15 +32,14 @@ typedef enum e_enum
 {
 	CMD,
 	WORD,
-	FLGS,
 	APPEND,
 	HEREDOC,
 	DELIM,
-	OPERATEUR,
-	INFILE = '<',
-	OUTFILE = '>',
+	REDIR_INFILE = '<',
+	REDIR_OUTFILE = '>',
 	PIPE = '|',
-	FICHIER,
+	INFILE,
+	OUTFILE,
 	BUILD,
 	NOT_FOUND,
 }					t_enum;
@@ -70,19 +70,27 @@ typedef struct s_pipe
 	struct s_data	*data;
 }					t_pipe;
 
+typedef struct s_redir
+{
+	int				infile;
+	int				outfile;
+	int				here_tmp;
+	char			*heredoc;
+	struct s_data	*data;
+}					t_redir;
+
 typedef struct s_data
 {
 	int				exit_code;
-	int				nb_pipe;
 	int				err_quote;
 	int				err_export;
 	int				err;
-	int				infile;
-	int				outfile;
 	int				exit_status;
 	char			wich_quote_err;
+	char			*expanded_str;
 	char			*line;
 	char			**env;
+	t_redir			*redir;
 	t_token			*token;
 	t_env			*cpy_env;
 	t_env			*cpy_env2;
@@ -92,9 +100,7 @@ typedef struct s_data
 //================== builtins =====================================//
 
 //----------------- cd.c ------------------------
-void				cd_go_home(t_data *data);
-void				change_directory(t_data *data);
-void				handle_cd(t_data *data, int fd_out);
+void				handle_cd(t_data *data, t_token *tok, int fd_out);
 
 //----------------- cd_utils.c ------------------------
 void				change_old_env_pwd(t_data *data, char *path);
@@ -103,7 +109,7 @@ char				*get_actual_env_path(t_data *data);
 char				*get_home_env(t_data *data);
 
 //----------------- echo.c ------------------------
-void				handle_echo(t_token *tok, int fd_out);
+void				handle_echo(t_data *data, t_token *tok, int fd_out);
 
 //----------------- env.c ------------------------
 void				handle_env(t_data *data, t_token *tok, int fd_out);
@@ -112,8 +118,14 @@ void				handle_env(t_data *data, t_token *tok, int fd_out);
 void				handle_exit(t_data *data, t_token *tok, int fd_out);
 
 //----------------- export.c ------------------------
-int					find_if_env_exist(t_env *env, char *value);
 void				handle_export(t_data *data, t_token *tok, int fd_out);
+
+//----------------- export_utils.c ------------------------
+void				modif_env_node(t_data *data, char *value, int j);
+void				add_env_node(t_data *data, char *value);
+void				display_export_order(t_data *data, int fd_out);
+int					find_if_env_exist(t_env *env, char *value);
+int					is_valid_name(char *name, t_data *data);
 
 //----------------- get_env.c ------------------------
 void				get_shlvl_env(t_data *data);
@@ -129,7 +141,7 @@ void				get_shlvl_export(t_data *data);
 void				get_env2(char **env, t_data *data);
 
 //----------------- pwd.c ----------------------
-void				handle_pwd(int fd_out);
+void				handle_pwd(t_data *data, t_token *tok, int fd_out);
 
 //----------------- syntaxe_export.c ----------------------
 int					check_syntax_export(char *value, t_data *data);
@@ -148,16 +160,23 @@ void				handle_unset(t_data *data, t_token *tok);
 //----------------- syntaxe.c ----------------------
 int					good_syntaxe(t_data *data);
 
+//----------------- remove_quote.c ----------------------
+void				remove_quote(char *str, t_token *tok);
+
 //----------------- parse.c ----------------------
 void				parse(t_data *data);
-void				clean_line(char *line, t_data *data);
+void				syntaxe_line(char *line, t_data *data);
 int					is_builtins(t_token *token);
 int					handle_builtins(t_data *data, t_token *tok, int fd_out);
 
 //================== exec =====================================//
 
-//----------------- exec_infile.c ----------------------
-void				exec_in(void);
+//----------------- env_to_send.c ---------------------
+char				**env_to_tab(t_env *env);
+
+//----------------- exec_dup2.c ---------------------
+void				exec_dup2_pipe(t_data *data, t_token *tmp, int i);
+void				exec_dup2_simple(t_data *data);
 
 //----------------- exec_pipes.c ----------------------
 void				ft_pipes(t_data *data);
@@ -165,29 +184,45 @@ void				ft_pipes(t_data *data);
 //----------------- exec_utils.c ----------------------
 int					pipe_in_line(t_data *data);
 char				**recup_cmd(t_data *data, t_token *tok);
-t_enum				wich_type_exec(t_data *data);
 t_token				*recup_tok_after_pipe(t_token *tmp);
 
 //----------------- exec.c ----------------------
 void				update_last_cmd(t_data *data, char *cmd_path);
 void				exec_cmd(t_data *data, char **env, char **cmd,
 						t_token *tok);
-void				update_last_cmd(t_data *data, char *cmd_path);
-void				exec_cmd(t_data *data, char **env, char **cmd,
-						t_token *tok);
 void				exec_choice(t_data *data, t_token *tok);
-void				wich_exec(t_data *data);
+void				wich_exec(t_data *data, t_token *tmp);
+
+//----------------- heredoc.c ----------------------
+void				ft_heredoc(t_data *data, t_token *tok);
+
+//----------------- open_file.c ----------------------
+void				open_file(t_data *data, t_token *tok);
+t_token				*check_if_cmd_after_redir(t_data *data, t_token *tok);
+
+//----------------- simple_exec.c ----------------------
+void				simple_exec(t_data *data, t_token *tmp);
 
 //================== expand =====================================//
 
-void				replace_in_tok(t_token *tok, char *expanded_str);
-int					dollar_in_str(char *str);
+//----------------- expand_dollars.c ----------------------
+int					dollar_in_str(char *str, t_data *data);
+char				*expand_dollar_sequence(char **str, int *i);
+
+//----------------- expand_utils.c ----------------------
 size_t				get_var_len(char *str);
 int					is_exist_in_env(char *var, t_data *data);
 int					is_in_single_quotes(char *str, int index);
 char				*ft_strjoin_char(char *str, char c);
 
+//----------------- expand_utils2.c ----------------------
+int					is_in_double_quotes(char *str, int index);
+char				*give_me_inside_var(char *var, t_data *data);
+char				*extract_var(char *str, int *i);
+char				*ft_concate(char *before, char *in_var);
+
 //----------------- expand.c ----------------------
+char				*extract_var(char *str, int *i);
 void				expand(t_data *data);
 
 //================== token =====================================//
@@ -200,13 +235,15 @@ void				add_token_operateur(char *line, t_token **tok, t_data *data,
 						int *i);
 t_token				*last_token(t_token *tok);
 
+//----------------- check_token_type2.c ----------------------
+int					is_word(char c);
+int					is_word_and_space(char c);
+
 //----------------- check_token_type.c ----------------------
 int					is_quote(char c);
 int					is_pipe(char c);
 int					is_operateur(char c);
 int					ft_isspace(char c);
-int					is_word(char c);
-int					is_word_and_space(char c);
 
 //----------------- get_path.c ----------------------
 char				**recup_path(t_env *env);
@@ -225,30 +262,43 @@ char				*ft_copy_pipe(int *i);
 char				*ft_copy_operateur(int *i, int j);
 
 //----------------- token_utils.c ----------------------
-void				ft_change_word_to_cmd(t_data *data);
-void				ft_check_access_cmd(t_data *data);
+void				ft_change_word_to_type(t_data *data);
+void				ft_check_access_cmd(t_data *data, int step);
 
 //----------------- tokenize.c ----------------------
 void				tokenize(char *line, t_data *data);
 char				*ft_enum_to_char(int num);
 
-//================== main =====================================//
+//================== signal =====================================//
+
+//----------------- signal.c --------------------------
+void				signal_handlers(void);
+void				reset_signal_handler(t_data *data);
+
+//----------------- signal_child.c --------------------------
+void				child_signal_handler(void);
+
+//----------------- signal_heredoc.c --------------------------
+void				heredoc_signal_handler(void);
+
+//================== clean =====================================//
 
 //----------------- exit_status.c ----------------------
+void				free_close_fds(t_data *data, int sous_process);
 void				get_end_exec(t_data *data, int i, pid_t pid);
-void				quit_pipe(t_data *data, int i);
-void				failed_mess(t_data *data, char *mess, int code);
 
 //----------------- free_data.c ----------------------
 void				free_tok(t_data *data);
 void				free_env(t_data *data, t_env *env, int cpy);
 void				free_pipe(t_data *data);
-void				free_close_fds(t_data *data, int sous_process);
+void				quit_pipe(t_data *data, int i);
+void				failed_mess(t_data *data, char *mess, int code);
 
-//----------------- signal.c ---------------------expor-
-void				signal_handlers(void);
-void				reset_signal_handler(void);
-void				child_signal_handler(void);
+//================== main =====================================//
+
+//----------------- write_str.c --------------------------
+void				write_char_fd(t_data *data, char *str_err, char c, int fd);
+void				write_str_fd(t_data *data, char *str_err, char *s, int fd);
 
 //----------------- main.c ----------------------
 void				exit_prog(t_data *data, int code);

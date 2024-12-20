@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bertille <bertille@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/17 18:29:02 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/12 18:14:20 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/15 19:50:15 by bertille         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void				*ft_calloc(size_t nmemb, size_t size);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 
 // ---------------- printf -----------------
-int					ft_len_nb(size_t nb, size_t len);
+int					ft_len_nb(int nb, int len);
 int					ft_putnbr(int nbr);
 int					ft_putnbr_base(char *base, int nbr, int len);
 int					ft_print_ptr(char *base, void *ptr, size_t len);
