@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:54:47 by bertille          #+#    #+#             */
-/*   Updated: 2024/12/20 20:39:30 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/21 00:32:57 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ void	reset_signal_handler(t_data *data)
 {
 	if ((g_signal_received == 1 || g_signal_received == 3)
 		&& data->exit_code == 130)
+	{
+		g_signal_received = 0;
+		data->exit_status = 0;
+	}
+	if (g_signal_received == 4 && data->exit_code == 131)
 	{
 		g_signal_received = 0;
 		data->exit_status = 0;
