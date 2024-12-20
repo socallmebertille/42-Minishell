@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 14:00:04 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 21:03:05 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:37:36 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,12 @@ void	simple_exec(t_data *data, t_token *tmp)
 {
 	pid_t	pid;
 
-	if (data->err || tmp->type == NOT_FOUND || data->exit_status == 1
-		|| g_signal_received == 3)
+	if (data->err || data->exit_status == 1
+		|| g_signal_received == 3 || tmp->type == NOT_FOUND)
 		return ;
 	tmp = check_if_cmd_after_redir(data, tmp);
+	if (!tmp)
+		return ;
 	if (tmp->type == BUILD)
 		simple_exec_build(data, tmp);
 	else if (tmp->type == CMD && data->exit_status != 1)

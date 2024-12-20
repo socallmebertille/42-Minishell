@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 14:36:32 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/15 05:10:13 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:11:13 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	remove_quote(char *str, t_token *tok)
 	int		i;
 	char	*no_quote_str;
 
+	if (!str)
+		return ;
 	no_quote_str = ft_strdup("");
 	if (!no_quote_str)
 		return ;

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 19:10:37 by uzanchi           #+#    #+#             */
-/*   Updated: 2024/12/20 16:34:33 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:46:10 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,22 @@ static void	init_tok_for_cmd(t_data *data, t_token *tok)
 	}
 }
 
+static int	no_cmd(t_data *data)
+{
+	t_token	*tok;
+
+	tok = data->token;
+	if (!tok)
+		return (0);
+	while (tok)
+	{
+		if (tok->type == CMD || tok->type == BUILD)
+			return (1);
+		tok = tok->next;
+	}
+	return (0);
+}
+
 void	ft_heredoc(t_data *data, t_token *tok)
 {
 	int		fd;
@@ -81,6 +97,8 @@ void	ft_heredoc(t_data *data, t_token *tok)
 		return ;
 	}
 	close(fd);
+	if (!no_cmd(data))
+		return ;
 	init_tok_for_cmd(data, tok);
 	return ;
 }
