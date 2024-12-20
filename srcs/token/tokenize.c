@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 14:55:18 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/18 13:13:50 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:44:46 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ void	tokenize(char *line, t_data *data)
 	i = 0;
 	(void)line;
 	expand(data);
+	if (!data->line[0])
+		return (failed_mess(data, "", 0));
 	while (data->line[i])
 	{
 		if (ft_isspace(data->line[i]))
