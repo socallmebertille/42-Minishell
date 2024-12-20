@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 13:51:15 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/20 17:14:42 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:59:21 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,12 @@ static void	get_export(t_data *data, t_token *tmp_tok, t_token *tmp_tiktok,
 			return ;
 		if (point_dexclamation(data))
 			return ;
-		if (!is_valid_name(export_key(tmp_tiktok->value)))
+		if (!is_valid_name(export_key(tmp_tiktok->value), data))
 		{
+			if (data->err)
+				return ;
 			tmp_tiktok = tmp_tok->next;
 			tmp_tok = tmp_tok->next;
-			continue ;
 			continue ;
 		}
 		tmp_tiktok = tmp_tok->next;

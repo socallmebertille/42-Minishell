@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 19:53:52 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:57:19 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,14 +125,7 @@ void				modif_env_node(t_data *data, char *value, int j);
 void				add_env_node(t_data *data, char *value);
 void				display_export_order(t_data *data, int fd_out);
 int					find_if_env_exist(t_env *env, char *value);
-int					is_valid_name(char *name);
-
-//----------------- export_utils.c ------------------------
-void				modif_env_node(t_data *data, char *value, int j);
-void				add_env_node(t_data *data, char *value);
-void				display_export_order(t_data *data, int fd_out);
-int					find_if_env_exist(t_env *env, char *value);
-int					is_valid_name(char *name);
+int					is_valid_name(char *name, t_data *data);
 
 //----------------- get_env.c ------------------------
 void				get_shlvl_env(t_data *data);

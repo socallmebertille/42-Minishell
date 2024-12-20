@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 14:08:13 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 14:18:37 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:00:34 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	display_export_order(t_data *data, int fd_out)
 	}
 }
 
-int	is_valid_name(char *name)
+int	is_valid_name(char *name, t_data *data)
 {
 	int	i;
 
@@ -92,7 +92,7 @@ int	is_valid_name(char *name)
 		ft_putstr_fd(name, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
 		free(name);
-		return (0);
+		return (data->exit_status = 1, data->err = 1, 0);
 	}
 	i = 1;
 	while (name[i])
@@ -103,7 +103,7 @@ int	is_valid_name(char *name)
 			ft_putstr_fd(name, 2);
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			free(name);
-			return (0);
+			return (data->exit_status = 1, data->err = 1, 0);
 		}
 		i++;
 	}
