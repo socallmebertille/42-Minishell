@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 20:32:33 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:44:51 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,7 @@ void	exec_choice(t_data *data, t_token *tok)
 	if (tok->type == BUILD)
 		handle_builtins(data, tok, STDOUT_FILENO);
 	else if (tok->type == CMD)
-	{
-		// child_signal_handler();
 		exec_cmd(data, data->env, cmd, tok);
-		// signal_handlers();
-	}
 	ft_free_tab(cmd);
 }
 

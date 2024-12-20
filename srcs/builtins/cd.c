@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 15:39:24 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/20 17:20:27 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:44:38 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	cd_go_home(t_data *data)
 	{
 		data->err = 1;
 		data->exit_status = 1;
-		return;
+		return ;
 	}
 	change_old_env_pwd(data, get_actual_env_path(data));
 	chdir(home_path);
@@ -92,8 +92,3 @@ void	handle_cd(t_data *data, t_token *tok, int fd_out)
 			return (change_directory(data, tok, fd_out));
 	}
 }
-
-// cd
-// cd avec plus de un arg exit=1
-// cd avec un chemin faux exit=1
-// changement var env
