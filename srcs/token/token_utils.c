@@ -6,7 +6,7 @@
 /*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 13:54:11 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 15:42:52 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/20 13:03:04 by kepouliq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ static char	*check_err_messages(t_data *data, t_token *tok, char *exist,
 			exist = ft_strdup(tok->value);
 			if (!exist)
 				return (failed_mess(data, "malloc failed", 1), NULL);
-			check_if_directory(data, exist);
-			if (data->err)
-				return (free(exist), NULL);
 		}
+		check_if_directory(data, exist);
+		if (data->err)
+			return (NULL);
 	}
 	return (exist);
 }

@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 18:30:41 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/15 08:28:49 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:49:08 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,5 @@ void	syntaxe_line(char *line, t_data *data)
 			open_quote_exit(data);
 		return ;
 	}
+	// if (check_is_dir_slash(data->line))
 }
