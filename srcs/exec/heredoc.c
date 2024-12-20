@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 19:10:37 by uzanchi           #+#    #+#             */
-/*   Updated: 2024/12/20 12:20:58 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:34:33 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,7 @@ void	ft_heredoc(t_data *data, t_token *tok)
 	g_signal_received = 2;
 	fd = open("heredoc.tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
-	{
-		failed_mess(data, "open failed", 1);
-		return ;
-	}
+		return (failed_mess(data, "open failed", 1));
 	child_signal_handler();
 	if (!print_in_file(data, fd, tok->next->value))
 	{
