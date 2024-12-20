@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_heredoc.c                                   :+:      :+:    :+:   */
+/*   signal_child.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/20 12:23:31 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 20:35:28 by saberton         ###   ########.fr       */
+/*   Created: 2024/12/20 20:39:15 by saberton          #+#    #+#             */
+/*   Updated: 2024/12/20 20:39:34 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	handle_child_sigint(int signum)
 {
 	(void)signum;
+	write(2, "\n", 1);
 	g_signal_received = 3;
 	rl_done = 1;
 	return ;
@@ -25,7 +26,7 @@ static int	sig_event(void)
 	return (EXIT_SUCCESS);
 }
 
-void	heredoc_signal_handler(void)
+void	child_signal_handler(void)
 {
 	struct sigaction	sa;
 

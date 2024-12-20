@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 19:57:19 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:40:19 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,10 +274,12 @@ char				*ft_enum_to_char(int num);
 //----------------- signal.c --------------------------
 void				signal_handlers(void);
 void				reset_signal_handler(t_data *data);
+
+//----------------- signal_child.c --------------------------
 void				child_signal_handler(void);
 
 //----------------- signal_heredoc.c --------------------------
-void				child_signal_handler(void);
+void				heredoc_signal_handler(void);
 
 //================== clean =====================================//
 

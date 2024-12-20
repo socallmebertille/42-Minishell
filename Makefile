@@ -10,6 +10,7 @@ SRCS_NAMES	=	main.c write_str.c \
 				clean/exit_status.c \
 				signal/signal.c \
 				signal/signal_heredoc.c \
+				signal/signal_child.c \
 				builtins/get_env.c \
 				builtins/env.c \
 				builtins/unset.c \

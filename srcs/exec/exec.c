@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 19:47:14 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:32:33 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,11 @@ void	exec_choice(t_data *data, t_token *tok)
 	if (tok->type == BUILD)
 		handle_builtins(data, tok, STDOUT_FILENO);
 	else if (tok->type == CMD)
+	{
+		// child_signal_handler();
 		exec_cmd(data, data->env, cmd, tok);
+		// signal_handlers();
+	}
 	ft_free_tab(cmd);
 }
 
@@ -115,6 +119,7 @@ void	wich_exec(t_data *data, t_token	*tmp)
 		return (failed_mess(data, "dup failed", 1));
 	if (!is_not_found(data))
 		data->exit_status = 0;
+	child_signal_handler();
 	if (data->pipe->nb_pipe > 0)
 		ft_pipes(data);
 	else

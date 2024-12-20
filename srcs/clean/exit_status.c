@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:30:06 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 21:33:38 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:31:44 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,9 @@ static void	loop_end_exec(t_data *data, pid_t pid, int status)
 		data->exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status) && !data->err)
 	{
-		if (WTERMSIG(status) == 2)
+		if (g_signal_received == 3 && WTERMSIG(status) == 2)
+			data->exit_status = 130;
+		else if (WTERMSIG(status) == 2)
 			data->exit_status = 2;
 	}
 }

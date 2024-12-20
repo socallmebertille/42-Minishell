@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kepouliq <kepouliq@student.42.fr>          +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 19:53:56 by kepouliq         ###   ########.fr       */
+/*   Updated: 2024/12/20 20:39:52 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,19 @@ static void	loop(t_data *data)
 {
 	while (1)
 	{
+		signal_handlers();
 		g_signal_received = 0;
 		data->line = readline("minishell$ ");
-		if (g_signal_received == 1)
+		if (g_signal_received == 1 || g_signal_received == 3)
 			data->exit_status = 130;
 		if (!data->line)
 			return (write(2, "exit\n", 5), exit_prog(data, 0));
+		// if (g_signal_received == 3)
+		// {
+		// 	data->exit_code = 130;
+		// 	clean_loop(data);
+		// 	continue ;
+		// }
 		if (is_line_empty_or_need_continue(data))
 			continue ;
 		syntaxe_line(data->line, data);
