@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 14:14:21 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:22:14 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 int	g_signal_received = 0;
 
-static int is_line_empty_or_need_continue(t_data *data)
+static int	is_line_empty_or_need_continue(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!data->line[0])
-			return (1) ;
+		return (1);
 	while (ft_isspace(data->line[i]))
 		i++;
 	if (data->line[i] == '\0')
@@ -33,6 +33,18 @@ static int is_line_empty_or_need_continue(t_data *data)
 		return (69);
 	}
 	return (0);
+}
+
+static void	clean_loop(t_data *data)
+{
+	if (access("heredoc.tmp", F_OK) == 0)
+		unlink("heredoc.tmp");
+	data->err_quote = 0;
+	data->err = 0;
+	free_tok(data);
+	data->token = NULL;
+	free(data->line);
+	reset_signal_handler(data);
 }
 
 static void	loop(t_data *data)
@@ -54,12 +66,7 @@ static void	loop(t_data *data)
 			tokenize(data->line, data);
 		if (!data->err_quote && !data->err)
 			parse(data);
-		data->err_quote = 0;
-		data->err = 0;
-		free_tok(data);
-		data->token = NULL;
-		free(data->line);
-		reset_signal_handler(data);
+		clean_loop(data);
 	}
 }
 

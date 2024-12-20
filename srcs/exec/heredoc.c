@@ -3,67 +3,87 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uzanchi <uzanchi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 19:10:37 by uzanchi           #+#    #+#             */
-/*   Updated: 2024/12/18 21:03:17 by uzanchi          ###   ########.fr       */
+/*   Updated: 2024/12/20 12:20:58 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	reset_line(int signum)
+static int	print_in_file(t_data *data, int fd, char *delim)
 {
-	(void)signum;
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	write(1, "\n", STDERR_FILENO);
-	rl_redisplay();
+	while (g_signal_received != 3)
+	{
+		if (g_signal_received == 3)
+			return (0);
+		data->redir->heredoc = readline("> ");
+		if (g_signal_received == 3)
+			return (free(data->redir->heredoc), 0);
+		if (!data->redir->heredoc)
+		{
+			ft_putstr_fd("minishell: warning: here-document at line 1 ", 2);
+			ft_putstr_fd("delimited by end-of-file (wanted `", 2);
+			ft_putstr_fd(delim, 2);
+			ft_putstr_fd("')\n", 2);
+			break ;
+		}
+		if (ft_strcmp(delim, data->redir->heredoc) == 0)
+		{
+			free(data->redir->heredoc);
+			break ;
+		}
+		ft_putstr_fd(data->redir->heredoc, fd);
+		ft_putstr_fd("\n", fd);
+	}
+	return (1);
 }
 
-static void	signals_interactive(void)
+static void	init_tok_for_cmd(t_data *data, t_token *tok)
 {
-	signal(SIGINT, reset_line);
-	signal(SIGQUIT, SIG_IGN);
-}
+	t_token	*tmp;
 
-static void	display_new_line(int signum)
-{
-	if (signum == SIGQUIT)
-		ft_printf("Quit (core dumped)");
-	write(1, "\n", STDERR_FILENO);
-	rl_on_new_line();
-}
-
-static void	signals_non_interactive(void)
-{
-	signal(SIGINT, display_new_line);
-	signal(SIGQUIT, display_new_line);
+	data->redir->here_tmp += 1;
+	free(tok->value);
+	tok->value = ft_strdup("heredoc.tmp");
+	tok->type = WORD;
+	if (tok->next)
+	{
+		tmp = tok->next;
+		tok->next = tok->next->next;
+		if (tok->next)
+			tok->next->prev = tok;
+		if (tmp->value)
+		{
+			free(tmp->value);
+			tmp->value = NULL;
+		}
+		free(tmp);
+		tmp = NULL;
+	}
 }
 
 void	ft_heredoc(t_data *data, t_token *tok)
 {
-	char	*heredoc;
+	int		fd;
 
-	if (pipe(data->redir->fds_doc) == -1)
-		return (failed_mess(data, "pipe failed", 1));
-	while (1)
+	g_signal_received = 2;
+	fd = open("heredoc.tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd == -1)
 	{
-		signals_interactive();
-		heredoc = readline("> ");
-		signals_non_interactive();
-		if (!heredoc)
-			break ;
-		if (!ft_strncmp(tok->next->value, heredoc, ft_strlen(tok->value)))
-		{
-			free(heredoc);
-			break ;
-		}
-		write(data->redir->fds_doc[1], heredoc, ft_strlen(heredoc));
-		write(data->redir->fds_doc[1], "\n", 1);
-		free(heredoc);
+		failed_mess(data, "open failed", 1);
+		return ;
 	}
-	data->redir->infile = data->redir->fds_doc[0];
-	close(data->redir->fds_doc[1]);
-	data->redir->fds_doc[1] = -1;
+	child_signal_handler();
+	if (!print_in_file(data, fd, tok->next->value))
+	{
+		close(fd);
+		data->exit_status = 130;
+		data->err = 1;
+		return ;
+	}
+	close(fd);
+	init_tok_for_cmd(data, tok);
+	return ;
 }

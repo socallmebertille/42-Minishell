@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 18:05:45 by kepouliq          #+#    #+#             */
-/*   Updated: 2024/12/19 14:22:41 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:38:41 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,8 @@ void	parse(t_data *data)
 	ft_bzero(&data_redir, sizeof(t_redir));
 	data_redir.infile = -1;
 	data_redir.outfile = -1;
-	data_redir.heredoc = -1;
-	data_redir.fds_doc[0] = -1;
-	data_redir.fds_doc[1] = -1;
+	data_redir.here_tmp = 0;
+	data_redir.heredoc = NULL;
 	data_redir.data = data;
 	data->redir = &data_redir;
 	wich_exec(data, data->token);

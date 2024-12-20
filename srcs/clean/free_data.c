@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:39 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/18 14:28:39 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:27:50 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,5 @@ void	failed_mess(t_data *data, char *mess, int code)
 	if (*mess)
 		ft_putstr_fd("\n", 2);
 	data->err = 1;
-	data->exit_status += code;
+	data->exit_status = code;
 }
