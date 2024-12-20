@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 21:34:32 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:22:14 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static int	is_line_empty_or_need_continue(t_data *data)
 
 static void	clean_loop(t_data *data)
 {
+	if (access("heredoc.tmp", F_OK) == 0)
+		unlink("heredoc.tmp");
 	data->err_quote = 0;
 	data->err = 0;
 	free_tok(data);
@@ -64,8 +66,6 @@ static void	loop(t_data *data)
 			tokenize(data->line, data);
 		if (!data->err_quote && !data->err)
 			parse(data);
-		if (access("heredoc.tmp", F_OK) == 0)
-			unlink("heredoc.tmp");
 		clean_loop(data);
 	}
 }

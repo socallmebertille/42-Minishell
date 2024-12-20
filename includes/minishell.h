@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:41:46 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/19 18:14:36 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:28:19 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,7 +276,17 @@ void				ft_check_access_cmd(t_data *data, int step);
 void				tokenize(char *line, t_data *data);
 char				*ft_enum_to_char(int num);
 
-//================== main =====================================//
+//================== signal =====================================//
+
+//----------------- signal.c --------------------------
+void				signal_handlers(void);
+void				reset_signal_handler(t_data *data);
+void				child_signal_handler(void);
+
+//----------------- signal_heredoc.c --------------------------
+void				child_signal_handler(void);
+
+//================== clean =====================================//
 
 //----------------- exit_status.c ----------------------
 void				free_close_fds(t_data *data, int sous_process);
@@ -289,10 +299,7 @@ void				free_pipe(t_data *data);
 void				quit_pipe(t_data *data, int i);
 void				failed_mess(t_data *data, char *mess, int code);
 
-//----------------- signal.c --------------------------
-void				signal_handlers(void);
-void				reset_signal_handler(t_data *data);
-void				child_signal_handler(void);
+//================== main =====================================//
 
 //----------------- write_str.c --------------------------
 void				write_char_fd(t_data *data, char *str_err, char c, int fd);

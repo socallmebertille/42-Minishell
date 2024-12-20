@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:54:47 by bertille          #+#    #+#             */
-/*   Updated: 2024/12/19 21:09:43 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:27:30 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,4 @@ void	reset_signal_handler(t_data *data)
 		g_signal_received = 0;
 		data->exit_status = 0;
 	}
-}
-
-static void	handle_child_sigint(int signum)
-{
-	(void)signum;
-	write(2, "\n", 1);
-	g_signal_received = 3;
-}
-
-void	child_signal_handler(void)
-{
-	signal(SIGINT, handle_child_sigint);
-	signal(SIGQUIT, SIG_DFL);
 }

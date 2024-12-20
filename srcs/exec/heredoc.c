@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 19:10:37 by uzanchi           #+#    #+#             */
-/*   Updated: 2024/12/19 21:32:59 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:20:58 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	print_in_file(t_data *data, int fd, char *delim)
 {
-	while (1)
+	while (g_signal_received != 3)
 	{
 		if (g_signal_received == 3)
 			return (0);
