@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 14:00:04 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 19:37:36 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:05:48 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	simple_exec(t_data *data, t_token *tmp)
 {
 	pid_t	pid;
 
-	if (data->err || data->exit_status == 1
+	if (data->err || data->exit_status == 1 || g_signal_received == 4
 		|| g_signal_received == 3 || tmp->type == NOT_FOUND)
 		return ;
 	tmp = check_if_cmd_after_redir(data, tmp);
