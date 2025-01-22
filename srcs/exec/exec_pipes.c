@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 10:19:57 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 19:47:03 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:07:49 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	cmd_in_pipe(t_data *data, t_token *tmp, int i)
 
 static void	exec_in_pipe(t_data *data, t_token *tmp, int i)
 {
-	if (!tmp || data->exit_status == 1 || g_signal_received == 3)
+	if (!tmp || data->exit_status == 1 || g_signal_received >= 3)
 		return ;
 	if (tmp->type == CMD || tmp->type == BUILD)
 		cmd_in_pipe(data, tmp, i);
@@ -97,10 +97,10 @@ void	ft_pipes(t_data *data)
 		return (quit_pipe(data, i));
 	while (tmp)
 	{
-		if ((data->err && data->exit_status != 1) || g_signal_received == 3)
+		if ((data->err && data->exit_status != 1) || g_signal_received >= 3)
 			break ;
 		open_file(data, tmp);
-		if ((data->err && data->exit_status != 1) || g_signal_received == 3)
+		if ((data->err && data->exit_status != 1) || g_signal_received >= 3)
 			break ;
 		tmp = check_if_cmd_after_redir(data, tmp);
 		exec_in_pipe(data, tmp, i);

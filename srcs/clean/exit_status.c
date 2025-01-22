@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:30:06 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 20:31:44 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:08:52 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ static void	loop_end_exec(t_data *data, pid_t pid, int status)
 	{
 		if (g_signal_received == 3 && WTERMSIG(status) == 2)
 			data->exit_status = 130;
+		else if (g_signal_received == 4 && WTERMSIG(status) == 3)
+			data->exit_status = 131;
 		else if (WTERMSIG(status) == 2)
 			data->exit_status = 2;
 	}

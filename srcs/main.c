@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 10:42:36 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 20:44:19 by saberton         ###   ########.fr       */
+/*   Updated: 2025/01/07 18:14:07 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,15 @@ static void	loop(t_data *data)
 		signal_handlers();
 		g_signal_received = 0;
 		data->line = readline("minishell$ ");
-		if (g_signal_received == 1 || g_signal_received == 3)
-			data->exit_status = 130;
+		if (g_signal_received == 1)
+		{
+			free(data->line);
+			data->line = NULL;
+			g_signal_received = 0;
+			continue ;
+		}
 		if (!data->line)
-			return (write(2, "exit\n", 5), exit_prog(data, 0));
+			return (ft_putstr_fd("exit\n", 2), exit_prog(data, 0));
 		if (is_line_empty_or_need_continue(data))
 			continue ;
 		syntaxe_line(data->line, data);
@@ -91,6 +96,8 @@ int	main(int ac, char **av, char **env)
 	signal_handlers();
 	get_env(env, &data);
 	data.pipe = NULL;
+	g_signal_received = 0;
+	data.exit_status = 0;
 	loop(&data);
 	rl_clear_history();
 	return (0);

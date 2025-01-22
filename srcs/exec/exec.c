@@ -6,7 +6,7 @@
 /*   By: saberton <saberton@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 14:34:54 by saberton          #+#    #+#             */
-/*   Updated: 2024/12/20 20:44:51 by saberton         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:14:13 by saberton         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void	wich_exec(t_data *data, t_token	*tmp)
 		return (failed_mess(data, "dup failed", 1));
 	if (!is_not_found(data))
 		data->exit_status = 0;
+	// if (ft_strcmp("./minishell", tmp->value))
 	child_signal_handler();
 	if (data->pipe->nb_pipe > 0)
 		ft_pipes(data);
